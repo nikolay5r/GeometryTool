@@ -21,6 +21,20 @@ const string GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go t
 
 bool stopProgram = false;
 
+void convertToLowerCase(string& text)
+{
+	string result = "";
+
+	for (int i = 0; i < text.length(); i++) {
+
+		char ch = tolower(text[i]);
+
+		result += ch;
+	}
+
+	text = result;
+}
+
 void showTitle()
 {
 	cout << "\n\t\t\t---GeometryTool---\n";
@@ -47,6 +61,8 @@ void usersChoice()
 
 	string option;
 	cin >> option;
+
+	convertToLowerCase(option);
 
 	if (option == SAVE_OR_DELETE_CORRESPONDING_NUMBER)
 	{
