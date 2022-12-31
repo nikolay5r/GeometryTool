@@ -38,6 +38,14 @@ void convertToLowerCase(string& text)
 	text = result;
 }
 
+string toString(double number)
+{
+	stringstream ss;
+	ss << number;
+
+	return ss.str();
+}
+
 string getKeywordFromConsole()
 {
 	cout << "Keyword: ";
@@ -85,8 +93,11 @@ void saveLineOption()
 		cin >> k;
 		cout << "\'+\' or \'-\': ";
 		cin >> symbol;
+			cout << INVALID_INPUT_TEXT;
+			saveLineOption();
 			cout << "n: ";
 			cin >> n;
+
 
 }
 
