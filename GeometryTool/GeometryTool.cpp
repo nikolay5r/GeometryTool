@@ -249,6 +249,31 @@ void saveOption()
 
 }
 
+void deleteLine(string name)
+{
+	int numberOfRow = 0;
+	string rowText;
+
+	ifstream dataBase(linesDB);
+
+	while (getline(dataBase, rowText))
+	{
+		numberOfRow++;
+
+		vector<string> words{};
+
+		splitByDelim(words, rowText, " : ");
+
+		if (words[0] == name)
+		{
+			break;
+		}
+	}
+
+	dataBase.close();
+
+}
+
 void deleteLineOption()
 {
 	string name;
