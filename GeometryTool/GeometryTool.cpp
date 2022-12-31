@@ -69,6 +69,28 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
+void saveOption()
+{
+	string keyword = getKeywordFromConsole();
+
+	if (keyword == "line")
+	{
+	}
+	else if (keyword == "point")
+	{
+	}
+	else if (keyword == "menu")
+	{
+		showMainMenu();
+	}
+	else
+	{
+		cout << INVALID_INPUT_TEXT;
+		saveOption();
+	}
+
+}
+
 void saveOrDeleteOption()
 {
 	string keyword = getKeywordFromConsole();
@@ -79,6 +101,7 @@ void saveOrDeleteOption()
 			<< "Enter \"point\" if you want to save a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 
+		saveOption();
 	}
 	else if (keyword == "delete")
 	{
