@@ -60,6 +60,30 @@ string getKeywordFromConsole()
 	return keyword;
 }
 
+void printThreeDotsAnimation()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		Sleep(1200);
+		cout << ". ";
+	}
+
+	Sleep(1200);
+	cout << "\n";
+}
+
+void exitAnimation()
+{
+	cout << "Closing program";
+	printThreeDotsAnimation();
+}
+
+void saveAnimation()
+{
+	cout << "Saving";
+	printThreeDotsAnimation();
+}
+
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
 	int pos = 0;
@@ -244,6 +268,8 @@ int main()
 	{
 		usersChoice();
 	}
+
+	exitAnimation();
 
 	return 0;
 }
