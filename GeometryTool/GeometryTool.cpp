@@ -184,15 +184,44 @@ void saveLineOption()
 	}
 }
 
+void savePointOption()
+{
+	string name = "";
+	double x = 0,
+		y = 0;
+
+	cout << "Enter name of a point (it can upper and lower case letters, \'_\' and numbers): ";
+	cin >> name;
+
+	if (isElementInDatabase(name, pointsDB))
+	{
+		cout << "That name already exists! Try another. . .\n";
+		savePointOption();
+	}
+	else
+	{
+		cout << "Enter coordinates:\n";
+		cout << "x: ";
+		cin >> x;
+		cout << "y: ";
+		cin >> y;
+
+	}
+}
+
 void saveOption()
 {
 	string keyword = getKeywordFromConsole();
 
 	if (keyword == "line")
 	{
+		saveLineOption();
+		showMainMenu();
 	}
 	else if (keyword == "point")
 	{
+		savePointOption();
+		showMainMenu();
 	}
 	else if (keyword == "menu")
 	{
