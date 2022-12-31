@@ -16,6 +16,12 @@ const string FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER = "6";
 const string FIND_THE_TANGENT_CORRESPONDING_NUMBER = "7";
 const string DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
 
+
+void showTitle()
+{
+	cout << "\n\t\t\t---GeometryTool---\n";
+}
+
 void showMainMenu()
 {
 	cout << "\nEnter a number corresponding to the option you want to choose or enter \"exit\" if you want to exit:\n";
@@ -33,5 +39,7 @@ void showMainMenu()
 
 int main()
 {
+	showTitle();
+	showMainMenu();
 
 }
