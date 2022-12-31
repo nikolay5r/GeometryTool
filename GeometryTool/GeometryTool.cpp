@@ -104,4 +104,10 @@ int main()
 	showTitle();
 	showMainMenu();
 
+	while (!stopProgram)
+	{
+		usersChoice();
+	}
+
+	return 0;
 }
