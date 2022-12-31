@@ -60,6 +60,15 @@ string getKeywordFromConsole()
 	return keyword;
 }
 
+void splitByDelim(vector<string>& words, string text, string delim = " ")
+{
+	int pos = 0;
+	while ((pos = text.find(delim)) != string::npos) {
+		words.push_back(text.substr(0, pos));
+		text.erase(0, pos + delim.length());
+	}
+}
+
 void showTitle()
 {
 	cout << "\n\t\t\t---GeometryTool---\n";
