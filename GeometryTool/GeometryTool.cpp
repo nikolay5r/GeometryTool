@@ -184,6 +184,19 @@ void saveLineOption()
 	}
 }
 
+void savePoint(string name, double x, double y)
+{
+	ofstream dataBase(pointsDB, ios::app);
+
+	string data = name + " : " + toString(x) + ";" + toString(y);
+
+	dataBase << data << "\n";
+
+	saveAnimation();
+
+	dataBase.close();
+}
+
 void savePointOption()
 {
 	string name = "";
@@ -206,6 +219,7 @@ void savePointOption()
 		cout << "y: ";
 		cin >> y;
 
+		savePoint(name, x, y);
 	}
 }
 
