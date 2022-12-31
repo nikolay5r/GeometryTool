@@ -72,6 +72,24 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
+void saveLineOption()
+{
+	string name;
+	double k, n;
+	string symbol;
+
+	cout << "Enter name of a line (it can be upper and lower case letters, \'_\' and numbers): ";
+	cin >> name;
+		cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
+		cout << "k: ";
+		cin >> k;
+		cout << "\'+\' or \'-\': ";
+		cin >> symbol;
+			cout << "n: ";
+			cin >> n;
+
+}
+
 void saveOption()
 {
 	string keyword = getKeywordFromConsole();
