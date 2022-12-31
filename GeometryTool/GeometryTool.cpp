@@ -80,6 +80,19 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
+void saveLine(const string name, const double k, const string symbol, const double n)
+{
+	ofstream dataBase(pointsDB, fstream::app);
+
+	string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
+
+	dataBase << data << "\n";
+
+	saveAnimation();
+
+	dataBase.close();
+}
+
 void saveLineOption()
 {
 	string name;
@@ -98,7 +111,7 @@ void saveLineOption()
 			cout << "n: ";
 			cin >> n;
 
-
+			saveLine(name, k, symbol, n);
 }
 
 void saveOption()
