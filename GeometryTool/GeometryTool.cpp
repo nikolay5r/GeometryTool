@@ -35,6 +35,20 @@ void convertToLowerCase(string& text)
 	text = result;
 }
 
+string getKeywordFromConsole()
+{
+	cout << "Keyword: ";
+
+	string keyword = "";
+	cin >> keyword;
+
+	cout << "\n";
+
+	convertToLowerCase(keyword);
+
+	return keyword;
+}
+
 void showTitle()
 {
 	cout << "\n\t\t\t---GeometryTool---\n";
@@ -55,6 +69,34 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
+void saveOrDeleteOption()
+{
+	string keyword = getKeywordFromConsole();
+
+	if (keyword == "save")
+	{
+		cout << "Enter \"line\" if you want to save a line\n"
+			<< "Enter \"point\" if you want to save a point\n"
+			<< GO_TO_MAIN_MENU_TEXT;
+
+	}
+	else if (keyword == "delete")
+	{
+		cout << "Enter \"line\" if you want to delete a line\n"
+			<< "Enter \"point\" if you want to delete a point\n"
+			<< GO_TO_MAIN_MENU_TEXT;
+	}
+	else if (keyword == "menu")
+	{
+		showMainMenu();
+	}
+	else
+	{
+		cout << INVALID_INPUT_TEXT;
+		saveOrDeleteOption();
+	}
+}
+
 void usersChoice()
 {
 	cout << "Enter an option: ";
@@ -70,6 +112,7 @@ void usersChoice()
 			<< "Enter the word \"delete\" if you want to delete a line or a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 
+		saveOrDeleteOption();
 	}
 	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
 	{
