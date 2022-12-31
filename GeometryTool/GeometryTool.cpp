@@ -249,12 +249,27 @@ void saveOption()
 
 }
 
+void deleteLineOption()
+{
+	string name;
+
+	cout << "Enter the name of the line (it can be upper and lower case letters, \'_\' and numbers): ";
+	cin >> name;
+
+	if (!isElementInDatabase(name, linesDB))
+	{
+		cout << "That name doesn't exist! Try another. . .\n";
+		deleteLineOption();
+	}
+}
+
 void deleteOption()
 {
 	string keyword = getKeywordFromConsole();
 
 	if (keyword == "line")
 	{
+		deleteLineOption();
 		showMainMenu();
 	}
 	else if (keyword == "point")
