@@ -6,6 +6,9 @@
 
 using namespace std;
 
+const string linesDB = "lines.txt";
+const string pointsDB = "points.txt";
+
 const string SAVE_OR_DELETE_CORRESPONDING_NUMBER = "0";
 const string DEFINE_LINE_CORRESPONDING_NUMBER = "1";
 const string CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER = "2";
