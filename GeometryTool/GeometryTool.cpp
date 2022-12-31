@@ -249,6 +249,28 @@ void saveOption()
 
 }
 
+void deleteOption()
+{
+	string keyword = getKeywordFromConsole();
+
+	if (keyword == "line")
+	{
+		showMainMenu();
+	}
+	else if (keyword == "point")
+	{
+		showMainMenu();
+	}
+	else if (keyword == "menu")
+	{
+		showMainMenu();
+	}
+	else
+	{
+		cout << INVALID_INPUT_TEXT;
+	}
+}
+
 void saveOrDeleteOption()
 {
 	string keyword = getKeywordFromConsole();
