@@ -93,6 +93,29 @@ void splitByDelim(vector<string>& words, string text, string delim = " ")
 	}
 }
 
+bool isElementInDatabase(string element, string path)
+{
+	ifstream dataBase(path);
+
+	string rowText;
+
+	while (getline(dataBase, rowText))
+	{
+		vector<string> words;
+
+		splitByDelim(words, rowText, " : ");
+
+		if (words[0] == element)
+		{
+			return true;
+		}
+	}
+
+	dataBase.close();
+
+	return false;
+}
+
 void showTitle()
 {
 	cout << "\n\t\t\t---GeometryTool---\n";
