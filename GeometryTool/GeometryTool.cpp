@@ -16,6 +16,10 @@ const string FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER = "6";
 const string FIND_THE_TANGENT_CORRESPONDING_NUMBER = "7";
 const string DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
 
+const string INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
+const string GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
+
+bool stopProgram = false;
 
 void showTitle()
 {
@@ -36,6 +40,64 @@ void showMainMenu()
 		<< " " << FIND_THE_TANGENT_CORRESPONDING_NUMBER << " - derive an equation of a tangent to the parabola at a corresponding point;\n"
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
+
+void usersChoice()
+{
+	cout << "Enter an option: ";
+
+	string option;
+	cin >> option;
+
+	if (option == SAVE_OR_DELETE_CORRESPONDING_NUMBER)
+	{
+		cout << "\nEnter the word \"save\" if you want to save a line or a point\n"
+			<< "Enter the word \"delete\" if you want to delete a line or a point\n"
+			<< GO_TO_MAIN_MENU_TEXT;
+
+	}
+	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == FIND_PARALEL_LINE_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == FIND_THE_TANGENT_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER)
+	{
+
+	}
+	else if (option == "exit")
+	{
+		stopProgram = true;
+	}
+	else
+	{
+		cout << INVALID_INPUT_TEXT;
+		usersChoice();
+	}
+}
+
 
 int main()
 {
