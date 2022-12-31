@@ -157,17 +157,31 @@ void saveLineOption()
 
 	cout << "Enter name of a line (it can be upper and lower case letters, \'_\' and numbers): ";
 	cin >> name;
+
+	if (isElementInDatabase(name, linesDB))
+	{
+		cout << "That name already exists! Try another. . .\n";
+		saveLineOption();
+	}
+	else
+	{
 		cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
 		cout << "k: ";
 		cin >> k;
 		cout << "\'+\' or \'-\': ";
 		cin >> symbol;
+		if (symbol != "+" && symbol != "-")
+		{
 			cout << INVALID_INPUT_TEXT;
 			saveLineOption();
+		}
+		else
+		{
 			cout << "n: ";
 			cin >> n;
-
 			saveLine(name, k, symbol, n);
+		}
+	}
 }
 
 void saveOption()
