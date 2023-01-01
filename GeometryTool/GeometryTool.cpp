@@ -94,7 +94,13 @@ void deleteAnimation()
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
 	size_t pos = 0;
-	while ((pos = text.find(delim)) != string::npos) {
+
+	if (text.find(delim) == string::npos)
+	{
+		words.push_back(text);
+	}
+	
+	while ( pos = (text.find(delim)) != string::npos) {
 		words.push_back(text.substr(0, pos));
 		text.erase(0, pos + delim.length());
 	}
@@ -130,7 +136,7 @@ bool isElementInDatabase(string element, const char* path)
 
 		while (getline(dataBase, rowText))
 		{
-			vector<string> words;
+			vector<string> words{};
 
 			splitByDelim(words, rowText, " : ");
 
@@ -160,8 +166,6 @@ void saveLine(const string name, const double k, const string symbol, const doub
 		string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
 
 		dataBase << data << "\n";
-
-		saveAnimation();
 
 		dataBase.close();
 	}
@@ -217,8 +221,6 @@ void savePoint(string name, double x, double y)
 
 		dataBase << data << "\n";
 
-		saveAnimation();
-
 		dataBase.close();
 	}
 	else
@@ -261,11 +263,13 @@ void saveOption()
 	if (keyword == "line")
 	{
 		saveLineOption();
+		saveAnimation();
 		showMainMenu();
 	}
 	else if (keyword == "point")
 	{
 		savePointOption();
+		saveAnimation();
 		showMainMenu();
 	}
 	else if (keyword == "menu")
@@ -307,7 +311,11 @@ void deleteLine(string name)
 		newDataBase.close();
 
 		remove(linesDB);
-		rename("linesNew.txt", linesDB);
+		if (rename("linesNew.txt", linesDB))
+		{
+			stopProgram = true;
+			cout << "There was an error with the deleting of the line!\nWe are sorry. . .\n";
+		}
 	}
 	else
 	{
@@ -359,7 +367,11 @@ void deletePoint(string name)
 		newDataBase.close();
 
 		remove(pointsDB);
-		rename("pointsNew.txt", pointsDB);
+		if (rename("pointsNew.txt", pointsDB) != 0)
+		{
+			stopProgram = true;
+			cout << "There was an error with the deleting of the point!\nWe are sorry. . .\n";
+		}
 	}
 	else
 	{
@@ -391,6 +403,7 @@ void deleteOption()
 	if (keyword == "line")
 	{
 		deleteLineOption();
+		deleteAnimation();
 		showMainMenu();
 	}
 	else if (keyword == "point")
