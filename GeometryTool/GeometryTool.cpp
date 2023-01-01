@@ -21,6 +21,7 @@ const char* DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
 
 const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
 const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
+const char* DATABASE_CANNOT_OPEN_TEXT = "ERROR! We are sorry the database cannot be open!\n";
 
 bool stopProgram = false;
 
@@ -93,27 +94,35 @@ void splitByDelim(vector<string>& words, string text, string delim = " ")
 	}
 }
 
-bool isElementInDatabase(string element, char* path)
+bool isElementInDatabase(string element, const char* path)
 {
 	ifstream dataBase(path);
 
-	string rowText;
-
-	while (getline(dataBase, rowText))
+	if (dataBase.is_open())
 	{
-		vector<string> words;
+		string rowText;
 
-		splitByDelim(words, rowText, " : ");
-
-		if (words[0] == element)
+		while (getline(dataBase, rowText))
 		{
-			return true;
+			vector<string> words;
+
+			splitByDelim(words, rowText, " : ");
+
+			if (words[0] == element)
+			{
+				return true;
+			}
 		}
+
+		dataBase.close();
+
+		return false;
 	}
-
-	dataBase.close();
-
-	return false;
+	else
+	{
+		cout << DATABASE_CANNOT_OPEN_TEXT;
+		showMainMenu();
+	}
 }
 
 void showTitle()
@@ -140,13 +149,21 @@ void saveLine(const string name, const double k, const string symbol, const doub
 {
 	ofstream dataBase(linesDB, fstream::app);
 
-	string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
+	if (dataBase.is_open())
+	{
+		string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
 
-	dataBase << data << "\n";
+		dataBase << data << "\n";
 
-	saveAnimation();
+		saveAnimation();
 
-	dataBase.close();
+		dataBase.close();
+	}
+	else
+	{
+		cout << DATABASE_CANNOT_OPEN_TEXT;
+		showMainMenu();
+	}
 }
 
 void saveLineOption()
@@ -188,13 +205,21 @@ void savePoint(string name, double x, double y)
 {
 	ofstream dataBase(pointsDB, ios::app);
 
-	string data = name + " : " + toString(x) + ";" + toString(y);
+	if (dataBase.is_open())
+	{
+		string data = name + " : " + toString(x) + ";" + toString(y);
 
-	dataBase << data << "\n";
+		dataBase << data << "\n";
 
-	saveAnimation();
+		saveAnimation();
 
-	dataBase.close();
+		dataBase.close();
+	}
+	else
+	{
+		cout << DATABASE_CANNOT_OPEN_TEXT;
+		showMainMenu();
+	}
 }
 
 void savePointOption()
@@ -256,27 +281,34 @@ void deleteLine(string name)
 	ifstream dataBase(linesDB);
 	ofstream newDataBase("linesNew.txt");
 
-	while (getline(dataBase, rowText))
+	if (dataBase.is_open() && newDataBase.is_open())
 	{
-		vector<string> words{};
-
-		splitByDelim(words, rowText, " : ");
-
-		if (words[0] == name)
+		while (getline(dataBase, rowText))
 		{
-			continue;
+			vector<string> words{};
+
+			splitByDelim(words, rowText, " : ");
+
+			if (words[0] == name)
+			{
+				continue;
+			}
+
+			newDataBase << rowText << "\n";
 		}
 
-		newDataBase << rowText << "\n";
+		dataBase.close();
+		newDataBase.close();
+
+		remove(linesDB);
+		rename("linesNew.txt", linesDB);
 	}
-
-	dataBase.close();
-	newDataBase.close();
-
-	remove(linesDB);
-	rename("linesNew.txt", linesDB);
+	else
+	{
+		cout << DATABASE_CANNOT_OPEN_TEXT;
+		showMainMenu();
+	}
 }
-
 void deleteLineOption()
 {
 	string name;
