@@ -85,6 +85,12 @@ void saveAnimation()
 	printThreeDotsAnimation();
 }
 
+void deleteAnimation()
+{
+	cout << "Deleting";
+	printThreeDotsAnimation();
+}
+
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
 	size_t pos = 0;
@@ -390,6 +396,7 @@ void deleteOption()
 	else if (keyword == "point")
 	{
 		deletePointOption();
+		deleteAnimation();
 		showMainMenu();
 	}
 	else if (keyword == "menu")
