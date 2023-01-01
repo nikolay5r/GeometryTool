@@ -87,11 +87,31 @@ void saveAnimation()
 
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
-	int pos = 0;
+	size_t pos = 0;
 	while ((pos = text.find(delim)) != string::npos) {
 		words.push_back(text.substr(0, pos));
 		text.erase(0, pos + delim.length());
 	}
+}
+
+void showTitle()
+{
+	cout << "\n\t\t\t---GeometryTool---\n";
+}
+
+void showMainMenu()
+{
+	cout << "\nEnter a number corresponding to the option you want to choose or enter \"exit\" if you want to exit:\n";
+
+	cout << " " << SAVE_OR_DELETE_CORRESPONDING_NUMBER << " - save a line or a point or delete one;\n"
+		<< " " << DEFINE_LINE_CORRESPONDING_NUMBER << " - define a line through coefficient and points;\n"
+		<< " " << CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
+		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line (g) and\n     passes through a point (p) from the given line;\n"
+		<< " " << FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER << " - derive an equation of a perpendicular line to a given line (g) and\n     passes through a point (p) from the given line;\n"
+		<< " " << FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER << " - find intersection point of two lines (if it exists);\n"
+		<< " " << FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER << " - find equations in triangle;\n"
+		<< " " << FIND_THE_TANGENT_CORRESPONDING_NUMBER << " - derive an equation of a tangent to the parabola at a corresponding point;\n"
+		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
 bool isElementInDatabase(string element, const char* path)
@@ -125,26 +145,6 @@ bool isElementInDatabase(string element, const char* path)
 	}
 }
 
-void showTitle()
-{
-	cout << "\n\t\t\t---GeometryTool---\n";
-}
-
-void showMainMenu()
-{
-	cout << "\nEnter a number corresponding to the option you want to choose or enter \"exit\" if you want to exit:\n";
-
-	cout << " " << SAVE_OR_DELETE_CORRESPONDING_NUMBER << " - save a line or a point or delete one;\n"
-		<< " " << DEFINE_LINE_CORRESPONDING_NUMBER << " - define a line through coefficient and points;\n"
-		<< " " << CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
-		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line (g) and\n     passes through a point (p) from the given line;\n"
-		<< " " << FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER << " - derive an equation of a perpendicular line to a given line (g) and\n     passes through a point (p) from the given line;\n"
-		<< " " << FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER << " - find intersection point of two lines (if it exists);\n"
-		<< " " << FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER << " - find equations in triangle;\n"
-		<< " " << FIND_THE_TANGENT_CORRESPONDING_NUMBER << " - derive an equation of a tangent to the parabola at a corresponding point;\n"
-		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
-}
-
 void saveLine(const string name, const double k, const string symbol, const double n)
 {
 	ofstream dataBase(linesDB, fstream::app);
@@ -172,7 +172,7 @@ void saveLineOption()
 	double k, n;
 	string symbol;
 
-	cout << "Enter name of a line (it can be upper and lower case letters, \'_\' and numbers): ";
+	cout << "Enter name of a line (it can consist from upper and lower case letters, \'_\' and numbers): ";
 	cin >> name;
 
 	if (isElementInDatabase(name, linesDB))
@@ -309,11 +309,12 @@ void deleteLine(string name)
 		showMainMenu();
 	}
 }
+
 void deleteLineOption()
 {
 	string name;
 
-	cout << "Enter the name of the line (it can be upper and lower case letters, \'_\' and numbers): ";
+	cout << "Enter the name of the line (it can consist from upper and lower case letters, \'_\' and numbers): ";
 	cin >> name;
 
 	if (!isElementInDatabase(name, linesDB))
@@ -323,6 +324,58 @@ void deleteLineOption()
 	}
 
 	deleteLine(name);
+}
+
+void deletePoint(string name)
+{
+	string rowText;
+
+	ifstream dataBase(pointsDB);
+	ofstream newDataBase("pointsNew.txt");
+
+	if (dataBase.is_open() && newDataBase.is_open())
+	{
+		while (getline(dataBase, rowText))
+		{
+			vector<string> words{};
+
+			splitByDelim(words, rowText, " : ");
+
+			if (words[0] == name)
+			{
+				continue;
+			}
+
+			newDataBase << rowText << "\n";
+		}
+
+		dataBase.close();
+		newDataBase.close();
+
+		remove(pointsDB);
+		rename("pointsNew.txt", pointsDB);
+	}
+	else
+	{
+		cout << DATABASE_CANNOT_OPEN_TEXT;
+		showMainMenu();
+	}
+}
+
+void deletePointOption()
+{
+	string name;
+
+	cout << "Enter the name of the point (it can consist from upper and lower case letters, \'_\' and numbers): ";
+	cin >> name;
+
+	if (!isElementInDatabase(name, pointsDB))
+	{
+		cout << "That name doesn't exist! Try another. . .\n";
+		deletePointOption();
+	}
+
+	deletePoint(name);
 }
 
 void deleteOption()
@@ -336,6 +389,7 @@ void deleteOption()
 	}
 	else if (keyword == "point")
 	{
+		deletePointOption();
 		showMainMenu();
 	}
 	else if (keyword == "menu")
