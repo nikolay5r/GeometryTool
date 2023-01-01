@@ -6,21 +6,21 @@
 
 using namespace std;
 
-const string linesDB = "lines.txt";
-const string pointsDB = "points.txt";
+const char* linesDB = "lines.txt";
+const char* pointsDB = "points.txt";
 
-const string SAVE_OR_DELETE_CORRESPONDING_NUMBER = "0";
-const string DEFINE_LINE_CORRESPONDING_NUMBER = "1";
-const string CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER = "2";
-const string FIND_PARALEL_LINE_CORRESPONDING_NUMBER = "3";
-const string FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER = "4";
-const string FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER = "5";
-const string FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER = "6";
-const string FIND_THE_TANGENT_CORRESPONDING_NUMBER = "7";
-const string DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
+const char* SAVE_OR_DELETE_CORRESPONDING_NUMBER = "0";
+const char* DEFINE_LINE_CORRESPONDING_NUMBER = "1";
+const char* CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER = "2";
+const char* FIND_PARALEL_LINE_CORRESPONDING_NUMBER = "3";
+const char* FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER = "4";
+const char* FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER = "5";
+const char* FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER = "6";
+const char* FIND_THE_TANGENT_CORRESPONDING_NUMBER = "7";
+const char* DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
 
-const string INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
-const string GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
+const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
+const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
 
 bool stopProgram = false;
 
@@ -93,7 +93,7 @@ void splitByDelim(vector<string>& words, string text, string delim = " ")
 	}
 }
 
-bool isElementInDatabase(string element, string path)
+bool isElementInDatabase(string element, char* path)
 {
 	ifstream dataBase(path);
 
@@ -138,7 +138,7 @@ void showMainMenu()
 
 void saveLine(const string name, const double k, const string symbol, const double n)
 {
-	ofstream dataBase(pointsDB, fstream::app);
+	ofstream dataBase(linesDB, fstream::app);
 
 	string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
 
@@ -251,27 +251,30 @@ void saveOption()
 
 void deleteLine(string name)
 {
-	int numberOfRow = 0;
 	string rowText;
 
 	ifstream dataBase(linesDB);
+	ofstream newDataBase("linesNew.txt");
 
 	while (getline(dataBase, rowText))
 	{
-		numberOfRow++;
-
 		vector<string> words{};
 
 		splitByDelim(words, rowText, " : ");
 
 		if (words[0] == name)
 		{
-			break;
+			continue;
 		}
+
+		newDataBase << rowText << "\n";
 	}
 
 	dataBase.close();
+	newDataBase.close();
 
+	remove(linesDB);
+	rename("linesNew.txt", linesDB);
 }
 
 void deleteLineOption()
@@ -286,6 +289,8 @@ void deleteLineOption()
 		cout << "That name doesn't exist! Try another. . .\n";
 		deleteLineOption();
 	}
+
+	deleteLine(name);
 }
 
 void deleteOption()
@@ -328,6 +333,8 @@ void saveOrDeleteOption()
 		cout << "Enter \"line\" if you want to delete a line\n"
 			<< "Enter \"point\" if you want to delete a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
+
+		deleteOption();
 	}
 	else if (keyword == "menu")
 	{
@@ -399,7 +406,6 @@ void usersChoice()
 		usersChoice();
 	}
 }
-
 
 int main()
 {
