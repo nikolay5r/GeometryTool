@@ -456,7 +456,7 @@ void saveOrDeleteOption()
 	}
 }
 
-void wantToSaveLine(double k, double x, double y, char symbol)
+void wantToSaveLine(const double k, const string symbol, const double n)
 {
 	string answer;
 	cout << "Do you want to save the line? ";
@@ -470,18 +470,18 @@ void wantToSaveLine(double k, double x, double y, char symbol)
 		if (!isElementInDatabase(name, pointsDB))
 		{
 			cout << NAME_EXISTS_TEXT;
-			wantToSaveLine(k, x, y, symbol);
+			wantToSaveLine(k, symbol, n);
 		}
-		savePoint(name, x, y);
+		saveLine(name, k, symbol, n);
 	}
 	else if (answer != "yes" && answer != "no")
 	{
 		cout << INVALID_INPUT_TEXT;
-		wantToSaveLine(k, x, y, symbol);
+		wantToSaveLine(k, symbol, n);
 	}
 }
 
-void wantToSavePoint(double x, double y)
+void wantToSavePoint(const double x, const double y)
 {
 	string answer;
 	cout << "Do you want to save the point? ";
@@ -534,19 +534,19 @@ void defineLineThroughSlope()
 	wantToSavePoint(x, y);
 	
 	double n = k * x - y;
-	char symbol = n >= 0 ? '+' : '-';
+	string symbol = n >= 0 ? "+" : "-";
+	n = abs(n);
 
 	if (n == 0)
 	{
-		cout << "The equation of the line is: y = " << k << '* x ';
+		cout << "The equation of the line is: y = " << k << " * x\n";
 	}
 	else
 	{
-		cout << symbol << " " << abs(n);
+		cout << "The equation of the line is: y = " << k << "* x " << symbol << " " << n << "\n";
 	}
-	cout << "\n";
 
-	
+	wantToSaveLine(k, symbol, n);
 }
 
 void defineLineOption()
