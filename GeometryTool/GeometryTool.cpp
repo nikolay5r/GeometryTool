@@ -100,7 +100,7 @@ void splitByDelim(vector<string>& words, string text, string delim = " ")
 		words.push_back(text);
 	}
 	
-	while ( pos = (text.find(delim)) != string::npos) {
+	while ((pos = text.find(delim)) != string::npos) {
 		words.push_back(text.substr(0, pos));
 		text.erase(0, pos + delim.length());
 	}
