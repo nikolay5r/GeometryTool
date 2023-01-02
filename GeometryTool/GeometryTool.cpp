@@ -116,7 +116,7 @@ void showMainMenu()
 	cout << "\nEnter a number corresponding to the option you want to choose or enter \"exit\" if you want to exit:\n";
 
 	cout << " " << SAVE_OR_DELETE_CORRESPONDING_NUMBER << " - save a line or a point or delete one;\n"
-		<< " " << DEFINE_LINE_CORRESPONDING_NUMBER << " - define a line through coefficient and points;\n"
+		<< " " << DEFINE_LINE_CORRESPONDING_NUMBER << " - define a line through slope and points;\n"
 		<< " " << CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
 		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line (g) and\n     passes through a point (p) from the given line;\n"
 		<< " " << FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER << " - derive an equation of a perpendicular line to a given line (g) and\n     passes through a point (p) from the given line;\n"
@@ -328,7 +328,7 @@ void deleteLineOption()
 {
 	string name;
 
-	cout << "Enter the name of the line (it can consist from upper and lower case letters, \'_\' and numbers): ";
+	cout << "Enter the name of the line: ";
 	cin >> name;
 
 	if (!isElementInDatabase(name, linesDB))
@@ -384,7 +384,7 @@ void deletePointOption()
 {
 	string name;
 
-	cout << "Enter the name of the point (it can consist from upper and lower case letters, \'_\' and numbers): ";
+	cout << "Enter the name of the point: ";
 	cin >> name;
 
 	if (!isElementInDatabase(name, pointsDB))
@@ -453,6 +453,29 @@ void saveOrDeleteOption()
 	}
 }
 
+void defineLineOption()
+{
+	string keyword = getKeywordFromConsole();
+
+	if (keyword == "slope")
+	{
+
+	}
+	else if (keyword == "points")
+	{
+
+	}
+	else if (keyword == "menu")
+	{
+		showMainMenu();
+	}
+	else
+	{
+		cout << INVALID_INPUT_TEXT;
+		defineLineOption();
+	}
+}
+
 void usersChoice()
 {
 	cout << "Enter an option: ";
@@ -472,7 +495,11 @@ void usersChoice()
 	}
 	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
 	{
+		cout << "\nEnter the word \"slope\" if you want to define a line through slope and a point\n"
+			<< "Enter the word \"points\" if you want to define a line through two points\n"
+			<< GO_TO_MAIN_MENU_TEXT;
 
+		defineLineOption();
 	}
 	else if (option == CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
