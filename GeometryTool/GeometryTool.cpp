@@ -453,6 +453,34 @@ void saveOrDeleteOption()
 	}
 }
 
+void wantToSavePoint(double x, double y)
+{
+	string answer;
+	cout << "Do you want to save the point? ";
+	cin >> answer;
+
+	if (answer == "yes")
+	{
+		string name;
+		cout << ENTER_NAME_TEXT;
+		cin >> name;
+		if (!isElementInDatabase(name, pointsDB))
+		{
+			cout << NAME_EXISTS_TEXT;
+			wantToSavePoint(x, y);
+		}
+		savePoint(name, x, y);
+	}
+	else if (answer != "yes" && answer != "no")
+	{
+		cout << INVALID_INPUT_TEXT;
+		wantToSavePoint(x, y);
+	}
+}
+	wantToSavePoint(x, y);
+
+}
+
 void defineLineOption()
 {
 	string keyword = getKeywordFromConsole();
