@@ -1,0 +1,1 @@
+obi4amLora : 2*x+4
