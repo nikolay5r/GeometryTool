@@ -467,13 +467,16 @@ void wantToSaveLine(const double k, const string symbol, const double n)
 		string name;
 		cout << ENTER_NAME_TEXT;
 		cin >> name;
-		if (isElementInDatabase(name, pointsDB))
+		if (isElementInDatabase(name, linesDB))
 		{
 			cout << NAME_EXISTS_TEXT;
 			wantToSaveLine(k, symbol, n);
 		}
-		saveLine(name, k, symbol, n);
-		saveAnimation();
+		else
+		{
+			saveLine(name, k, symbol, n);
+			saveAnimation();
+		}
 	}
 	else if (answer != "yes" && answer != "no")
 	{
@@ -498,8 +501,11 @@ void wantToSavePoint(const double x, const double y)
 			cout << NAME_EXISTS_TEXT;
 			wantToSavePoint(x, y);
 		}
-		savePoint(name, x, y);
-		saveAnimation();
+		else
+		{
+			savePoint(name, x, y);
+			saveAnimation();
+		}
 	}
 	else if (answer != "yes" && answer != "no")
 	{
