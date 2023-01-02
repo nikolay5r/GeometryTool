@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -487,7 +488,7 @@ void defineLineThroughSlope()
 	cout << "Enter slope: ";
 	cin >> k;
 
-	/*string answer;
+	string answer;
 	cout << "Do you want to use existing point? (yes/no) - ";
 	cin >> answer;
 
@@ -498,7 +499,7 @@ void defineLineThroughSlope()
 	else if (answer != "yes" && answer != "no")
 	{
 
-	}*/
+	}
 
 	cout << "Enter coordinates of the point:\nx: ";
 	cin >> x;
@@ -506,8 +507,19 @@ void defineLineThroughSlope()
 	cin >> y;
 
 	wantToSavePoint(x, y);
+	
+	double n = k * x - y;
+	char symbol = n >= 0 ? '+' : '-';
 
-		
+	if (n == 0)
+	{
+		cout << "The equation of the line is: y = " << k << '* x ';
+	}
+	else
+	{
+		cout << symbol << " " << abs(n);
+	}
+	
 }
 
 void defineLineOption()
