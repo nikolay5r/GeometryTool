@@ -456,6 +456,31 @@ void saveOrDeleteOption()
 	}
 }
 
+void wantToSaveLine(double k, double x, double y, char symbol)
+{
+	string answer;
+	cout << "Do you want to save the line? ";
+	cin >> answer;
+
+	if (answer == "yes")
+	{
+		string name;
+		cout << ENTER_NAME_TEXT;
+		cin >> name;
+		if (!isElementInDatabase(name, pointsDB))
+		{
+			cout << NAME_EXISTS_TEXT;
+			wantToSaveLine(k, x, y, symbol);
+		}
+		savePoint(name, x, y);
+	}
+	else if (answer != "yes" && answer != "no")
+	{
+		cout << INVALID_INPUT_TEXT;
+		wantToSaveLine(k, x, y, symbol);
+	}
+}
+
 void wantToSavePoint(double x, double y)
 {
 	string answer;
@@ -488,7 +513,7 @@ void defineLineThroughSlope()
 	cout << "Enter slope: ";
 	cin >> k;
 
-	string answer;
+	/*string answer;
 	cout << "Do you want to use existing point? (yes/no) - ";
 	cin >> answer;
 
@@ -499,7 +524,7 @@ void defineLineThroughSlope()
 	else if (answer != "yes" && answer != "no")
 	{
 
-	}
+	}*/
 
 	cout << "Enter coordinates of the point:\nx: ";
 	cin >> x;
@@ -519,6 +544,8 @@ void defineLineThroughSlope()
 	{
 		cout << symbol << " " << abs(n);
 	}
+	cout << "\n";
+
 	
 }
 
