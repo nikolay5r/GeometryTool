@@ -22,6 +22,8 @@ const char* DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
 const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
 const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
 const char* DATABASE_CANNOT_OPEN_TEXT = "ERROR! We are sorry the database cannot be open!\n";
+const char* ENTER_NAME_TEXT = "Enter name (it can upper and lower case letters, \'_\' and numbers): ";
+const char* NAME_EXISTS_TEXT = "That name already exists! Try another. . .\n";
 
 bool stopProgram = false;
 
@@ -182,12 +184,12 @@ void saveLineOption()
 	double k, n;
 	string symbol;
 
-	cout << "Enter name of a line (it can consist from upper and lower case letters, \'_\' and numbers): ";
+	cout << ENTER_NAME_TEXT;
 	cin >> name;
 
 	if (isElementInDatabase(name, linesDB))
 	{
-		cout << "That name already exists! Try another. . .\n";
+		cout << NAME_EXISTS_TEXT;
 		saveLineOption();
 	}
 	else
@@ -236,12 +238,12 @@ void savePointOption()
 	double x = 0,
 		y = 0;
 
-	cout << "Enter name of a point (it can upper and lower case letters, \'_\' and numbers): ";
+	cout << ENTER_NAME_TEXT;
 	cin >> name;
 
 	if (isElementInDatabase(name, pointsDB))
 	{
-		cout << "That name already exists! Try another. . .\n";
+		cout << NAME_EXISTS_TEXT;
 		savePointOption();
 	}
 	else
@@ -477,8 +479,35 @@ void wantToSavePoint(double x, double y)
 		wantToSavePoint(x, y);
 	}
 }
+
+void defineLineThroughSlope()
+{
+	double k, x, y;
+
+	cout << "Enter slope: ";
+	cin >> k;
+
+	/*string answer;
+	cout << "Do you want to use existing point? (yes/no) - ";
+	cin >> answer;
+
+	if (answer == "yes")
+	{
+		
+	}
+	else if (answer != "yes" && answer != "no")
+	{
+
+	}*/
+
+	cout << "Enter coordinates of the point:\nx: ";
+	cin >> x;
+	cout << "y: ";
+	cin >> y;
+
 	wantToSavePoint(x, y);
 
+		
 }
 
 void defineLineOption()
@@ -487,7 +516,7 @@ void defineLineOption()
 
 	if (keyword == "slope")
 	{
-
+		
 	}
 	else if (keyword == "points")
 	{
