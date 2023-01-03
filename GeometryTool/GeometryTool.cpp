@@ -109,6 +109,12 @@ void printThreeDotsAnimation()
 	cout << "\n";
 }
 
+void calcAnimation()
+{
+	cout << "Calculating";
+	printThreeDotsAnimation();
+}
+
 void loadAnimation()
 {
 	cout << "Loading";
@@ -640,6 +646,7 @@ void defineLineThroughSlopeAndPoint()
 	string symbol = n >= 0 ? "+" : "-";
 	n = abs(n);
 
+	calcAnimation();
 	printLine(k, symbol, n);
 
 	wantToSaveLine(k, symbol, n);
@@ -703,6 +710,7 @@ void defineLineThroughPoints()
 		string symbol = n >= 0 ? "+" : "-";
 		n = abs(n);
 
+		calcAnimation();
 		printLine(k, symbol, n);
 
 		wantToSaveLine(k, symbol, n);
