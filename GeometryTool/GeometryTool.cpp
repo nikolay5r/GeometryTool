@@ -579,7 +579,7 @@ void wantToSavePoint(const double x, const double y)
 	}
 }
 
-string wantToUseExistingPoint()
+void wantToUseExistingPoint(string& point)
 {
 	string answer;
 	cout << "Do you want to use existing point? ";
@@ -593,33 +593,30 @@ string wantToUseExistingPoint()
 		if (isElementInDatabase(name, pointsDB))
 		{
 			loadAnimation();
-			return getPoint(name);
+			point = getPoint(name);
 		}
 		else
 		{
 			cout << NAME_DOESNT_EXIST_TEXT;
-			wantToUseExistingPoint();
+			wantToUseExistingPoint(point);
 		}
 	}
-	else if (answer == "no")
-	{
-		return "";
-	}
-	else
+	else if (answer != "no")
 	{
 		cout << INVALID_INPUT_TEXT;
-		wantToUseExistingPoint();
+		wantToUseExistingPoint(point);
 	}
 }
 
 void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
+	string point = "";
 
 	cout << "Enter slope: ";
 	cin >> k;
 
-	string point = wantToUseExistingPoint();
+	wantToUseExistingPoint(point);
 
 	if (point == "")
 	{
@@ -652,7 +649,8 @@ void defineLineThroughPoints()
 {
 	double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
-	string point1 = wantToUseExistingPoint();
+	string point1 = "";
+	wantToUseExistingPoint(point1);
 
 	if (point1 == "")
 	{
@@ -672,7 +670,8 @@ void defineLineThroughPoints()
 		y1 = stod(coordinates[1]);
 	}
 
-	string point2 = wantToUseExistingPoint();
+	string point2 = "";
+	wantToUseExistingPoint(point2);
 
 	if (point2 == "")
 	{
@@ -685,7 +684,7 @@ void defineLineThroughPoints()
 	}
 	else
 	{
-		vector<string> coordinates;
+		vector<string> coordinates{};
 		splitByDelim(coordinates, point2, ";");
 
 		x2 = stod(coordinates[0]);
