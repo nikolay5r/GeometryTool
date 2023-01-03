@@ -121,11 +121,11 @@ void showMainMenu()
 	cout << " " << SAVE_OR_DELETE_CORRESPONDING_NUMBER << " - save a line or a point or delete one;\n"
 		<< " " << DEFINE_LINE_CORRESPONDING_NUMBER << " - define a line through slope and points;\n"
 		<< " " << CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
-		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line (g) and\n     passes through a point (p) from the given line;\n"
-		<< " " << FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER << " - derive an equation of a perpendicular line to a given line (g) and\n     passes through a point (p) from the given line;\n"
+		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line and passes through a point;\n"
+		<< " " << FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER << " - derive an equation of a perpendicular line to a given line and passes through a point;\n"
 		<< " " << FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER << " - find intersection point of two lines (if it exists);\n"
 		<< " " << FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER << " - find equations in triangle;\n"
-		<< " " << FIND_THE_TANGENT_CORRESPONDING_NUMBER << " - derive an equation of a tangent to the parabola at a corresponding point;\n"
+		<< " " << FIND_THE_TANGENT_CORRESPONDING_NUMBER << " - derive an equation of a tangent to a parabola at a corresponding point;\n"
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
@@ -514,6 +514,33 @@ void wantToSavePoint(const double x, const double y)
 	}
 }
 
+void wantToUseExistingPoint()
+{
+	string answer;
+	cout << "Do you want to use existing point? (yes/no) - ";
+	cin >> answer;
+
+	if (answer == "yes")
+	{
+		string name;
+		cout << ENTER_NAME_TEXT;
+		cin >> name;
+		if (isElementInDatabase(name, pointsDB))
+		{
+			cout << NAME_EXISTS_TEXT;
+			wantToUseExistingPoint();
+		}
+		else
+		{
+			
+		}
+	}
+	else if (answer != "yes" && answer != "no")
+	{
+
+	}
+}
+
 void defineLineThroughSlope()
 {
 	double k, x, y;
@@ -521,18 +548,7 @@ void defineLineThroughSlope()
 	cout << "Enter slope: ";
 	cin >> k;
 
-	/*string answer;
-	cout << "Do you want to use existing point? (yes/no) - ";
-	cin >> answer;
-
-	if (answer == "yes")
-	{
-		
-	}
-	else if (answer != "yes" && answer != "no")
-	{
-
-	}*/
+	
 
 	cout << "Enter coordinates of the point:\nx: ";
 	cin >> x;
