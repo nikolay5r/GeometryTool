@@ -78,6 +78,12 @@ void printThreeDotsAnimation()
 	cout << "\n";
 }
 
+void loadAnimation()
+{
+	cout << "Loading";
+	printThreeDotsAnimation();
+}
+
 void exitAnimation()
 {
 	cout << "Closing program";
@@ -555,6 +561,7 @@ string wantToUseExistingPoint()
 		cin >> name;
 		if (isElementInDatabase(name, pointsDB))
 		{
+			loadAnimation();
 			return getPoint(name);
 		}
 		else
