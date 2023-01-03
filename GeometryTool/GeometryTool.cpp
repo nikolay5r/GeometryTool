@@ -30,6 +30,36 @@ const char* NAME_EXISTS_TEXT = "That name already exists! Try another. . .\n";
 
 bool stopProgram = false;
 
+void printLine(const double k, const string symbol, const double n)
+{
+	if (k != 1 && k != 0)
+	{
+		if (n == 0)
+		{
+			cout << "The equation of the line is: y = " << k << " * x\n";
+		}
+		else
+		{
+			cout << "The equation of the line is: y = " << k << " * x " << symbol << " " << n << "\n";
+		}
+	}
+	else if (k == 1)
+	{
+		cout << "The equation of the line is: y = x " << symbol << " " << n << "\n";
+	}
+	else
+	{
+		if (symbol == "+")
+		{
+			cout << "The equation of the line is: y = " << n << "\n";
+		}
+		else
+		{
+			cout << "The equation of the line is: y = " << symbol << n << "\n";
+		}
+	}
+}
+
 void convertToLowerCase(string& text)
 {
 	string result = "";
@@ -612,14 +642,7 @@ void defineLineThroughSlopeAndPoint()
 	string symbol = n >= 0 ? "+" : "-";
 	n = abs(n);
 
-	if (n == 0)
-	{
-		cout << "The equation of the line is: y = " << k << " * x\n";
-	}
-	else
-	{
-		cout << "The equation of the line is: y = " << k << " * x " << symbol << " " << n << "\n";
-	}
+	printLine(k, symbol, n);
 
 	wantToSaveLine(k, symbol, n);
 }
@@ -680,14 +703,7 @@ void defineLineThroughPoints()
 		string symbol = n >= 0 ? "+" : "-";
 		n = abs(n);
 
-		if (n == 0)
-		{
-			cout << "The equation of the line is: y = " << k << " * x\n";
-		}
-		else
-		{
-			cout << "The equation of the line is: y = " << k << " * x " << symbol << " " << n << "\n";
-		}
+		printLine(k, symbol, n);
 
 		wantToSaveLine(k, symbol, n);
 	}
