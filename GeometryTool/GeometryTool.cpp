@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <string.h>
 
 using namespace std;
 
@@ -149,7 +150,7 @@ string getPoint(const string name)
 			}
 		}
 
-		dataBase.close();
+		database.close();
 	}
 	else
 	{
@@ -575,16 +576,16 @@ string wantToUseExistingPoint()
 	}
 }
 
-void defineLineThroughSlope()
+void defineLineThroughSlopeAndPoint()
 {
-	double k, x, y;
+	double k = 0, x = 0, y = 0;
 
 	cout << "Enter slope: ";
 	cin >> k;
 
-	string equation = wantToUseExistingPoint();
+	string point = wantToUseExistingPoint();
 
-	if (equation == "")
+	if (point == "")
 	{
 		cout << "Enter coordinates of the point:\nx: ";
 		cin >> x;
@@ -595,9 +596,12 @@ void defineLineThroughSlope()
 	}
 	else
 	{
-
+		vector<string> coordinates;
+		splitByDelim(coordinates, point, ";");
+		
+		x = stod(coordinates[0]);
+		y = stod(coordinates[1]);
 	}
-
 	
 	double n = k * x - y;
 	string symbol = n >= 0 ? "+" : "-";
@@ -621,7 +625,7 @@ void defineLineOption()
 
 	if (keyword == "slope")
 	{
-		defineLineThroughSlope();
+		defineLineThroughSlopeAndPoint();
 		showMainMenu();
 	}
 	else if (keyword == "points")
