@@ -547,22 +547,22 @@ void wantToSavePoint(const double x, const double y)
 string wantToUseExistingPoint()
 {
 	string answer;
-	cout << "Do you want to use existing point? (yes/no) - ";
+	cout << "Do you want to use existing point? ";
 	cin >> answer;
 
 	if (answer == "yes")
 	{
 		string name;
-		cout << ENTER_NAME_TEXT;
+		cout << "Enter name: ";
 		cin >> name;
 		if (isElementInDatabase(name, pointsDB))
 		{
-			cout << NAME_EXISTS_TEXT;
-			wantToUseExistingPoint();
+			return getPoint(name);
 		}
 		else
 		{
-			return getPoint(name);
+			cout << NAME_EXISTS_TEXT;
+			wantToUseExistingPoint();
 		}
 	}
 	else if (answer == "no")
