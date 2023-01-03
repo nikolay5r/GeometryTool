@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <string.h>
+#include <cstring>
 
 using namespace std;
 
@@ -98,16 +99,13 @@ void deleteAnimation()
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
 	size_t pos = 0;
-
-	if (text.find(delim) == string::npos)
-	{
-		words.push_back(text);
-	}
 	
 	while ((pos = text.find(delim)) != string::npos) {
 		words.push_back(text.substr(0, pos));
 		text.erase(0, pos + delim.length());
 	}
+
+	words.push_back(text);
 }
 
 void showTitle()
