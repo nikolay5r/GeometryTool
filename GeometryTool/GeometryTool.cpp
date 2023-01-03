@@ -27,6 +27,7 @@ const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to
 const char* DATABASE_CANNOT_OPEN_TEXT = "ERROR! We are sorry the database cannot be open!\n";
 const char* ENTER_NAME_TEXT = "Enter name (it can be upper and lower case letters, \'_\' and numbers): ";
 const char* NAME_EXISTS_TEXT = "That name already exists! Try another. . .\n";
+const char* NAME_DOESNT_EXIST_TEXT = "That name doesn't exist! Try another. . .\n";
 
 bool stopProgram = false;
 
@@ -400,7 +401,7 @@ void deleteLineOption()
 
 	if (!isElementInDatabase(name, linesDB))
 	{
-		cout << "That name doesn't exist! Try another. . .\n";
+		cout << NAME_DOESNT_EXIST_TEXT;
 		deleteLineOption();
 	}
 
@@ -456,7 +457,7 @@ void deletePointOption()
 
 	if (!isElementInDatabase(name, pointsDB))
 	{
-		cout << "That name doesn't exist! Try another. . .\n";
+		cout << NAME_DOESNT_EXIST_TEXT;
 		deletePointOption();
 	}
 
@@ -596,7 +597,7 @@ string wantToUseExistingPoint()
 		}
 		else
 		{
-			cout << NAME_EXISTS_TEXT;
+			cout << NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingPoint();
 		}
 	}
@@ -698,7 +699,7 @@ void defineLineThroughPoints()
 	}
 	else
 	{
-		double k = (y1 - y2) * (x1 - x2);
+		double k = (y1 - y2) / (x1 - x2);
 		double n = k * x1 - y1;
 		string symbol = n >= 0 ? "+" : "-";
 		n = abs(n);
@@ -720,7 +721,8 @@ void defineLineOption()
 	}
 	else if (keyword == "points")
 	{
-
+		defineLineThroughPoints();
+		showMainMenu();
 	}
 	else if (keyword == "menu")
 	{
