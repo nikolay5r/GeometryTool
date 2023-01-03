@@ -624,6 +624,75 @@ void defineLineThroughSlopeAndPoint()
 	wantToSaveLine(k, symbol, n);
 }
 
+void defineLineThroughPoints()
+{
+	double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+
+	string point1 = wantToUseExistingPoint();
+
+	if (point1 == "")
+	{
+		cout << "Enter coordinates of the point:\nx: ";
+		cin >> x1;
+		cout << "y: ";
+		cin >> y1;
+
+		wantToSavePoint(x1, y1);
+	}
+	else
+	{
+		vector<string> coordinates;
+		splitByDelim(coordinates, point1, ";");
+
+		x1 = stod(coordinates[0]);
+		y1 = stod(coordinates[1]);
+	}
+
+	string point2 = wantToUseExistingPoint();
+
+	if (point2 == "")
+	{
+		cout << "Enter coordinates of the point:\nx: ";
+		cin >> x2;
+		cout << "y: ";
+		cin >> y2;
+
+		wantToSavePoint(x2, y2);
+	}
+	else
+	{
+		vector<string> coordinates;
+		splitByDelim(coordinates, point2, ";");
+
+		x2 = stod(coordinates[0]);
+		y2 = stod(coordinates[1]);
+	}
+
+	if (x1 - x2 == 0)
+	{
+		cout << INVALID_INPUT_TEXT;
+		defineLineThroughPoints();
+	}
+	else
+	{
+		double k = (y1 - y2) * (x1 - x2);
+		double n = k * x1 - y1;
+		string symbol = n >= 0 ? "+" : "-";
+		n = abs(n);
+
+		if (n == 0)
+		{
+			cout << "The equation of the line is: y = " << k << " * x\n";
+		}
+		else
+		{
+			cout << "The equation of the line is: y = " << k << " * x " << symbol << " " << n << "\n";
+		}
+
+		wantToSaveLine(k, symbol, n);
+	}
+}
+
 void defineLineOption()
 {
 	string keyword = getKeywordFromConsole();
