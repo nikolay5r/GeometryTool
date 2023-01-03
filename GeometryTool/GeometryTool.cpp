@@ -129,6 +129,35 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
+string getPoint(const string name)
+{
+	ifstream database(pointsDB);
+
+	if (database.is_open())
+	{
+		string rowText;
+
+		while (getline(database, rowText))
+		{
+			vector<string> words{};
+
+			splitByDelim(words, rowText, " : ");
+
+			if (words[0] == name)
+			{
+				return words[1];
+			}
+		}
+
+		dataBase.close();
+	}
+	else
+	{
+		cout << DATABASE_CANNOT_OPEN_TEXT;
+		showMainMenu();
+	}
+}
+
 bool isElementInDatabase(string element, const char* path)
 {
 	ifstream dataBase(path);
@@ -514,7 +543,7 @@ void wantToSavePoint(const double x, const double y)
 	}
 }
 
-void wantToUseExistingPoint()
+string wantToUseExistingPoint()
 {
 	string answer;
 	cout << "Do you want to use existing point? (yes/no) - ";
@@ -532,12 +561,17 @@ void wantToUseExistingPoint()
 		}
 		else
 		{
-			
+			return getPoint(name);
 		}
 	}
-	else if (answer != "yes" && answer != "no")
+	else if (answer == "no")
 	{
-
+		return "";
+	}
+	else
+	{
+		cout << INVALID_INPUT_TEXT;
+		wantToUseExistingPoint();
 	}
 }
 
@@ -548,14 +582,22 @@ void defineLineThroughSlope()
 	cout << "Enter slope: ";
 	cin >> k;
 
-	
+	string equation = wantToUseExistingPoint();
 
-	cout << "Enter coordinates of the point:\nx: ";
-	cin >> x;
-	cout << "y: ";
-	cin >> y;
+	if (equation == "")
+	{
+		cout << "Enter coordinates of the point:\nx: ";
+		cin >> x;
+		cout << "y: ";
+		cin >> y;
 
-	wantToSavePoint(x, y);
+		wantToSavePoint(x, y);
+	}
+	else
+	{
+
+	}
+
 	
 	double n = k * x - y;
 	string symbol = n >= 0 ? "+" : "-";
