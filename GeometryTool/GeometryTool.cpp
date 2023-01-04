@@ -1013,6 +1013,16 @@ void findPerpendicularLineOption()
 	wantToSaveLine(k, symbol, n);
 }
 
+void findIntersectionPointOfParabolaAndLine()
+{
+
+}
+
+void findIntersectionPointOfTwoLines()
+{
+
+}
+
 void findIntersectionPointOption()
 {
 	string keyword = getKeywordFromConsole();
