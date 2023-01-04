@@ -1,8 +1,7 @@
-obi4amLora : 2*x+4
+obi4amLora : 3*x+4
 lori : 1.73*x-0.27
 loi : 1.73*x-0.27
 lor4e : 4*x+11
 k : 2*x+2
-loi : 2*x+2
 o : 2*x-2
 Nikolay : 2*x+5

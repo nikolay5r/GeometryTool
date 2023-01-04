@@ -255,6 +255,7 @@ void getEquationOfLine(const string name, string& equation)
 			if (words[0] == name)
 			{
 				equation = words[1];
+				break;
 			}
 		}
 
@@ -808,7 +809,7 @@ void getArgumentsFromExistingLine(string equation, double& k, double& n)
 
 void getLineArguments(string& line, double& k, string& symbol, double& n)
 {
-	wantToUseExistingPoint(line);
+	wantToUseExistingLine(line);
 
 	if (line == "")
 	{
@@ -818,7 +819,6 @@ void getLineArguments(string& line, double& k, string& symbol, double& n)
 	}
 	else
 	{
-		double n;
 		getArgumentsFromExistingLine(line, k, n);
 	}
 }
@@ -1015,7 +1015,7 @@ void findPerpendicularLineOption()
 
 void findIntersectionPointOfParabolaAndLine()
 {
-
+	
 }
 
 void findIntersectionPointOfTwoLines()
