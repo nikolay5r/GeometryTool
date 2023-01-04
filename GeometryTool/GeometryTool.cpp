@@ -990,8 +990,30 @@ void findParallelLineOption()
 
 void findPerpendicularLineOption()
 {
+	string givenLine, symbol;
+	double kGivenLine, n;
 
+	wantToUseExistingLine(givenLine);
+	getLineArguments(givenLine, kGivenLine, symbol, n);
+
+	string point;
+	double x, y;
+
+	wantToUseExistingPoint(point);
+	getPointCoordinates(point, x, y);
+
+	double k = -1 / kGivenLine;
+	n = k * x - y;
+	symbol = n >= 0 ? "+" : "-";
+	n = abs(n);
+
+	calcAnimation();
+	printLine(k, symbol, n, x, y);
+
+	wantToSaveLine(k, symbol, n);
 }
+
+
 
 void usersChoice()
 {
@@ -1050,6 +1072,10 @@ void usersChoice()
 	}
 	else if (option == FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER)
 	{
+		cout << "\nEnter the word \"parabola\" if you want to find the intersection point(s) of a parabola and a line\n"
+			<< "Enter the word \"lines\" if you want to find the intersection point(s) of two lines\n"
+			<< GO_TO_MAIN_MENU_TEXT;
+		findItersectionPointOption();
 
 		wait();
 		showMainMenu();
