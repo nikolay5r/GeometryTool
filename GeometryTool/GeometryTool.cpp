@@ -731,7 +731,6 @@ void wantToUseExistingPoint(string& point, string answer = "")
 		convertToLowerCase(answer);
 	}
 
-
 	if (answer == "yes")
 	{
 		string name;
@@ -764,7 +763,6 @@ void wantToUseExistingLine(string& line, string answer = "")
 
 		convertToLowerCase(answer);
 	}
-
 
 	if (answer == "yes")
 	{
@@ -835,6 +833,44 @@ void getPointCoordinates(string& point, double& x, double& y)
 	else
 	{
 		getCoordinatesFromExistingPoint(point, x, y);
+	}
+}
+
+void getParabolaArguments(double& a, double& b, double& c)
+{
+	cout << "Enter a parabola in this format \"a*x^2 + b*x + c = 0\":";
+	cout << "a: ";
+	cin >> a;
+	if (!isNumberValid(a))
+	{
+		cout << "A-argument is too large! It should be between -100 and 100!\n";
+		getParabolaArguments(a, b, c);
+	}
+	else
+	{
+		cout << "b: ";
+		cin >> b;
+		if (!isNumberValid(b))
+		{
+			cout << "B-argument is too large! It should be between -100 and 100!\n";
+			getParabolaArguments(a, b, c);
+		}
+		else
+		{
+			cout << "c: ";
+			cin >> c;
+		}
+		if (!isNumberValid(c))
+		{
+			cout << "C-argument is too large! It should be between -100 and 100!\n";
+			getParabolaArguments(a, b, c);
+		}
+	}
+
+	if (a == 0)
+	{
+		cout << "This is not a parabola! Try again...";
+		getParabolaArguments(a, b, c);
 	}
 }
 
@@ -1015,7 +1051,50 @@ void findPerpendicularLineOption()
 
 void findIntersectionPointOfParabolaAndLine()
 {
+	string line, symbol;
+	double k, n;
+
+	getLineArguments(line, k, symbol, n);
+
+	double a, b, c;
+
+	getParabolaArguments(a, b, c);
 	
+	b -= k;
+	c -= n;
+	double determinant = pow(b, 2) - 4 * a * c;
+	double x1 = (-b + sqrt(determinant)) / (2 * a);
+	double x2 = (-b - sqrt(determinant)) / (2 * a);
+
+	bool isX1IntersectionPoint = ((a * pow(x1, 2)) + (b * x1) + c == 0);
+	bool isX2IntersectionPoint = ((a * pow(x2, 2)) + (b * x2) + c == 0);
+
+	calcAnimation();
+	if (isX1IntersectionPoint && isX2IntersectionPoint)
+	{
+		double y1 = k * x1 - n;
+		double y2 = k * x2 - n;
+
+		cout << "There are two intersection points:\n"
+			<< " Intersection point #1: (" << x1 << ", " << y1 << ")\n"
+			<< " Intersection point #2: (" << x2 << ", " << y2 << ")\n";
+	}
+	else if (isX1IntersectionPoint)
+	{
+		double y1 = k * x1 - n;
+		cout << "There is one intersection point:\n"
+			<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
+	}
+	else if (isX2IntersectionPoint)
+	{
+		double y2 = k * x2 - n;
+		cout << "There is one intersection point:\n"
+			<< " Intersection point: (" << x2 << ", " << y2 << ")\n";
+	}
+	else
+	{
+		cout << "There are no intersection points!";
+	}
 }
 
 void findIntersectionPointOfTwoLines()
@@ -1031,7 +1110,12 @@ void findIntersectionPointOfTwoLines()
 	getLineArguments(line2, k2, symbol2, n2);
 
 	calcAnimation();
-	if (k1 == k2)
+
+	if (k1 == k2 && n1 == n2)
+	{
+		cout << "The lines are the same! Incorrect input!\n";
+	}
+	else if (k1 == k2)
 	{
 		cout << "There are no intersection points! The lines are parallel!\n";
 	}
