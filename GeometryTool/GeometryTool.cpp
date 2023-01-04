@@ -26,8 +26,9 @@ const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
 const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
 const char* DATABASE_CANNOT_OPEN_TEXT = "ERROR! We are sorry the database cannot be open!\n";
 const char* ENTER_NAME_TEXT = "Enter name (it can be upper and lower case letters, \'_\' and numbers and 16 characters long): \n";
-const char* NAME_EXISTS_TEXT = "That name already exists! Try another. . .\n";
-const char* NAME_DOESNT_EXIST_TEXT = "That name doesn't exist! Try another. . .\n";
+const char* NAME_EXISTS_TEXT = "Name already exists! Try another. . .\n";
+const char* NAME_DOESNT_EXIST_TEXT = "Name doesn't exist! Try another. . .\n";
+const char* INVALID_NUMBER_TEXT = "Number is too large! It should be between -100 and 100!\n";
 
 bool stopProgram = false;
 
@@ -36,15 +37,20 @@ void wait()
 	Sleep(1200);
 }
 
+bool isNumberValid(const double number)
+{
+	return abs(number) <= 100;
+}
+
 bool areCoordinatesValid(const double x, const double y)
 {
-	if (abs(x) > 100)
+	if (!isNumberValid(x))
 	{
 		cout << "X-coordinate is too large! It should be between -100 and 100!\n";
 		return false;
 	}
 
-	if (abs(y) > 100)
+	if (!!isNumberValid(y))
 	{
 		cout << "Y-coordinate is too large! It should be between -100 and 100!\n";
 		return false;
@@ -327,18 +333,35 @@ void saveLineOption()
 		cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
 		cout << "k: ";
 		cin >> k;
-		cout << "\'+\' or \'-\': ";
-		cin >> symbol;
-		if (symbol != "+" && symbol != "-")
+		if (isNumberValid(k))
 		{
-			cout << INVALID_INPUT_TEXT;
-			saveLineOption();
+			cout << "\'+\' or \'-\': ";
+			cin >> symbol;
+
+			if (symbol != "+" && symbol != "-")
+			{
+				cout << INVALID_INPUT_TEXT;
+				saveLineOption();
+			}
+			else
+			{
+				cout << "n: ";
+				cin >> n;
+				if (isNumberValid(n))
+				{
+					saveLine(name, k, symbol, n);
+				}
+				else
+				{
+					cout << INVALID_NUMBER_TEXT;
+					saveLineOption();
+				}
+			}
 		}
 		else
 		{
-			cout << "n: ";
-			cin >> n;
-			saveLine(name, k, symbol, n);
+			cout << INVALID_NUMBER_TEXT;
+			saveLineOption();
 		}
 	}
 }
