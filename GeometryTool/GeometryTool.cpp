@@ -238,7 +238,7 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
-string getPoint(const string name)
+void getPoint(const string name, string& point)
 {
 	ifstream database(pointsDB);
 
@@ -254,7 +254,7 @@ string getPoint(const string name)
 
 			if (words[0] == name)
 			{
-				return words[1];
+				point = words[1];
 			}
 		}
 
@@ -707,7 +707,7 @@ void wantToUseExistingPoint(string& point, string answer = "")
 		if (isElementInDatabase(name, pointsDB))
 		{
 			loadAnimation();
-			point = getPoint(name);
+			getPoint(name, point);
 		}
 		else
 		{
@@ -741,7 +741,7 @@ void wantToUseExistingLine(string& line, string answer = "")
 		if (isElementInDatabase(name, linesDB))
 		{
 			loadAnimation();
-			line = getLine(name);
+			getEquationOfLine(name, line);
 		}
 		else
 		{
