@@ -1,5 +1,5 @@
 A : 2;3
-B : 2;4
+B : 2;8
 K : 5;6
 loi : 1;2
-loiObichaNicki : 86;234
+loiObichaNicki : 86;-86

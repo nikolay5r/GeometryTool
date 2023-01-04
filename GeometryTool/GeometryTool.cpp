@@ -54,7 +54,7 @@ bool areCoordinatesValid(const double x, const double y)
 		return false;
 	}
 
-	if (!!isNumberValid(y))
+	if (!isNumberValid(y))
 	{
 		cout << "Y-coordinate is too large! It should be between -100 and 100!\n";
 		return false;
@@ -684,7 +684,6 @@ void wantToSaveLine(const double k, const string symbol, const double n, string 
 
 void wantToSavePoint(const double x, const double y, string answer = "")
 {
-
 	if (answer == "")
 	{
 		cout << "Do you want to save the point? ";
@@ -944,6 +943,10 @@ void checkIfDotIsOnLineOption()
 	{
 		string symbol;
 		setEquationOfLine(k, symbol, n);
+		if (symbol == "-")
+		{
+			n = -n;
+		}
 		wantToSaveLine(k, symbol, n);
 	}
 	else
@@ -971,11 +974,11 @@ void checkIfDotIsOnLineOption()
 	calcAnimation();
 	if (isPointOnLine)
 	{
-		cout << "The point is on the line.";
+		cout << "The point IS on the line.\n";
 	}
 	else
 	{
-		cout << "The point is not on the line.";
+		cout << "The point IS NOT on the line.\n";
 	}
 }
 
@@ -1012,6 +1015,7 @@ void usersChoice()
 	}
 	else if (option == CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
+		cout << "\n";
 		checkIfDotIsOnLineOption();
 
 		wait();
