@@ -31,6 +31,11 @@ const char* NAME_DOESNT_EXIST_TEXT = "That name doesn't exist! Try another. . .\
 
 bool stopProgram = false;
 
+void wait()
+{
+	Sleep(1200);
+}
+
 void printLine(const double k, const string symbol, const double n, const double x1 = 101, const double y1 = 101, const double x2 = 102, const double y2 = 102)
 {
 	cout << "The equation of the line is: ";
@@ -113,11 +118,11 @@ void printThreeDotsAnimation()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		Sleep(1200);
+		wait();
 		cout << ". ";
 	}
 
-	Sleep(1200);
+	wait();
 	cout << "\n";
 }
 
@@ -208,7 +213,6 @@ string getPoint(const string name)
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
-		showMainMenu();
 	}
 }
 
@@ -239,7 +243,6 @@ bool isElementInDatabase(string element, const char* path)
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
-		showMainMenu();
 	}
 }
 
@@ -258,7 +261,6 @@ void saveLine(const string name, const double k, const string symbol, const doub
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
-		showMainMenu();
 	}
 }
 
@@ -312,7 +314,6 @@ void savePoint(string name, double x, double y)
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
-		showMainMenu();
 	}
 }
 
@@ -350,24 +351,17 @@ void saveOption()
 	{
 		saveLineOption();
 		saveAnimation();
-		showMainMenu();
 	}
 	else if (keyword == "point")
 	{
 		savePointOption();
 		saveAnimation();
-		showMainMenu();
 	}
-	else if (keyword == "menu")
-	{
-		showMainMenu();
-	}
-	else
+	else if (keyword != "menu")
 	{
 		cout << INVALID_INPUT_TEXT;
 		saveOption();
 	}
-
 }
 
 void deleteLine(string name)
@@ -406,7 +400,6 @@ void deleteLine(string name)
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
-		showMainMenu();
 	}
 }
 
@@ -462,7 +455,6 @@ void deletePoint(string name)
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
-		showMainMenu();
 	}
 }
 
@@ -490,19 +482,13 @@ void deleteOption()
 	{
 		deleteLineOption();
 		deleteAnimation();
-		showMainMenu();
 	}
 	else if (keyword == "point")
 	{
 		deletePointOption();
 		deleteAnimation();
-		showMainMenu();
 	}
-	else if (keyword == "menu")
-	{
-		showMainMenu();
-	}
-	else
+	else if (keyword != "menu")
 	{
 		cout << INVALID_INPUT_TEXT;
 	}
@@ -528,11 +514,7 @@ void saveOrDeleteOption()
 
 		deleteOption();
 	}
-	else if (keyword == "menu")
-	{
-		showMainMenu();
-	}
-	else
+	else if (keyword != "menu")
 	{
 		cout << INVALID_INPUT_TEXT;
 		saveOrDeleteOption();
@@ -544,6 +526,8 @@ void wantToSaveLine(const double k, const string symbol, const double n)
 	string answer;
 	cout << "Do you want to save the line? ";
 	cin >> answer;
+
+	convertToLowerCase(answer);
 
 	if (answer == "yes")
 	{
@@ -574,6 +558,8 @@ void wantToSavePoint(const double x, const double y)
 	cout << "Do you want to save the point? ";
 	cin >> answer;
 
+	convertToLowerCase(answer);
+
 	if (answer == "yes")
 	{
 		string name;
@@ -602,6 +588,8 @@ void wantToUseExistingPoint(string& point)
 	string answer;
 	cout << "Do you want to use existing point? ";
 	cin >> answer;
+
+	convertToLowerCase(answer);
 
 	if (answer == "yes")
 	{
@@ -760,18 +748,12 @@ void defineLineOption()
 	if (keyword == "slope")
 	{
 		defineLineThroughSlopeAndPoint();
-		showMainMenu();
 	}
 	else if (keyword == "points")
 	{
 		defineLineThroughPoints();
-		showMainMenu();
 	}
-	else if (keyword == "menu")
-	{
-		showMainMenu();
-	}
-	else
+	else if (keyword != "menu")
 	{
 		cout << INVALID_INPUT_TEXT;
 		defineLineOption();
@@ -794,6 +776,9 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 
 		saveOrDeleteOption();
+
+		wait();
+		showMainMenu();
 	}
 	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
 	{
@@ -802,6 +787,9 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 
 		defineLineOption();
+
+		wait();
+		showMainMenu();
 	}
 	else if (option == CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
