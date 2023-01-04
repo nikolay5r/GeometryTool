@@ -375,6 +375,20 @@ void setEquationOfLine(double& k, string& symbol, double&n)
 	}
 }
 
+void setPointCoordinates(double& x, double& y)
+{
+	cout << "Enter coordinates:\n";
+	cout << "x: ";
+	cin >> x;
+	cout << "y: ";
+	cin >> y;
+
+	if (!areCoordinatesValid(x, y))
+	{
+		setPointCoordinates(x, y);
+	}
+}
+
 void saveLineOption(string name = "")
 {
 	double k, n;
@@ -442,19 +456,8 @@ void savePointOption(string name = "")
 	}
 	else
 	{
-		cout << "Enter coordinates:\n";
-		cout << "x: ";
-		cin >> x;
-		cout << "y: ";
-		cin >> y;
-		if (!areCoordinatesValid(x, y))
-		{
-			savePointOption(name);
-		}
-		else
-		{
-			savePoint(name, x, y);
-		}
+		setPointCoordinates(x, y);
+		savePoint(name, x, y);
 	}
 }
 
@@ -961,14 +964,17 @@ void defineLineOption()
 
 void checkIfDotIsOnLineOption()
 {
-	string line;
+	string line, symbol;
+	double k = 0, n = 0;
 
 	wantToUseExistingLine(line);
 
 	if (line == "")
 	{
-
+		setEquationOfLine(k, symbol, n);
+		wantToSaveLine(k, symbol, n);
 	}
+
 }
 
 void usersChoice()

@@ -5,3 +5,4 @@ lor4e : 4*x+11
 k : 2*x+2
 loi : 2*x+2
 o : 2*x-2
+Nikolay : 2*x+5
