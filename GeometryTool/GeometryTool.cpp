@@ -982,6 +982,11 @@ void checkIfDotIsOnLineOption()
 	}
 }
 
+void findParallelLineOption()
+{
+
+}
+
 void usersChoice()
 {
 	cout << "Enter an option: ";
@@ -1023,6 +1028,8 @@ void usersChoice()
 	}
 	else if (option == FIND_PARALEL_LINE_CORRESPONDING_NUMBER)
 	{
+		cout << "\n";
+		findParallelLineOption();
 
 		wait();
 		showMainMenu();
