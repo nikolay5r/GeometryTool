@@ -342,7 +342,7 @@ void saveLine(const string name, const double k, const string symbol, const doub
 	}
 }
 
-void setEquationOfLine(double& k, string& symbol, double&n)
+void setEquationOfLine(double& k, string& symbol, double& n)
 {
 	cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
 	cout << "k: ";
@@ -806,6 +806,22 @@ void getArgumentsFromExistingLine(string equation, double& k, double& n)
 	n = stod(arguments[1]);
 }
 
+void setLineArguments(string& line, double& k, string& symbol, double& n)
+{
+	if (line == "")
+	{
+		string symbol;
+		setEquationOfLine(k, symbol, n);
+		n = (symbol == "-") ? -n : n;
+		wantToSaveLine(k, symbol, n);
+	}
+	else
+	{
+		double n;
+		getArgumentsFromExistingLine(line, k, n);
+	}
+}
+
 void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
@@ -984,7 +1000,7 @@ void checkIfDotIsOnLineOption()
 
 void findParallelLineOption()
 {
-
+	
 }
 
 void usersChoice()
