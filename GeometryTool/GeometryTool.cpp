@@ -9,6 +9,8 @@
 
 using namespace std;
 
+const int timeToWait = 1200;
+
 const char* linesDB = "lines.txt";
 const char* pointsDB = "points.txt";
 
@@ -34,7 +36,7 @@ bool stopProgram = false;
 
 void wait()
 {
-	Sleep(1200);
+	Sleep(timeToWait);
 }
 
 bool isNumberValid(const double number)
@@ -278,18 +280,18 @@ bool isElementInDatabase(const string element, const char* path)
 
 			if (words[0] == element)
 			{
+				dataBase.close();
 				return true;
 			}
 		}
-
-		dataBase.close();
-
-		return false;
 	}
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
 	}
+
+	dataBase.close();
+	return false;
 }
 
 void saveLine(const string name, const double k, const string symbol, const double n)
@@ -723,40 +725,48 @@ void defineLineThroughSlopeAndPoint()
 	cout << "Enter slope: ";
 	cin >> k;
 
-	wantToUseExistingPoint(point);
-
-	if (point == "")
+	if (isNumberValid(k))
 	{
-		cout << "Enter coordinates of the point:\nx: ";
-		cin >> x;
-		cout << "y: ";
-		cin >> y;
+		wantToUseExistingPoint(point);
 
-		wantToSavePoint(x, y);
+		if (point == "")
+		{
+			cout << "Enter coordinates of the point:\nx: ";
+			cin >> x;
+			cout << "y: ";
+			cin >> y;
+
+			wantToSavePoint(x, y);
+		}
+		else
+		{
+			vector<string> coordinates;
+			splitByDelim(coordinates, point, ";");
+
+			x = stod(coordinates[0]);
+			y = stod(coordinates[1]);
+		}
+
+		if (!areCoordinatesValid(x, y))
+		{
+			savePointOption();
+		}
+		else
+		{
+			double n = k * x - y;
+			string symbol = n >= 0 ? "+" : "-";
+			n = abs(n);
+
+			calcAnimation();
+			printLine(k, symbol, n);
+
+			wantToSaveLine(k, symbol, n);
+		}
 	}
 	else
 	{
-		vector<string> coordinates;
-		splitByDelim(coordinates, point, ";");
-
-		x = stod(coordinates[0]);
-		y = stod(coordinates[1]);
-	}
-
-	if (!areCoordinatesValid(x, y))
-	{
-		savePointOption();
-	}
-	else
-	{
-		double n = k * x - y;
-		string symbol = n >= 0 ? "+" : "-";
-		n = abs(n);
-
-		calcAnimation();
-		printLine(k, symbol, n);
-
-		wantToSaveLine(k, symbol, n);
+		cout << INVALID_NUMBER_TEXT;
+		defineLineThroughSlopeAndPoint();
 	}
 }
 
