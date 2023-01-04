@@ -18,7 +18,7 @@ const char* pointsDB = "points.txt";
 
 const char* SAVE_OR_DELETE_CORRESPONDING_NUMBER = "0";
 const char* DEFINE_LINE_CORRESPONDING_NUMBER = "1";
-const char* CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER = "2";
+const char* CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER = "2";
 const char* FIND_PARALEL_LINE_CORRESPONDING_NUMBER = "3";
 const char* FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER = "4";
 const char* FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER = "5";
@@ -229,7 +229,7 @@ void showMainMenu()
 
 	cout << " " << SAVE_OR_DELETE_CORRESPONDING_NUMBER << " - save a line or a point or delete one;\n"
 		<< " " << DEFINE_LINE_CORRESPONDING_NUMBER << " - define a line through slope and points;\n"
-		<< " " << CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
+		<< " " << CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
 		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line and passes through a point;\n"
 		<< " " << FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER << " - derive an equation of a perpendicular line to a given line and passes through a point;\n"
 		<< " " << FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER << " - find intersection point of two lines (if it exists);\n"
@@ -935,13 +935,14 @@ void defineLineOption()
 
 void checkIfDotIsOnLineOption()
 {
-	string line, symbol;
+	string line;
 	double k = 0, n = 0;
 
 	wantToUseExistingLine(line);
 
 	if (line == "")
 	{
+		string symbol;
 		setEquationOfLine(k, symbol, n);
 		wantToSaveLine(k, symbol, n);
 	}
@@ -950,6 +951,32 @@ void checkIfDotIsOnLineOption()
 		getArgumentsFromExistingLine(line, k, n);
 	}
 
+	string point;
+	double x = 0, y = 0;
+
+	wantToUseExistingPoint(point);
+
+	if (point == "")
+	{
+		setPointCoordinates(x, y);
+		wantToSavePoint(x, y);
+	}
+	else
+	{
+		getCoordinatesFromExistingPoint(point, x, y);
+	}
+
+	bool isPointOnLine = ((k * x + n) == y) ? true : false;
+
+	calcAnimation();
+	if (isPointOnLine)
+	{
+		cout << "The point is on the line.";
+	}
+	else
+	{
+		cout << "The point is not on the line.";
+	}
 }
 
 void usersChoice()
@@ -983,7 +1010,7 @@ void usersChoice()
 		wait();
 		showMainMenu();
 	}
-	else if (option == CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER)
+	else if (option == CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
 		checkIfDotIsOnLineOption();
 
