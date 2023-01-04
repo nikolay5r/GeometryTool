@@ -890,6 +890,11 @@ void defineLineOption()
 	}
 }
 
+void checkIfDotIsOnLineOption()
+{
+
+}
+
 void usersChoice()
 {
 	cout << "Enter an option: ";
@@ -923,31 +928,46 @@ void usersChoice()
 	}
 	else if (option == CHECK_IF_DOT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
+		checkIfDotIsOnLineOption();
 
+		wait();
+		showMainMenu();
 	}
 	else if (option == FIND_PARALEL_LINE_CORRESPONDING_NUMBER)
 	{
 
+		wait();
+		showMainMenu();
 	}
 	else if (option == FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER)
 	{
 
+		wait();
+		showMainMenu();
 	}
 	else if (option == FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER)
 	{
 
+		wait();
+		showMainMenu();
 	}
 	else if (option == FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER)
 	{
 
+		wait();
+		showMainMenu();
 	}
 	else if (option == FIND_THE_TANGENT_CORRESPONDING_NUMBER)
 	{
 
+		wait();
+		showMainMenu();
 	}
 	else if (option == DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER)
 	{
 
+		wait();
+		showMainMenu();
 	}
 	else if (option == "exit")
 	{
