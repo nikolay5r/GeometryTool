@@ -265,6 +265,7 @@ void getEquationOfLine(const string name, string& equation)
 		cout << DATABASE_CANNOT_OPEN_TEXT;
 	}
 }
+
 void getPoint(const string name, string& point)
 {
 	ifstream database(pointsDB);
@@ -341,6 +342,39 @@ void saveLine(const string name, const double k, const string symbol, const doub
 	}
 }
 
+void setEquationOfLine(double& k, string& symbol, double&n)
+{
+	cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
+	cout << "k: ";
+	cin >> k;
+	if (isNumberValid(k))
+	{
+		cout << "\'+\' or \'-\': ";
+		cin >> symbol;
+
+		if (symbol != "+" && symbol != "-")
+		{
+			cout << INVALID_INPUT_TEXT;
+			setEquationOfLine(k, symbol, n);
+		}
+		else
+		{
+			cout << "n: ";
+			cin >> n;
+			if (!isNumberValid(n))
+			{
+				cout << INVALID_NUMBER_TEXT;
+				setEquationOfLine(k, symbol, n);
+			}
+		}
+	}
+	else
+	{
+		cout << INVALID_NUMBER_TEXT;
+		setEquationOfLine(k, symbol, n);
+	}
+}
+
 void saveLineOption(string name = "")
 {
 	double k, n;
@@ -363,39 +397,8 @@ void saveLineOption(string name = "")
 	}
 	else
 	{
-		cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
-		cout << "k: ";
-		cin >> k;
-		if (isNumberValid(k))
-		{
-			cout << "\'+\' or \'-\': ";
-			cin >> symbol;
-
-			if (symbol != "+" && symbol != "-")
-			{
-				cout << INVALID_INPUT_TEXT;
-				saveLineOption(name);
-			}
-			else
-			{
-				cout << "n: ";
-				cin >> n;
-				if (isNumberValid(n))
-				{
-					saveLine(name, k, symbol, n);
-				}
-				else
-				{
-					cout << INVALID_NUMBER_TEXT;
-					saveLineOption(name);
-				}
-			}
-		}
-		else
-		{
-			cout << INVALID_NUMBER_TEXT;
-			saveLineOption(name);
-		}
+		setEquationOfLine(k, symbol, n);
+		saveLine(name, k, symbol, n);
 	}
 }
 
@@ -958,7 +961,14 @@ void defineLineOption()
 
 void checkIfDotIsOnLineOption()
 {
+	string line;
 
+	wantToUseExistingLine(line);
+
+	if (line == "")
+	{
+
+	}
 }
 
 void usersChoice()
