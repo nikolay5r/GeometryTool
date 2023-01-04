@@ -310,18 +310,20 @@ void saveLine(const string name, const double k, const string symbol, const doub
 	}
 }
 
-void saveLineOption()
+void saveLineOption(string name = "")
 {
-	string name;
 	double k, n;
 	string symbol;
 
-	cout << ENTER_NAME_TEXT;
-	cin >> name;
+	if (name == "")
+	{
+		cout << ENTER_NAME_TEXT;
+		cin >> name;
+	}
 
 	if (!isNameValid(name))
 	{
-		savePointOption();
+		saveLineOption();
 	}
 	else if (isElementInDatabase(name, linesDB))
 	{
@@ -341,7 +343,7 @@ void saveLineOption()
 			if (symbol != "+" && symbol != "-")
 			{
 				cout << INVALID_INPUT_TEXT;
-				saveLineOption();
+				saveLineOption(name);
 			}
 			else
 			{
@@ -354,14 +356,14 @@ void saveLineOption()
 				else
 				{
 					cout << INVALID_NUMBER_TEXT;
-					saveLineOption();
+					saveLineOption(name);
 				}
 			}
 		}
 		else
 		{
 			cout << INVALID_NUMBER_TEXT;
-			saveLineOption();
+			saveLineOption(name);
 		}
 	}
 }
@@ -384,14 +386,16 @@ void savePoint(const string name, const double x, const double y)
 	}
 }
 
-void savePointOption()
+void savePointOption(string name = "")
 {
-	string name = "";
 	double x = 0,
 		y = 0;
 
-	cout << ENTER_NAME_TEXT;
-	cin >> name;
+	if (name == "")
+	{
+		cout << ENTER_NAME_TEXT;
+		cin >> name;
+	}
 
 	if (!isNameValid(name))
 	{
@@ -411,7 +415,7 @@ void savePointOption()
 		cin >> y;
 		if (!areCoordinatesValid(x, y))
 		{
-			savePointOption();
+			savePointOption(name);
 		}
 		else
 		{
@@ -602,13 +606,16 @@ void saveOrDeleteOption()
 	}
 }
 
-void wantToSaveLine(const double k, const string symbol, const double n)
+void wantToSaveLine(const double k, const string symbol, const double n, string answer = "")
 {
-	string answer;
-	cout << "Do you want to save the line? ";
-	cin >> answer;
 
-	convertToLowerCase(answer);
+	if (answer == "")
+	{
+		cout << "Do you want to save the line? ";
+		cin >> answer;
+
+		convertToLowerCase(answer);
+	}
 
 	if (answer == "yes")
 	{
@@ -618,12 +625,12 @@ void wantToSaveLine(const double k, const string symbol, const double n)
 
 		if (!isNameValid(name))
 		{
-			wantToSaveLine(k, symbol, n);
+			wantToSaveLine(k, symbol, n, answer);
 		}
 		else if (isElementInDatabase(name, linesDB))
 		{
 			cout << NAME_EXISTS_TEXT;
-			wantToSaveLine(k, symbol, n);
+			wantToSaveLine(k, symbol, n, answer);
 		}
 		else
 		{
@@ -638,13 +645,16 @@ void wantToSaveLine(const double k, const string symbol, const double n)
 	}
 }
 
-void wantToSavePoint(const double x, const double y)
+void wantToSavePoint(const double x, const double y, string answer = "")
 {
-	string answer;
-	cout << "Do you want to save the point? ";
-	cin >> answer;
 
-	convertToLowerCase(answer);
+	if (answer == "")
+	{
+		cout << "Do you want to save the point? ";
+		cin >> answer;
+
+		convertToLowerCase(answer);
+	}
 
 	if (answer == "yes")
 	{
@@ -654,12 +664,12 @@ void wantToSavePoint(const double x, const double y)
 
 		if (!isNameValid(name))
 		{
-			wantToSavePoint(x, y);
+			wantToSavePoint(x, y, answer);
 		}
 		else if (isElementInDatabase(name, pointsDB))
 		{
 			cout << NAME_EXISTS_TEXT;
-			wantToSavePoint(x, y);
+			wantToSavePoint(x, y, answer);
 		}
 		else
 		{
