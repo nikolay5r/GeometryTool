@@ -1013,9 +1013,25 @@ void findPerpendicularLineOption()
 	wantToSaveLine(k, symbol, n);
 }
 
-void findItersectionPointOption()
+void findIntersectionPointOption()
 {
+	string keyword = getKeywordFromConsole();
 
+	if (keyword == "parabola")
+	{
+		cout << "Find intersection point of parabola and a line:\n";
+		findIntersectionPointOfParabolaAndLine();
+	}
+	else if (keyword == "lines")
+	{
+		cout << "Find intersection point of two lines:\n";
+		findIntersectionPointOfTwoLines();
+	}
+	else if (keyword != "menu")
+	{
+		cout << INVALID_INPUT_TEXT;
+		findIntersectionPointOption();
+	}
 }
 
 void usersChoice()
@@ -1078,7 +1094,7 @@ void usersChoice()
 		cout << "\nEnter the word \"parabola\" if you want to find the intersection point(s) of a parabola and a line\n"
 			<< "Enter the word \"lines\" if you want to find the intersection point(s) of two lines\n"
 			<< GO_TO_MAIN_MENU_TEXT;
-		findItersectionPointOption();
+		findIntersectionPointOption();
 
 		wait();
 		showMainMenu();
