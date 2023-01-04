@@ -690,14 +690,14 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 
 void wantToUseExistingPoint(string& point, string answer = "")
 {
-	string answer;
 	if (answer == "")
 	{
 		cout << "Do you want to use existing point? ";
 		cin >> answer;
+		
+		convertToLowerCase(answer);
 	}
 
-	convertToLowerCase(answer);
 
 	if (answer == "yes")
 	{
@@ -719,6 +719,40 @@ void wantToUseExistingPoint(string& point, string answer = "")
 	{
 		cout << INVALID_INPUT_TEXT;
 		wantToUseExistingPoint(point);
+	}
+}
+
+void wantToUseExistingLine(string& line, string answer = "")
+{
+	if (answer == "")
+	{
+		cout << "Do you want to use existing point? ";
+		cin >> answer;
+
+		convertToLowerCase(answer);
+	}
+
+
+	if (answer == "yes")
+	{
+		string name;
+		cout << "Enter name: ";
+		cin >> name;
+		if (isElementInDatabase(name, linesDB))
+		{
+			loadAnimation();
+			line = getLine(name);
+		}
+		else
+		{
+			cout << NAME_DOESNT_EXIST_TEXT;
+			wantToUseExistingLine(line, answer);
+		}
+	}
+	else if (answer != "no")
+	{
+		cout << INVALID_INPUT_TEXT;
+		wantToUseExistingLine(line);
 	}
 }
 
