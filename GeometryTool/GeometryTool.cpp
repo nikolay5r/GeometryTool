@@ -36,6 +36,23 @@ void wait()
 	Sleep(1200);
 }
 
+bool areCoordinatesValid(const double x, const double y)
+{
+	if (abs(x) > 100)
+	{
+		cout << "X-coordinate is too large! It should be between -100 and 100!\n";
+		return false;
+	}
+
+	if (abs(y) > 100)
+	{
+		cout << "Y-coordinate is too large! It should be between -100 and 100!\n";
+		return false;
+	}
+
+	return true;
+}
+
 bool isNameValid(const string name)
 {
 	if (name.length() > 16)
@@ -369,8 +386,14 @@ void savePointOption()
 		cin >> x;
 		cout << "y: ";
 		cin >> y;
-
-		savePoint(name, x, y);
+		if (!areCoordinatesValid(x, y))
+		{
+			savePointOption();
+		}
+		else
+		{
+			savePoint(name, x, y);
+		}
 	}
 }
 
@@ -682,19 +705,26 @@ void defineLineThroughSlopeAndPoint()
 	{
 		vector<string> coordinates;
 		splitByDelim(coordinates, point, ";");
-		
+
 		x = stod(coordinates[0]);
 		y = stod(coordinates[1]);
 	}
-	
-	double n = k * x - y;
-	string symbol = n >= 0 ? "+" : "-";
-	n = abs(n);
 
-	calcAnimation();
-	printLine(k, symbol, n);
+	if (!areCoordinatesValid(x, y))
+	{
+		savePointOption();
+	}
+	else
+	{
+		double n = k * x - y;
+		string symbol = n >= 0 ? "+" : "-";
+		n = abs(n);
 
-	wantToSaveLine(k, symbol, n);
+		calcAnimation();
+		printLine(k, symbol, n);
+
+		wantToSaveLine(k, symbol, n);
+	}
 }
 
 void defineLineThroughPoints()
@@ -721,67 +751,79 @@ void defineLineThroughPoints()
 		x1 = stod(coordinates[0]);
 		y1 = stod(coordinates[1]);
 	}
-
-	string point2 = "";
-	wantToUseExistingPoint(point2);
-
-	if (point2 == "")
+	if (!areCoordinatesValid(x1, y1))
 	{
-		cout << "Enter coordinates of the point:\nx: ";
-		cin >> x2;
-		cout << "y: ";
-		cin >> y2;
-
-		wantToSavePoint(x2, y2);
+		savePointOption();
 	}
 	else
 	{
-		vector<string> coordinates{};
-		splitByDelim(coordinates, point2, ";");
+		string point2 = "";
+		wantToUseExistingPoint(point2);
 
-		x2 = stod(coordinates[0]);
-		y2 = stod(coordinates[1]);
-	}
-	
-	if (x1 == x2 && y1 == y2)
-	{
-		cout << "Can't define a line! Points are the same!\n";
-	}
-	else
-	{
-		if (x1 == x2)
+		if (point2 == "")
 		{
-			double k = 1;
-			double n = -x1;
-			string symbol = n >= 0 ? "+" : "-";
-			
-			calcAnimation();
-			printLine(k, symbol, n, x1, y1, x2, y2);
+			cout << "Enter coordinates of the point:\nx: ";
+			cin >> x2;
+			cout << "y: ";
+			cin >> y2;
 
-			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
-		}
-		else if (y1 == y2)
-		{
-			double k = 0;
-			double n = -y1;
-			string symbol = n >= 0 ? "+" : "-";
-
-			calcAnimation();
-			printLine(k, symbol, n, x1, y1, x2, y2);
-
-			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
+			wantToSavePoint(x2, y2);
 		}
 		else
 		{
-			double k = (y1 - y2) / (x1 - x2);
-			double n = k * x1 - y1;
-			string symbol = n >= 0 ? "+" : "-";
-			n = abs(n);
-			
-			calcAnimation();
-			printLine(k, symbol, n, x1, y1, x2, y2);
-		
-			wantToSaveLine(k, symbol, n);
+			vector<string> coordinates{};
+			splitByDelim(coordinates, point2, ";");
+
+			x2 = stod(coordinates[0]);
+			y2 = stod(coordinates[1]);
+		}
+		if (!areCoordinatesValid(x2, y2))
+		{
+			savePointOption();
+		}
+		else
+		{
+			if (x1 == x2 && y1 == y2)
+			{
+				cout << "Can't define a line! Points are the same!\n";
+			}
+			else
+			{
+				if (x1 == x2)
+				{
+					double k = 1;
+					double n = -x1;
+					string symbol = n >= 0 ? "+" : "-";
+
+					calcAnimation();
+					printLine(k, symbol, n, x1, y1, x2, y2);
+
+					cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
+				}
+				else if (y1 == y2)
+				{
+					double k = 0;
+					double n = -y1;
+					string symbol = n >= 0 ? "+" : "-";
+
+					calcAnimation();
+					printLine(k, symbol, n, x1, y1, x2, y2);
+
+					cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
+				}
+				else
+				{
+					double k = (y1 - y2) / (x1 - x2);
+					double n = k * x1 - y1;
+					string symbol = n >= 0 ? "+" : "-";
+					n = abs(n);
+
+					calcAnimation();
+					printLine(k, symbol, n, x1, y1, x2, y2);
+
+					wantToSaveLine(k, symbol, n);
+				}
+			}
 		}
 	}
 }
