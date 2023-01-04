@@ -758,7 +758,7 @@ void wantToUseExistingLine(string& line, string answer = "")
 {
 	if (answer == "")
 	{
-		cout << "Do you want to use existing point? ";
+		cout << "Do you want to use existing line? ";
 		cin >> answer;
 
 		convertToLowerCase(answer);
@@ -838,7 +838,7 @@ void getPointCoordinates(string& point, double& x, double& y)
 
 void getParabolaArguments(double& a, double& b, double& c)
 {
-	cout << "Enter a parabola in this format \"a*x^2 + b*x + c = 0\":";
+	cout << "Enter a parabola in this format \"a*x^2 + b*x + c = 0\":\n";
 	cout << "a: ";
 	cin >> a;
 	if (!isNumberValid(a))
@@ -1070,7 +1070,13 @@ void findIntersectionPointOfParabolaAndLine()
 	bool isX2IntersectionPoint = ((a * pow(x2, 2)) + (b * x2) + c == 0);
 
 	calcAnimation();
-	if (isX1IntersectionPoint && isX2IntersectionPoint)
+	if (x1 == x2 && isX1IntersectionPoint && isX2IntersectionPoint)
+	{
+		double y1 = k * x1 - n;
+		cout << "There is one intersection point:\n"
+			<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
+	}
+	else if (isX1IntersectionPoint && isX2IntersectionPoint)
 	{
 		double y1 = k * x1 - n;
 		double y2 = k * x2 - n;
