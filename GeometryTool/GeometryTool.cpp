@@ -749,7 +749,7 @@ void defineLineThroughSlopeAndPoint()
 
 		if (!areCoordinatesValid(x, y))
 		{
-			savePointOption();
+			defineLineThroughSlopeAndPoint();
 		}
 		else
 		{
@@ -796,7 +796,7 @@ void defineLineThroughPoints()
 	}
 	if (!areCoordinatesValid(x1, y1))
 	{
-		savePointOption();
+		defineLineThroughPoints();
 	}
 	else
 	{
@@ -822,7 +822,7 @@ void defineLineThroughPoints()
 		}
 		if (!areCoordinatesValid(x2, y2))
 		{
-			savePointOption();
+			defineLineThroughPoints();
 		}
 		else
 		{
