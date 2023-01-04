@@ -808,6 +808,8 @@ void getArgumentsFromExistingLine(string equation, double& k, double& n)
 
 void getLineArguments(string& line, double& k, string& symbol, double& n)
 {
+	wantToUseExistingPoint(line);
+
 	if (line == "")
 	{
 		setEquationOfLine(k, symbol, n);
@@ -823,6 +825,8 @@ void getLineArguments(string& line, double& k, string& symbol, double& n)
 
 void getPointCoordinates(string& point, double& x, double& y)
 {
+	wantToUseExistingPoint(point);
+
 	if (point == "")
 	{
 		setPointCoordinates(x, y);
@@ -844,8 +848,6 @@ void defineLineThroughSlopeAndPoint()
 
 	if (isNumberValid(k))
 	{
-		wantToUseExistingPoint(point);
-
 		getPointCoordinates(point, x, y);
 
 		double n = k * x - y;
@@ -864,12 +866,10 @@ void defineLineThroughPoints()
 	double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
 	string point1 = "";
-	wantToUseExistingPoint(point1);
 
 	getPointCoordinates(point1, x1, y1);
 
 	string point2 = "";
-	wantToUseExistingPoint(point2);
 
 	getPointCoordinates(point2, x2, y2);
 
@@ -1020,7 +1020,30 @@ void findIntersectionPointOfParabolaAndLine()
 
 void findIntersectionPointOfTwoLines()
 {
+	string line1, symbol1;
+	double k1, n1;
 
+	getLineArguments(line1, k1, symbol1, n1);
+
+	string line2, symbol2;
+	double k2, n2;
+
+	getLineArguments(line2, k2, symbol2, n2);
+
+	calcAnimation();
+	if (k1 == k2)
+	{
+		cout << "There are no intersection points! The lines are parallel!\n";
+	}
+	else
+	{
+		double x = (n2 - n1) / (k1 - k2);
+		double y = k1 * x - n1;
+
+		cout << "The intersection point is: (" << x << ", " << y << ").\n";
+		
+		wantToSavePoint(x, y);
+	}
 }
 
 void findIntersectionPointOption()
