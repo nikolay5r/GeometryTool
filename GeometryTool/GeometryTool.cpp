@@ -988,6 +988,11 @@ void findParallelLineOption()
 	wantToSaveLine(k, symbol, n);
 }
 
+void findPerpendicularLineOption()
+{
+
+}
+
 void usersChoice()
 {
 	cout << "Enter an option: ";
@@ -1021,7 +1026,7 @@ void usersChoice()
 	}
 	else if (option == CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
-		cout << "\n";
+		cout << "\nCheck if a point is on a line:\n";
 		checkIfDotIsOnLineOption();
 
 		wait();
@@ -1029,7 +1034,7 @@ void usersChoice()
 	}
 	else if (option == FIND_PARALEL_LINE_CORRESPONDING_NUMBER)
 	{
-		cout << "\n";
+		cout << "\nFind parallel line:\n";
 		findParallelLineOption();
 
 		wait();
@@ -1037,6 +1042,8 @@ void usersChoice()
 	}
 	else if (option == FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER)
 	{
+		cout << "\nFind perpendicular line:\n";
+		findPerpendicularLineOption();
 
 		wait();
 		showMainMenu();
