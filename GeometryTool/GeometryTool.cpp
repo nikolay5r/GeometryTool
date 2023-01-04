@@ -238,6 +238,33 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
 }
 
+void getEquationOfLine(const string name, string& equation)
+{
+	ifstream database(linesDB);
+
+	if (database.is_open())
+	{
+		string rowText;
+
+		while (getline(database, rowText))
+		{
+			vector<string> words{};
+
+			splitByDelim(words, rowText, " : ");
+
+			if (words[0] == name)
+			{
+				equation = words[1];
+			}
+		}
+
+		database.close();
+	}
+	else
+	{
+		cout << DATABASE_CANNOT_OPEN_TEXT;
+	}
+}
 void getPoint(const string name, string& point)
 {
 	ifstream database(pointsDB);
