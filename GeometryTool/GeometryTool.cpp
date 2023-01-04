@@ -25,7 +25,7 @@ const char* DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
 const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
 const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
 const char* DATABASE_CANNOT_OPEN_TEXT = "ERROR! We are sorry the database cannot be open!\n";
-const char* ENTER_NAME_TEXT = "Enter name (it can be upper and lower case letters, \'_\' and numbers): ";
+const char* ENTER_NAME_TEXT = "Enter name (it can be upper and lower case letters, \'_\' and numbers and 16 characters long): \n";
 const char* NAME_EXISTS_TEXT = "That name already exists! Try another. . .\n";
 const char* NAME_DOESNT_EXIST_TEXT = "That name doesn't exist! Try another. . .\n";
 
@@ -34,6 +34,29 @@ bool stopProgram = false;
 void wait()
 {
 	Sleep(1200);
+}
+
+bool isNameValid(const string name)
+{
+	if (name.length() > 16)
+	{
+		cout << "The name is too long! Try again...\n";
+		return false;
+	}
+
+	for (int i = 0; i < name.length(); i++)
+	{
+		if (!((name[i] >= 'a' && name[i] <= 'z')
+			|| (name[i] >= 'A' && name[i] <= 'Z')
+			|| (name[i] >= '0' && name[i] <= '9')
+			|| name[i] == '_'))
+		{
+			cout << "Invalid characters in name! Try again...\n";
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void printLine(const double k, const string symbol, const double n, const double x1 = 101, const double y1 = 101, const double x2 = 102, const double y2 = 102)
@@ -216,7 +239,7 @@ string getPoint(const string name)
 	}
 }
 
-bool isElementInDatabase(string element, const char* path)
+bool isElementInDatabase(const string element, const char* path)
 {
 	ifstream dataBase(path);
 
@@ -273,7 +296,11 @@ void saveLineOption()
 	cout << ENTER_NAME_TEXT;
 	cin >> name;
 
-	if (isElementInDatabase(name, linesDB))
+	if (!isNameValid(name))
+	{
+		savePointOption();
+	}
+	else if (isElementInDatabase(name, linesDB))
 	{
 		cout << NAME_EXISTS_TEXT;
 		saveLineOption();
@@ -299,7 +326,7 @@ void saveLineOption()
 	}
 }
 
-void savePoint(string name, double x, double y)
+void savePoint(const string name, const double x, const double y)
 {
 	ofstream dataBase(pointsDB, ios::app);
 
@@ -326,7 +353,11 @@ void savePointOption()
 	cout << ENTER_NAME_TEXT;
 	cin >> name;
 
-	if (isElementInDatabase(name, pointsDB))
+	if (!isNameValid(name))
+	{
+		savePointOption();
+	}
+	else if (isElementInDatabase(name, pointsDB))
 	{
 		cout << NAME_EXISTS_TEXT;
 		savePointOption();
@@ -415,8 +446,10 @@ void deleteLineOption()
 		cout << NAME_DOESNT_EXIST_TEXT;
 		deleteLineOption();
 	}
-
-	deleteLine(name);
+	else
+	{
+		deleteLine(name);
+	}
 }
 
 void deletePoint(string name)
@@ -470,8 +503,10 @@ void deletePointOption()
 		cout << NAME_DOESNT_EXIST_TEXT;
 		deletePointOption();
 	}
-
-	deletePoint(name);
+	else
+	{
+		deletePoint(name);
+	}
 }
 
 void deleteOption()
@@ -534,7 +569,12 @@ void wantToSaveLine(const double k, const string symbol, const double n)
 		string name;
 		cout << ENTER_NAME_TEXT;
 		cin >> name;
-		if (isElementInDatabase(name, linesDB))
+
+		if (!isNameValid(name))
+		{
+			wantToSaveLine(k, symbol, n);
+		}
+		else if (isElementInDatabase(name, linesDB))
 		{
 			cout << NAME_EXISTS_TEXT;
 			wantToSaveLine(k, symbol, n);
@@ -565,7 +605,12 @@ void wantToSavePoint(const double x, const double y)
 		string name;
 		cout << ENTER_NAME_TEXT;
 		cin >> name;
-		if (isElementInDatabase(name, pointsDB))
+
+		if (!isNameValid(name))
+		{
+			wantToSavePoint(x, y);
+		}
+		else if (isElementInDatabase(name, pointsDB))
 		{
 			cout << NAME_EXISTS_TEXT;
 			wantToSavePoint(x, y);
@@ -713,9 +758,9 @@ void defineLineThroughPoints()
 			calcAnimation();
 			printLine(k, symbol, n, x1, y1, x2, y2);
 
-			cout << "The program cannot save lines that has equal x-coordinates! Sorry...";
+			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
 		}
-		if (y1 == y2)
+		else if (y1 == y2)
 		{
 			double k = 0;
 			double n = -y1;
@@ -724,7 +769,7 @@ void defineLineThroughPoints()
 			calcAnimation();
 			printLine(k, symbol, n, x1, y1, x2, y2);
 
-			cout << "The program cannot save lines that has equal x-coordinates! Sorry...";
+			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
 		}
 		else
 		{
