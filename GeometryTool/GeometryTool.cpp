@@ -836,41 +836,15 @@ void getPointCoordinates(string& point, double& x, double& y)
 	}
 }
 
-void getParabolaArguments(double& a, double& b, double& c)
+void getParabola(double& p)
 {
-	cout << "Enter a parabola in this format \"a*x^2 + b*x + c = 0\":\n";
-	cout << "a: ";
-	cin >> a;
-	if (!isNumberValid(a))
+	cout << "Enter a parabola in this format \"y^2 = 2px\":\n";
+	cout << "p: ";
+	cin >> p;
+	if (!isNumberValid(p))
 	{
-		cout << "A-argument is too large! It should be between -100 and 100!\n";
-		getParabolaArguments(a, b, c);
-	}
-	else
-	{
-		cout << "b: ";
-		cin >> b;
-		if (!isNumberValid(b))
-		{
-			cout << "B-argument is too large! It should be between -100 and 100!\n";
-			getParabolaArguments(a, b, c);
-		}
-		else
-		{
-			cout << "c: ";
-			cin >> c;
-		}
-		if (!isNumberValid(c))
-		{
-			cout << "C-argument is too large! It should be between -100 and 100!\n";
-			getParabolaArguments(a, b, c);
-		}
-	}
-
-	if (a == 0)
-	{
-		cout << "This is not a parabola! Try again...";
-		getParabolaArguments(a, b, c);
+		cout << "P-argument is too large! It should be between -100 and 100!\n";
+		
 	}
 }
 
@@ -1056,50 +1030,62 @@ void findIntersectionPointOfParabolaAndLine()
 
 	getLineArguments(line, k, symbol, n);
 
-	double a, b, c;
+	double p;
 
-	getParabolaArguments(a, b, c);
-	
-	b -= k;
-	c -= n;
-	double determinant = pow(b, 2) - 4 * a * c;
-	double x1 = (-b + sqrt(determinant)) / (2 * a);
-	double x2 = (-b - sqrt(determinant)) / (2 * a);
-
-	bool isX1IntersectionPoint = ((a * pow(x1, 2)) + (b * x1) + c == 0);
-	bool isX2IntersectionPoint = ((a * pow(x2, 2)) + (b * x2) + c == 0);
+	getParabola(p);
 
 	calcAnimation();
-	if (x1 == x2 && isX1IntersectionPoint && isX2IntersectionPoint)
+	if (p == 0)
 	{
-		double y1 = k * x1 - n;
-		cout << "There is one intersection point:\n"
-			<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
-	}
-	else if (isX1IntersectionPoint && isX2IntersectionPoint)
-	{
-		double y1 = k * x1 - n;
-		double y2 = k * x2 - n;
+		double y = 0;
+		double x = -n / k;
 
-		cout << "There are two intersection points:\n"
-			<< " Intersection point #1: (" << x1 << ", " << y1 << ")\n"
-			<< " Intersection point #2: (" << x2 << ", " << y2 << ")\n";
-	}
-	else if (isX1IntersectionPoint)
-	{
-		double y1 = k * x1 - n;
 		cout << "There is one intersection point:\n"
-			<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
-	}
-	else if (isX2IntersectionPoint)
-	{
-		double y2 = k * x2 - n;
-		cout << "There is one intersection point:\n"
-			<< " Intersection point: (" << x2 << ", " << y2 << ")\n";
+			<< " Intersection point: (" << x << ", " << y << ")\n";
 	}
 	else
 	{
-		cout << "There are no intersection points!";
+		double a = k * k;
+		double b = 2 * n * k - 2 * p;
+		double c = n * n;
+		double determinant = b * b - 4 * a * c;
+		double x1 = (-b + sqrt(determinant)) / (2 * a);
+		double x2 = (-b - sqrt(determinant)) / (2 * a);
+
+		bool isX1IntersectionPoint = ((a * x1 * x1) + (b * x1) + c == 0);
+		bool isX2IntersectionPoint = ((a * x2 * x2) + (b * x2) + c == 0);
+
+		if (x1 == x2 && isX1IntersectionPoint && isX2IntersectionPoint)
+		{
+			double y1 = k * x1 - n;
+			cout << "There is one intersection point:\n"
+				<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
+		}
+		else if (isX1IntersectionPoint && isX2IntersectionPoint)
+		{
+			double y1 = k * x1 - n;
+			double y2 = k * x2 - n;
+
+			cout << "There are two intersection points:\n"
+				<< " Intersection point #1: (" << x1 << ", " << y1 << ")\n"
+				<< " Intersection point #2: (" << x2 << ", " << y2 << ")\n";
+		}
+		else if (isX1IntersectionPoint)
+		{
+			double y1 = k * x1 - n;
+			cout << "There is one intersection point:\n"
+				<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
+		}
+		else if (isX2IntersectionPoint)
+		{
+			double y2 = k * x2 - n;
+			cout << "There is one intersection point:\n"
+				<< " Intersection point: (" << x2 << ", " << y2 << ")\n";
+		}
+		else
+		{
+			cout << "There are no intersection points!";
+		}
 	}
 }
 
