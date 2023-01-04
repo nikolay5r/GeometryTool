@@ -1157,7 +1157,23 @@ void findIntersectionPointOption()
 
 void findEquationsInTriangleOption()
 {
+	string pointA;
+	double xa, ya;
 
+	cout << "Point A:\n";
+	getPointCoordinates(pointA, xa, ya);
+
+	string pointB;
+	double xb, yb;
+
+	cout << "Point B:\n";
+	getPointCoordinates(pointB, xb, yb);
+
+	string pointC;
+	double xc, yc;
+	
+	cout << "Point C:\n";
+	getPointCoordinates(pointC, xc, yc);
 }
 
 void usersChoice()
