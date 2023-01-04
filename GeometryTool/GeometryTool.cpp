@@ -966,7 +966,26 @@ void checkIfDotIsOnLineOption()
 
 void findParallelLineOption()
 {
-	
+	string givenLine, symbol;
+	double k, n;
+
+	wantToUseExistingLine(givenLine);
+	getLineArguments(givenLine, k, symbol, n);
+
+	string point;
+	double x, y;
+
+	wantToUseExistingPoint(point);
+	getPointCoordinates(point, x, y);
+
+	n = k * x - y;
+	symbol = n >= 0 ? "+" : "-";
+	n = abs(n);
+
+	calcAnimation();
+	printLine(k, symbol, n, x, y);
+
+	wantToSaveLine(k, symbol, n);
 }
 
 void usersChoice()
