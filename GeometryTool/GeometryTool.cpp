@@ -1142,12 +1142,10 @@ void findIntersectionPointOption()
 
 	if (keyword == "parabola")
 	{
-		cout << "Find intersection point of parabola and a line:\n";
 		findIntersectionPointOfParabolaAndLine();
 	}
 	else if (keyword == "lines")
 	{
-		cout << "Find intersection point of two lines:\n";
 		findIntersectionPointOfTwoLines();
 	}
 	else if (keyword != "menu")
@@ -1155,6 +1153,11 @@ void findIntersectionPointOption()
 		cout << INVALID_INPUT_TEXT;
 		findIntersectionPointOption();
 	}
+}
+
+void findEquationsInTriangleOption()
+{
+
 }
 
 void usersChoice()
@@ -1224,6 +1227,8 @@ void usersChoice()
 	}
 	else if (option == FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER)
 	{
+		cout << "\nFind equations in trinagle by given three points:\n";
+		findEquationsInTriangleOption();
 
 		wait();
 		showMainMenu();
