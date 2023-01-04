@@ -1013,7 +1013,10 @@ void findPerpendicularLineOption()
 	wantToSaveLine(k, symbol, n);
 }
 
+void findItersectionPointOption()
+{
 
+}
 
 void usersChoice()
 {
