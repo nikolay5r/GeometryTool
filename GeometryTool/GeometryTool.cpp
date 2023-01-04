@@ -8,6 +8,8 @@
 #include <cstring>
 
 using namespace std;
+using std::cout;
+using std::cin;
 
 const int timeToWait = 1200;
 
@@ -686,11 +688,14 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 	}
 }
 
-void wantToUseExistingPoint(string& point)
+void wantToUseExistingPoint(string& point, string answer = "")
 {
 	string answer;
-	cout << "Do you want to use existing point? ";
-	cin >> answer;
+	if (answer == "")
+	{
+		cout << "Do you want to use existing point? ";
+		cin >> answer;
+	}
 
 	convertToLowerCase(answer);
 
@@ -707,7 +712,7 @@ void wantToUseExistingPoint(string& point)
 		else
 		{
 			cout << NAME_DOESNT_EXIST_TEXT;
-			wantToUseExistingPoint(point);
+			wantToUseExistingPoint(point, answer);
 		}
 	}
 	else if (answer != "no")
