@@ -798,6 +798,15 @@ void getCoordinatesFromExistingPoint(string point, double& x, double& y)
 	y = stod(coordinates[1]);
 }
 
+void getArgumentsFromExistingLine(string equation, double& k, double& n)
+{
+	vector<string> arguments;
+	splitByDelim(arguments, equation, "*x");
+
+	k = stod(arguments[0]);
+	n = stod(arguments[1]);
+}
+
 void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
@@ -840,94 +849,67 @@ void defineLineThroughPoints()
 
 	if (point1 == "")
 	{
-		cout << "Enter coordinates of the point:\nx: ";
-		cin >> x1;
-		cout << "y: ";
-		cin >> y1;
-
+		setPointCoordinates(x1, y1);
 		wantToSavePoint(x1, y1);
 	}
 	else
 	{
-		vector<string> coordinates;
-		splitByDelim(coordinates, point1, ";");
-
-		x1 = stod(coordinates[0]);
-		y1 = stod(coordinates[1]);
+		getCoordinatesFromExistingPoint(point1, x1, y1);
 	}
-	if (!areCoordinatesValid(x1, y1))
+
+	string point2 = "";
+	wantToUseExistingPoint(point2);
+
+	if (point2 == "")
 	{
-		defineLineThroughPoints();
+		setPointCoordinates(x2, y2);
+		wantToSavePoint(x2, y2);
 	}
 	else
 	{
-		string point2 = "";
-		wantToUseExistingPoint(point2);
+		getCoordinatesFromExistingPoint(point2, x2, y2);
+	}
 
-		if (point2 == "")
+
+	if (x1 == x2 && y1 == y2)
+	{
+		cout << "Can't define a line! Points are the same!\n";
+	}
+	else
+	{
+		if (x1 == x2)
 		{
-			cout << "Enter coordinates of the point:\nx: ";
-			cin >> x2;
-			cout << "y: ";
-			cin >> y2;
+			double k = 1;
+			double n = -x1;
+			string symbol = n >= 0 ? "+" : "-";
 
-			wantToSavePoint(x2, y2);
+			calcAnimation();
+			printLine(k, symbol, n, x1, y1, x2, y2);
+
+			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
+		}
+		else if (y1 == y2)
+		{
+			double k = 0;
+			double n = -y1;
+			string symbol = n >= 0 ? "+" : "-";
+
+			calcAnimation();
+			printLine(k, symbol, n, x1, y1, x2, y2);
+
+			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
 		}
 		else
 		{
-			vector<string> coordinates{};
-			splitByDelim(coordinates, point2, ";");
+			double k = (y1 - y2) / (x1 - x2);
+			double n = k * x1 - y1;
+			string symbol = n >= 0 ? "+" : "-";
+			n = abs(n);
 
-			x2 = stod(coordinates[0]);
-			y2 = stod(coordinates[1]);
-		}
-		if (!areCoordinatesValid(x2, y2))
-		{
-			defineLineThroughPoints();
-		}
-		else
-		{
-			if (x1 == x2 && y1 == y2)
-			{
-				cout << "Can't define a line! Points are the same!\n";
-			}
-			else
-			{
-				if (x1 == x2)
-				{
-					double k = 1;
-					double n = -x1;
-					string symbol = n >= 0 ? "+" : "-";
+			calcAnimation();
+			printLine(k, symbol, n, x1, y1, x2, y2);
 
-					calcAnimation();
-					printLine(k, symbol, n, x1, y1, x2, y2);
-
-					cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
-				}
-				else if (y1 == y2)
-				{
-					double k = 0;
-					double n = -y1;
-					string symbol = n >= 0 ? "+" : "-";
-
-					calcAnimation();
-					printLine(k, symbol, n, x1, y1, x2, y2);
-
-					cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
-				}
-				else
-				{
-					double k = (y1 - y2) / (x1 - x2);
-					double n = k * x1 - y1;
-					string symbol = n >= 0 ? "+" : "-";
-					n = abs(n);
-
-					calcAnimation();
-					printLine(k, symbol, n, x1, y1, x2, y2);
-
-					wantToSaveLine(k, symbol, n);
-				}
-			}
+			wantToSaveLine(k, symbol, n);
 		}
 	}
 }
@@ -962,6 +944,10 @@ void checkIfDotIsOnLineOption()
 	{
 		setEquationOfLine(k, symbol, n);
 		wantToSaveLine(k, symbol, n);
+	}
+	else
+	{
+		getArgumentsFromExistingLine(line, k, n);
 	}
 
 }
