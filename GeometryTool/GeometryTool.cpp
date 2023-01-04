@@ -789,6 +789,15 @@ void wantToUseExistingLine(string& line, string answer = "")
 	}
 }
 
+void getCoordinatesFromExistingPoint(string point, double& x, double& y)
+{
+	vector<string> coordinates;
+	splitByDelim(coordinates, point, ";");
+
+	x = stod(coordinates[0]);
+	y = stod(coordinates[1]);
+}
+
 void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
@@ -803,42 +812,22 @@ void defineLineThroughSlopeAndPoint()
 
 		if (point == "")
 		{
-			cout << "Enter coordinates of the point:\nx: ";
-			cin >> x;
-			cout << "y: ";
-			cin >> y;
-
+			setPointCoordinates(x, y);
 			wantToSavePoint(x, y);
 		}
 		else
 		{
-			vector<string> coordinates;
-			splitByDelim(coordinates, point, ";");
-
-			x = stod(coordinates[0]);
-			y = stod(coordinates[1]);
+			getCoordinatesFromExistingPoint(point, x, y);
 		}
 
-		if (!areCoordinatesValid(x, y))
-		{
-			defineLineThroughSlopeAndPoint();
-		}
-		else
-		{
-			double n = k * x - y;
-			string symbol = n >= 0 ? "+" : "-";
-			n = abs(n);
+		double n = k * x - y;
+		string symbol = n >= 0 ? "+" : "-";
+		n = abs(n);
 
-			calcAnimation();
-			printLine(k, symbol, n);
+		calcAnimation();
+		printLine(k, symbol, n);
 
-			wantToSaveLine(k, symbol, n);
-		}
-	}
-	else
-	{
-		cout << INVALID_NUMBER_TEXT;
-		defineLineThroughSlopeAndPoint();
+		wantToSaveLine(k, symbol, n);
 	}
 }
 
