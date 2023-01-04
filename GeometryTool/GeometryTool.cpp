@@ -810,7 +810,6 @@ void getLineArguments(string& line, double& k, string& symbol, double& n)
 {
 	if (line == "")
 	{
-		string symbol;
 		setEquationOfLine(k, symbol, n);
 		n = (symbol == "-") ? -n : n;
 		wantToSaveLine(k, symbol, n);
@@ -847,7 +846,7 @@ void defineLineThroughSlopeAndPoint()
 	{
 		wantToUseExistingPoint(point);
 
-		
+		getPointCoordinates(point, x, y);
 
 		double n = k * x - y;
 		string symbol = n >= 0 ? "+" : "-";
@@ -867,29 +866,12 @@ void defineLineThroughPoints()
 	string point1 = "";
 	wantToUseExistingPoint(point1);
 
-	if (point1 == "")
-	{
-		setPointCoordinates(x1, y1);
-		wantToSavePoint(x1, y1);
-	}
-	else
-	{
-		getCoordinatesFromExistingPoint(point1, x1, y1);
-	}
+	getPointCoordinates(point1, x1, y1);
 
 	string point2 = "";
 	wantToUseExistingPoint(point2);
 
-	if (point2 == "")
-	{
-		setPointCoordinates(x2, y2);
-		wantToSavePoint(x2, y2);
-	}
-	else
-	{
-		getCoordinatesFromExistingPoint(point2, x2, y2);
-	}
-
+	getPointCoordinates(point2, x2, y2);
 
 	if (x1 == x2 && y1 == y2)
 	{
@@ -955,40 +937,19 @@ void defineLineOption()
 
 void checkIfDotIsOnLineOption()
 {
-	string line;
+	string line, symbol;
 	double k = 0, n = 0;
 
 	wantToUseExistingLine(line);
 
-	if (line == "")
-	{
-		string symbol;
-		setEquationOfLine(k, symbol, n);
-		if (symbol == "-")
-		{
-			n = -n;
-		}
-		wantToSaveLine(k, symbol, n);
-	}
-	else
-	{
-		getArgumentsFromExistingLine(line, k, n);
-	}
+	getLineArguments(line, k, symbol, n);
 
 	string point;
 	double x = 0, y = 0;
 
 	wantToUseExistingPoint(point);
 
-	if (point == "")
-	{
-		setPointCoordinates(x, y);
-		wantToSavePoint(x, y);
-	}
-	else
-	{
-		getCoordinatesFromExistingPoint(point, x, y);
-	}
+	getPointCoordinates(point, x, y);
 
 	bool isPointOnLine = ((k * x + n) == y) ? true : false;
 
