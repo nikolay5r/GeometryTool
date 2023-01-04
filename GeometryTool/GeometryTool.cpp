@@ -31,34 +31,46 @@ const char* NAME_DOESNT_EXIST_TEXT = "That name doesn't exist! Try another. . .\
 
 bool stopProgram = false;
 
-void printLine(const double k, const string symbol, const double n)
+void printLine(const double k, const string symbol, const double n, const double x1 = 101, const double y1 = 101, const double x2 = 102, const double y2 = 102)
 {
-	if (k != 1 && k != 0)
+	cout << "The equation of the line is: ";
+	
+	if (x1 == x2)
+	{
+		cout << "x = " << x1;
+	}
+	else if (y1 == y2)
+	{
+		cout << "y = " << y1;
+	}
+	else if (k != 1 && k != 0)
 	{
 		if (n == 0)
 		{
-			cout << "The equation of the line is: y = " << k << " * x\n";
+			cout << "y = " << k << " * x";
 		}
 		else
 		{
-			cout << "The equation of the line is: y = " << k << " * x " << symbol << " " << n << "\n";
+			cout << "y = " << k << " * x " << symbol << " " << n;
 		}
 	}
 	else if (k == 1)
 	{
-		cout << "The equation of the line is: y = x " << symbol << " " << n << "\n";
+		cout << "y = x " << symbol << " " << n;
 	}
 	else
 	{
 		if (symbol == "+")
 		{
-			cout << "The equation of the line is: y = " << n << "\n";
+			cout << "y = " << n;
 		}
 		else
 		{
-			cout << "The equation of the line is: y = " << symbol << n << "\n";
+			cout << "y = " << symbol << n;
 		}
 	}
+
+	cout << "\n";
 }
 
 void convertToLowerCase(string& text)
@@ -697,23 +709,47 @@ void defineLineThroughPoints()
 		x2 = stod(coordinates[0]);
 		y2 = stod(coordinates[1]);
 	}
-
-	if (x1 - x2 == 0)
+	
+	if (x1 == x2 && y1 == y2)
 	{
-		cout << INVALID_INPUT_TEXT;
-		defineLineThroughPoints();
+		cout << "Can't define a line! Points are the same!\n";
 	}
 	else
 	{
-		double k = (y1 - y2) / (x1 - x2);
-		double n = k * x1 - y1;
-		string symbol = n >= 0 ? "+" : "-";
-		n = abs(n);
+		if (x1 == x2)
+		{
+			double k = 1;
+			double n = -x1;
+			string symbol = n >= 0 ? "+" : "-";
+			
+			calcAnimation();
+			printLine(k, symbol, n, x1, y1, x2, y2);
 
-		calcAnimation();
-		printLine(k, symbol, n);
+			cout << "The program cannot save lines that has equal x-coordinates! Sorry...";
+		}
+		if (y1 == y2)
+		{
+			double k = 0;
+			double n = -y1;
+			string symbol = n >= 0 ? "+" : "-";
 
-		wantToSaveLine(k, symbol, n);
+			calcAnimation();
+			printLine(k, symbol, n, x1, y1, x2, y2);
+
+			cout << "The program cannot save lines that has equal x-coordinates! Sorry...";
+		}
+		else
+		{
+			double k = (y1 - y2) / (x1 - x2);
+			double n = k * x1 - y1;
+			string symbol = n >= 0 ? "+" : "-";
+			n = abs(n);
+			
+			calcAnimation();
+			printLine(k, symbol, n, x1, y1, x2, y2);
+		
+			wantToSaveLine(k, symbol, n);
+		}
 	}
 }
 
