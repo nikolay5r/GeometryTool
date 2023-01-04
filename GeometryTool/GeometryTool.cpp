@@ -806,7 +806,7 @@ void getArgumentsFromExistingLine(string equation, double& k, double& n)
 	n = stod(arguments[1]);
 }
 
-void setLineArguments(string& line, double& k, string& symbol, double& n)
+void getLineArguments(string& line, double& k, string& symbol, double& n)
 {
 	if (line == "")
 	{
@@ -822,6 +822,19 @@ void setLineArguments(string& line, double& k, string& symbol, double& n)
 	}
 }
 
+void getPointCoordinates(string& point, double& x, double& y)
+{
+	if (point == "")
+	{
+		setPointCoordinates(x, y);
+		wantToSavePoint(x, y);
+	}
+	else
+	{
+		getCoordinatesFromExistingPoint(point, x, y);
+	}
+}
+
 void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
@@ -834,15 +847,7 @@ void defineLineThroughSlopeAndPoint()
 	{
 		wantToUseExistingPoint(point);
 
-		if (point == "")
-		{
-			setPointCoordinates(x, y);
-			wantToSavePoint(x, y);
-		}
-		else
-		{
-			getCoordinatesFromExistingPoint(point, x, y);
-		}
+		
 
 		double n = k * x - y;
 		string symbol = n >= 0 ? "+" : "-";
