@@ -1280,6 +1280,15 @@ void findEquationsInTriangleOption()
 	}
 }
 
+void findTangentOption()
+{
+	double p, x, y;
+
+	getParabola(p);
+
+	getPointCoordinates(x, y);
+}
+
 void usersChoice()
 {
 	cout << "Enter an option: ";
