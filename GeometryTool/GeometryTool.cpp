@@ -913,23 +913,19 @@ void defineLineThroughPoints()
 	{
 		calcAnimation();
 		double k = 0, n = 0;
+		
 		string message = calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
+		printLine(k, n, x1, y1, x2, y2);
 		if (message == "equalX")
 		{
-			printLine(k, n, x1, y1, x2, y2);
-
 			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
 		}
 		else if (message == "equalY")
 		{
-			printLine(k, n, x1, y1, x2, y2);
-
 			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
 		}
 		else if (message == "passed")
 		{
-			printLine(k, n, x1, y1, x2, y2);
-
 			wantToSaveLine(k, n);
 		}
 	}
@@ -1156,30 +1152,11 @@ bool isPointTheSame(double& x1, double& y1, double& x2, double& y2)
 	return (x1 == x2 && y1 == y2);
 }
 
-void createLineFromTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
-{
-	if (x1 == x2)
-	{
-		k = 1;
-		n = -x1;
-	}
-	else if (y1 == y2)
-	{
-		k = 0;
-		n = -y1;
-	}
-	else
-	{
-		k = (y1 - y2) / (x1 - x2);
-		n = k * x1 - y1;
-	}
-}
-
 bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x3, double y3)
 {
 	double k, n;
 	
-	createLineFromTwoPoints(k, n, x1, y1, x2, y2);
+	calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
 
 	return (y3 == k * x3 + n);
 }
@@ -1190,19 +1167,19 @@ void calculateHeightsInTriangle(double xa, double ya, double xb, double yb, doub
 
 	cout << "Heights:\n";
 	
-	createLineFromTwoPoints(k, n, xa, ya, xb, yb);
+	calculateLineByTwoPoints(k, n, xa, ya, xb, yb);
 	calculatePerpendicularLineArgs(k, n, xc, yc);
 	
 	cout << " #1: ";
 	printLine(k, n, xc, yc);
 	
-	createLineFromTwoPoints(k, n, xa, ya, xc, yc);
+	calculateLineByTwoPoints(k, n, xa, ya, xc, yc);
 	calculatePerpendicularLineArgs(k, n, xb, yb);
 
 	cout << " #2: ";
 	printLine(k, n, xb, yb);
 	
-	createLineFromTwoPoints(k, n, xb, yb, xc, yc);
+	calculateLineByTwoPoints(k, n, xb, yb, xc, yc);
 	calculatePerpendicularLineArgs(k, n, xa, ya);
 	
 	cout << " #3: ";
@@ -1211,13 +1188,14 @@ void calculateHeightsInTriangle(double xa, double ya, double xb, double yb, doub
 
 void calculateMediansInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
 {
-	double xm = (xa + xb) / 2;
-	double ym = (ya + yb) / 2;
 	double k, n;
 
 	cout << "Medians:\n";
 
+	double xm = (xa + xb) / 2;
+	double ym = (ya + yb) / 2;
 	calculateLineByTwoPoints(k, n, xm, ym, xc, yc);
+
 	cout << " #1: ";
 	printLine(k, n, xc, yc);
 
@@ -1234,6 +1212,11 @@ void calculateMediansInTriangle(double xa, double ya, double xb, double yb, doub
 
 	cout << " #3: ";
 	printLine(k, n, xa, ya);
+}
+
+void calculateSemetralsInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
+{
+	
 }
 
 void findEquationsInTriangleOption()
