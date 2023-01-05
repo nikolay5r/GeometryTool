@@ -1167,6 +1167,22 @@ bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x
 	return (y3 == k * x3 + n);
 }
 
+void calculateHeightsInTriangle(double kAB, double nAB, double kAC, double nAC, double kBC, double nBC, double xa, double ya, double xb, double yb, double xc, double yc)
+{
+	calculatePerpendicularLineArgs(kAB, nAB, xc, yc);
+	calculatePerpendicularLineArgs(kAC, nAC, xb, yb);
+	calculatePerpendicularLineArgs(kBC, nBC, xa, ya);
+
+	cout << "Heights:\n";
+	
+	cout << " #1: ";
+	printLine(kAB, nAB, xc, yc);
+	cout << " #2: ";
+	printLine(kAC, nAC, xb, yb);
+	cout << " #3: ";
+	printLine(kAC, nAC, xb, yb);
+}
+
 void findEquationsInTriangleOption()
 {
 	string pointA;
@@ -1197,9 +1213,15 @@ void findEquationsInTriangleOption()
 	}
 	else
 	{
-		double k, n;
+		double kAB, nAB,
+			kAC, nAC,
+			kBC, nBC;
 
-		createLineFromTwoPoints(k, n, xa, ya, xb, yb);
+		createLineFromTwoPoints(kAB, nAB, xa, ya, xb, yb);
+		createLineFromTwoPoints(kAC, nAC, xa, ya, xc, yc);
+		createLineFromTwoPoints(kBC, nBC, xb, yb, xc, yc);
+		
+		calculateHeightsInTriangle(kAB, nAB, kAC, nAC, kBC, nBC, xa, ya, xb, yb, xc, yc);
 	}
 }
 
