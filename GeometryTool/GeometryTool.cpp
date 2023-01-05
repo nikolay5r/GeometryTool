@@ -869,6 +869,25 @@ void defineLineThroughSlopeAndPoint()
 	}
 }
 
+void calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
+{
+	if (x1 == x2)
+	{
+		k = 1;
+		n = -x1;
+	}
+	else if (y1 == y2)
+	{
+		k = 0;
+		n = y1;
+	}
+	else
+	{
+		k = (y1 - y2) / (x1 - x2);
+		n = k * x1 - y1;
+	}
+}
+
 void defineLineThroughPoints()
 {
 	double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
@@ -888,10 +907,11 @@ void defineLineThroughPoints()
 	else
 	{
 		calcAnimation();
+		double k = 0, n = 0;
 		if (x1 == x2)
 		{
-			double k = 1;
-			double n = -x1;
+			k = 1;
+			n = -x1;
 
 			printLine(k, n, x1, y1, x2, y2);
 
@@ -899,8 +919,8 @@ void defineLineThroughPoints()
 		}
 		else if (y1 == y2)
 		{
-			double k = 0;
-			double n = -y1;
+			k = 0;
+			n = y1;
 
 			printLine(k, n, x1, y1, x2, y2);
 
@@ -908,8 +928,7 @@ void defineLineThroughPoints()
 		}
 		else
 		{
-			double k = (y1 - y2) / (x1 - x2);
-			double n = k * x1 - y1;
+			calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
 
 			printLine(k, n, x1, y1, x2, y2);
 
@@ -1167,20 +1186,58 @@ bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x
 	return (y3 == k * x3 + n);
 }
 
-void calculateHeightsInTriangle(double kAB, double nAB, double kAC, double nAC, double kBC, double nBC, double xa, double ya, double xb, double yb, double xc, double yc)
+void calculateHeightsInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
 {
-	calculatePerpendicularLineArgs(kAB, nAB, xc, yc);
-	calculatePerpendicularLineArgs(kAC, nAC, xb, yb);
-	calculatePerpendicularLineArgs(kBC, nBC, xa, ya);
+	double k, n;
+
+
 
 	cout << "Heights:\n";
 	
+	createLineFromTwoPoints(k, n, xa, ya, xb, yb);
+	calculatePerpendicularLineArgs(k, n, xc, yc);
+	
 	cout << " #1: ";
-	printLine(kAB, nAB, xc, yc);
+	printLine(k, n, xc, yc);
+	
+	createLineFromTwoPoints(k, n, xa, ya, xc, yc);
+	calculatePerpendicularLineArgs(k, n, xb, yb);
+
 	cout << " #2: ";
-	printLine(kAC, nAC, xb, yb);
+	printLine(k, n, xb, yb);
+	
+	createLineFromTwoPoints(k, n, xb, yb, xc, yc);
+	calculatePerpendicularLineArgs(k, n, xa, ya);
+	
 	cout << " #3: ";
-	printLine(kBC, nBC, xa, ya);
+	printLine(k, n, xa, ya);
+}
+
+void calculateMediansInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
+{
+	double xm = (xa + xb) / 2;
+	double ym = (ya + yb) / 2;
+	double k, n;
+
+	cout << "Medians:\n";
+
+	calculateLineByTwoPoints(k, n, xm, ym, xc, yc);
+	cout << " #1: ";
+	printLine(k, n, xc, yc);
+
+	xm = (xa + xc) / 2;
+	ym = (ya + yc) / 2;
+	calculateLineByTwoPoints(k, n, xm, ym, xb, yb);
+
+	cout << " #2: ";
+	printLine(k, n, xb, yb);
+
+	xm = (xb + xc) / 2;
+	ym = (yb + yc) / 2;
+	calculateLineByTwoPoints(k, n, xm, ym, xa, ya);
+
+	cout << " #3: ";
+	printLine(k, n, xa, ya);
 }
 
 void findEquationsInTriangleOption()
@@ -1213,15 +1270,8 @@ void findEquationsInTriangleOption()
 	}
 	else
 	{
-		double kAB, nAB,
-			kAC, nAC,
-			kBC, nBC;
-
-		createLineFromTwoPoints(kAB, nAB, xa, ya, xb, yb);
-		createLineFromTwoPoints(kAC, nAC, xa, ya, xc, yc);
-		createLineFromTwoPoints(kBC, nBC, xb, yb, xc, yc);
-		
-		calculateHeightsInTriangle(kAB, nAB, kAC, nAC, kBC, nBC, xa, ya, xb, yb, xc, yc);
+		calculateHeightsInTriangle(xa, ya, xb, yb, xc, yc);
+		calculateMediansInTriangle(xa, ya, xb, yb, xc, yc);
 	}
 }
 
