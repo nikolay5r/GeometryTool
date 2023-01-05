@@ -86,7 +86,7 @@ bool isNameValid(const string name)
 	return true;
 }
 
-void printLine(const double k, double n, const double x1 = 101, const double y1 = 101, const double x2 = 102, const double y2 = 102)
+void printLine(const double k, double n, const double x1, const double y1, const double x2 = 102, const double y2 = 102)
 {
 	string symbol = n >= 0 ? "+" : "-";
 	n = abs(n);
@@ -863,7 +863,7 @@ void defineLineThroughSlopeAndPoint()
 		double n = k * x - y;
 
 		calcAnimation();
-		printLine(k, n);
+		printLine(k, n, x, y);
 
 		wantToSaveLine(k, n);
 	}
@@ -1287,6 +1287,19 @@ void findTangentOption()
 	getParabola(p);
 
 	getPointCoordinates(x, y);
+
+	if ((y * y) == (2 * p * x))
+	{
+		double k = p / x;
+		double n = (p * x) / y;
+
+		cout << "Tangent:\n";
+		printLine(k, n, x, y);
+	}
+	else
+	{
+		cout << "Point is not on the parabola! Can't find the tangent!\n";
+	}
 }
 
 void usersChoice()
