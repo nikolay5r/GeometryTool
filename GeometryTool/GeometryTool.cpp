@@ -24,7 +24,7 @@ const char* FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER = "4";
 const char* FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER = "5";
 const char* FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER = "6";
 const char* FIND_THE_TANGENT_CORRESPONDING_NUMBER = "7";
-const char* DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER = "8";
+const char* DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER = "8";
 
 const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
 const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
@@ -237,7 +237,7 @@ void showMainMenu()
 		<< " " << FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER << " - find intersection points (if it exists);\n"
 		<< " " << FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER << " - find equations in triangle;\n"
 		<< " " << FIND_THE_TANGENT_CORRESPONDING_NUMBER << " - derive an equation of a tangent to a parabola at a corresponding point;\n"
-		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
+		<< " " << DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of tetragon.\n";
 }
 
 void getEquationOfLine(const string name, string& equation)
@@ -806,8 +806,10 @@ void getArgumentsFromExistingLine(string equation, double& k, double& n)
 	n = stod(arguments[1]);
 }
 
-void getLineArguments(string& line, double& k, double& n)
+void getLineArguments(double& k, double& n)
 {
+	string line = "";
+
 	wantToUseExistingLine(line);
 
 	if (line == "")
@@ -948,17 +950,11 @@ void defineLineOption()
 
 void checkIfDotIsOnLineOption()
 {
-	string line;
 	double k = 0, n = 0;
 
-	wantToUseExistingLine(line);
+	getLineArguments (k, n);
 
-	getLineArguments(line, k, n);
-
-	string point;
 	double x = 0, y = 0;
-
-	wantToUseExistingPoint(point);
 
 	getPointCoordinates(x, y);
 
@@ -983,16 +979,12 @@ void calculatePerpendicularLineArgs(double& k, double& n, double& x, double& y)
 
 void findParallelLineOption()
 {
-	string givenLine;
 	double k, n;
 
-	wantToUseExistingLine(givenLine);
-	getLineArguments(givenLine, k, n);
+	getLineArguments(k, n);
 
-	string point;
 	double x, y;
 
-	wantToUseExistingPoint(point);
 	getPointCoordinates(x, y);
 
 	n = k * x - y;
@@ -1005,16 +997,12 @@ void findParallelLineOption()
 
 void findPerpendicularLineOption()
 {
-	string givenLine;
 	double k, n;
 
-	wantToUseExistingLine(givenLine);
-	getLineArguments(givenLine, k, n);
+	getLineArguments(k, n);
 
-	string point;
 	double x, y;
 
-	wantToUseExistingPoint(point);
 	getPointCoordinates(x, y);
 
 	calculatePerpendicularLineArgs(k, n, x, y);
@@ -1027,10 +1015,9 @@ void findPerpendicularLineOption()
 
 void findIntersectionPointOfParabolaAndLine()
 {
-	string line;
 	double k, n;
 
-	getLineArguments(line, k, n);
+	getLineArguments(k, n);
 
 	double p;
 
@@ -1091,21 +1078,30 @@ void findIntersectionPointOfParabolaAndLine()
 	}
 }
 
+bool areLinesTheSame(double k1, double n1, double k2, double n2)
+{
+	return k1 == k2 && n1 == n2;
+}
+
+void calculateIntersectionPointOfTwoLines(double& x, double& y, double k1, double n1, double k2, double n2)
+{
+	x = (n2 - n1) / (k1 - k2);
+	y = k1 * x - n1;
+}
+
 void findIntersectionPointOfTwoLines()
 {
-	string line1;
 	double k1, n1;
 
-	getLineArguments(line1, k1, n1);
+	getLineArguments(k1, n1);
 
-	string line2;
 	double k2, n2;
 
-	getLineArguments(line2, k2, n2);
+	getLineArguments(k2, n2);
 
 	calcAnimation();
 
-	if (k1 == k2 && n1 == n2)
+	if (areLinesTheSame(k1, n1, k2, n2))
 	{
 		cout << "The lines are the same! Incorrect input!\n";
 	}
@@ -1115,9 +1111,8 @@ void findIntersectionPointOfTwoLines()
 	}
 	else
 	{
-		double x = (n2 - n1) / (k1 - k2);
-		double y = k1 * x - n1;
-
+		double x = 0, y = 0;
+		calculateIntersectionPointOfTwoLines(x, y, k1, n1, k2, n2);
 		cout << "The intersection point is: (" << x << ", " << y << ").\n";
 		
 		wantToSavePoint(x, y);
@@ -1143,7 +1138,7 @@ void findIntersectionPointOption()
 	}
 }
 
-bool isPointTheSame(double& x1, double& y1, double& x2, double& y2)
+bool arePointsTheSame(double& x1, double& y1, double& x2, double& y2)
 {
 	return (x1 == x2 && y1 == y2);
 }
@@ -1262,7 +1257,7 @@ void findEquationsInTriangleOption()
 	getPointCoordinates(xc, yc);
 
 	calcAnimation();
-	if (isPointTheSame(xa, ya, xb, yb) || isPointTheSame(xc, yc, xb, yb) || isPointTheSame(xa, ya, xc, yc))
+	if (arePointsTheSame(xa, ya, xb, yb) || arePointsTheSame(xc, yc, xb, yb) || arePointsTheSame(xa, ya, xc, yc))
 	{
 		cout << "Two of the points are the same! The program cannot create a triangle!";
 	}
@@ -1302,9 +1297,188 @@ void findTangentOption()
 	}
 }
 
-void findTheTypeOfPolygonOption()
+bool canCreateTetragon(double k1, double n1, double k2, double n2, double k3, double n3, double k4, double n4)
 {
+	if ((areLinesTheSame(k1, n1, k2, n2) || areLinesTheSame(k1, n1, k3, n3)) ||
+		(areLinesTheSame(k1, n1, k4, n4) || areLinesTheSame(k3, n3, k2, n2)) ||
+		(areLinesTheSame(k4, n4, k2, n2) || areLinesTheSame(k3, n3, k4, n4)))
+	{
+		cout << "You used the same line at least twice! Cannot create a tetragon!\n";
+		return false;
+	}
+	
+	if ((((k1 == k2) && (k2 == k3)) || ((k1 == k2) && (k2 == k4))) ||
+		(((k1 == k3) && (k3 == k4)) || (k2 == k3) && (k3 == k4)))
+	{
+		cout << "Cannot create a tetragon! At least three of the lines are parallel!\n";
+		return false;
+	}
 
+	return true;
+}
+
+bool areLinesPerpendicular(double k1, double k2)
+{
+	return (k1 == (-1 / k2));
+}
+
+bool isTetragonRectangle(double k1, double k2, double k3, double k4)
+{
+	return (areLinesPerpendicular(k1, k2) && areLinesPerpendicular(k1, k3) && k1 == k4) ||
+		(areLinesPerpendicular(k1, k2) && areLinesPerpendicular(k1, k4) && k1 == k3) ||
+		(areLinesPerpendicular(k1, k3) && areLinesPerpendicular(k1, k4) && k1 == k2);
+}
+
+bool areAllSidesEqual(double k1, double n1, double k2, double n2, double k3, double n3, double k4, double n4)
+{
+	double xa, ya,
+		xb, yb,
+		xc, yc,
+		xd, yd;
+	
+	calculateIntersectionPointOfTwoLines(xa, ya, k1, n1, k4, n4);
+	calculateIntersectionPointOfTwoLines(xb, yb, k1, n1, k2, n2);
+	calculateIntersectionPointOfTwoLines(xc, yc, k2, n2, k3, n3);
+	calculateIntersectionPointOfTwoLines(xd, yd, k3, n3, k4, n4);
+
+
+	double AB = sqrt((xb - xa) * (xb - xa) + (yb - ya) * (yb - ya));
+	double AD = sqrt((xd - xa) * (xd - xa) + (yd - ya) * (yd - ya));
+	double BC = sqrt((xc - xb) * (xc - xb) + (yc - yb) * (yc - yb));
+	double CD = sqrt((xd - xc) * (xd - xc) + (yd - yc) * (yd - yc));
+
+	return (AB == AD && AD == BC && BC == CD);
+}
+
+void findTheTypeOfTetragonOption()
+{
+	double k1, n1,
+		k2, n2,
+		k3, n3,
+		k4, n4;
+
+	cout << "Line 1:\n";
+	getLineArguments(k1, n1);
+	cout << "Line 2:\n";
+	getLineArguments(k2, n2);
+	cout << "Line 3:\n";
+	getLineArguments(k3, n3);
+	cout << "Line 4:\n";
+	getLineArguments(k4, n4);
+
+	if (canCreateTetragon(k1, n1, k2, n2, k3, n3, k4, n4))
+	{
+		if (isTetragonRectangle(k1, k2, k3, k4) || isTetragonRectangle(k2, k1, k3, k4) || 
+			isTetragonRectangle(k3, k1, k2, k4) || isTetragonRectangle(k4, k1, k2, k3))
+		{
+			if (areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4) || areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4) || 
+				areAllSidesEqual(k3, n3, k1, n1, k2, n2, k4, n4) || areAllSidesEqual(k4, n4, k1, n1, k2, n2, k3, n3))
+			{
+				cout << "The teragon is a SQUARE!\n";
+			}
+			else
+			{
+				cout << "The tetragon is a RECTANGLE!\n";
+			}
+		}
+		else
+		{
+			if (k1 == k2)
+			{
+				if (areAllSidesEqual(k1, n1, k3, n3, k2, n2, k4, n4))
+				{
+					cout << "The tetragon is a RHOMBUS!\n";
+				}
+				else if (k3 == k4)
+				{
+					cout << "The tetragon is a PARALLELOGRAM!\n";
+				}
+				else
+				{
+					cout << "The tetragon is a TRAPEZOID!\n";
+				}
+			}
+			else if (k1 == k3)
+			{
+				if (areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4))
+				{
+					cout << "The tetragon is a RHOMBUS!\n";
+				}
+				else if (k2 == k4)
+				{
+					cout << "The tetragon is a PARALLELOGRAM!\n";
+				}
+				else
+				{
+				cout << "The tetragon is a TRAPEZOID!\n";
+				}
+			}
+			else if (k1 == k4)
+			{
+				if (areAllSidesEqual(k1, n1, k2, n2, k4, n4, k3, n3))
+				{
+					cout << "The tetragon is a RHOMBUS!\n";
+				}
+				else if (k3 == k2)
+				{
+					cout << "The tetragon is a PARALLELOGRAM!\n";
+				}
+				else
+				{
+					cout << "The tetragon is a TRAPEZOID!\n";
+				}
+			}
+			else if (k2 == k3)
+			{
+				if (areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4))
+				{
+					cout << "The tetragon is a RHOMBUS!\n";
+				}
+				else if (k1 == k4)
+				{
+					cout << "The tetragon is a PARALLELOGRAM!\n";
+				}
+				else
+				{
+					cout << "The tetragon is a TRAPEZOID!\n";
+				}
+			}
+			else if (k2 == k4)
+			{
+				if (areAllSidesEqual(k2, n2, k1, n1, k4, n4, k3, n3))
+				{
+					cout << "The tetragon is a RHOMBUS!\n";
+				}
+				else if (k3 == k1)
+				{
+					cout << "The tetragon is a PARALLELOGRAM!\n";
+				}
+				else
+				{
+					cout << "The tetragon is a TRAPEZOID!\n";
+				}
+			}
+			else if (k3 == k4)
+			{
+				if (areAllSidesEqual(k3, n3, k1, n1, k4, n4, k2, n2))
+				{
+					cout << "The tetragon is a RHOMBUS!\n";
+				}
+				else if (k2 == k1)
+				{
+					cout << "The tetragon is a PARALLELOGRAM!\n";
+				}
+				else
+				{
+					cout << "The tetragon is a TRAPEZOID!\n";
+				}
+			}
+			else
+			{
+				cout << "It is just a tetragon!\n";
+			}
+		}
+	}
 }
 
 void usersChoice()
@@ -1388,10 +1562,10 @@ void usersChoice()
 		wait();
 		showMainMenu();
 	}
-	else if (option == DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER)
+	else if (option == DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER)
 	{
-		cout << "\nFind the type of polygon : \n";
-		findTheTypeOfPolygonOption();
+		cout << "\nFind the type of tetragon : \n";
+		findTheTypeOfTetragonOption();
 
 		wait();
 		showMainMenu();
