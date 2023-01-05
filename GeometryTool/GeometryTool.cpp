@@ -1497,7 +1497,6 @@ void usersChoice()
 			<< "Enter the word \"delete\" if you want to delete a line or a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		saveOrDeleteOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1508,7 +1507,6 @@ void usersChoice()
 			<< "Enter the word \"points\" if you want to define a line through two points\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		defineLineOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1517,7 +1515,6 @@ void usersChoice()
 	{
 		cout << "\nCheck if a point is on a line:\n";
 		checkIfDotIsOnLineOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1526,7 +1523,6 @@ void usersChoice()
 	{
 		cout << "\nFind parallel line:\n";
 		findParallelLineOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1535,7 +1531,6 @@ void usersChoice()
 	{
 		cout << "\nFind perpendicular line:\n";
 		findPerpendicularLineOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1546,7 +1541,6 @@ void usersChoice()
 			<< "Enter the word \"lines\" if you want to find the intersection point(s) of two lines\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		findIntersectionPointOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1555,7 +1549,6 @@ void usersChoice()
 	{
 		cout << "\nFind equations in trinagle by given three points:\n";
 		findEquationsInTriangleOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1564,7 +1557,6 @@ void usersChoice()
 	{
 		cout << "\nFind the tangent of a parabola at a point:\n";
 		findTangentOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
@@ -1573,7 +1565,6 @@ void usersChoice()
 	{
 		cout << "\nFind the type of tetragon : \n";
 		findTheTypeOfTetragonOption();
-		cout << "Done!\n";
 
 		wait();
 		showMainMenu();
