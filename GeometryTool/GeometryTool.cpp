@@ -1218,28 +1218,31 @@ void calculateSemetrals(double xa, double ya, double xb, double yb, double xc, d
 {
 	double k, n;
 
-	cout << "Medians:\n";
+	cout << "Semetrals:\n";
 
 	double xm = (xa + xb) / 2;
 	double ym = (ya + yb) / 2;
+	calculateLineByTwoPoints(k, n, xa, ya, xb, yb);
 	calculatePerpendicularLineArgs(k, n, xm, ym);
 
 	cout << " #1: ";
-	printLine(k, n, xc, yc);
+	printLine(k, n, xm, ym);
 
 	xm = (xa + xc) / 2;
 	ym = (ya + yc) / 2;
+	calculateLineByTwoPoints(k, n, xa, ya, xc, yc);
 	calculatePerpendicularLineArgs(k, n, xm, ym);
 
 	cout << " #2: ";
-	printLine(k, n, xb, yb);
+	printLine(k, n, xm, ym);
 
 	xm = (xb + xc) / 2;
 	ym = (yb + yc) / 2;
+	calculateLineByTwoPoints(k, n, xb, yb, xc, yc);
 	calculatePerpendicularLineArgs(k, n, xm, ym);
 
 	cout << " #3: ";
-	printLine(k, n, xa, ya);
+	printLine(k, n, xm, ym);
 }
 
 void findEquationsInTriangleOption()
@@ -1262,6 +1265,7 @@ void findEquationsInTriangleOption()
 	cout << "Point C:\n";
 	getPointCoordinates(pointC, xc, yc);
 
+	calcAnimation();
 	if (isPointTheSame(xa, ya, xb, yb) || isPointTheSame(xc, yc, xb, yb) || isPointTheSame(xa, ya, xc, yc))
 	{
 		cout << "Two of the points are the same! The program cannot create a triangle!";
@@ -1273,7 +1277,9 @@ void findEquationsInTriangleOption()
 	else
 	{
 		calculateHeights(xa, ya, xb, yb, xc, yc);
+		wait();
 		calculateMedians(xa, ya, xb, yb, xc, yc);
+		wait();
 		calculateSemetrals(xa, ya, xb, yb, xc, yc);
 	}
 }
