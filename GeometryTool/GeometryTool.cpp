@@ -869,23 +869,28 @@ void defineLineThroughSlopeAndPoint()
 	}
 }
 
-void calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
+string calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
 {
+	string message;
 	if (x1 == x2)
 	{
 		k = 1;
 		n = -x1;
+		message = "equalX";
 	}
 	else if (y1 == y2)
 	{
 		k = 0;
 		n = y1;
+		message = "equalY";
 	}
 	else
 	{
 		k = (y1 - y2) / (x1 - x2);
 		n = k * x1 - y1;
+		message = "passed";
 	}
+	return message;
 }
 
 void defineLineThroughPoints()
@@ -908,28 +913,21 @@ void defineLineThroughPoints()
 	{
 		calcAnimation();
 		double k = 0, n = 0;
-		if (x1 == x2)
+		string message = calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
+		if (message == "equalX")
 		{
-			k = 1;
-			n = -x1;
-
 			printLine(k, n, x1, y1, x2, y2);
 
 			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
 		}
-		else if (y1 == y2)
+		else if (message == "equalY")
 		{
-			k = 0;
-			n = y1;
-
 			printLine(k, n, x1, y1, x2, y2);
 
 			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
 		}
-		else
+		else if (message == "passed")
 		{
-			calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
-
 			printLine(k, n, x1, y1, x2, y2);
 
 			wantToSaveLine(k, n);
@@ -1189,8 +1187,6 @@ bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x
 void calculateHeightsInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
 {
 	double k, n;
-
-
 
 	cout << "Heights:\n";
 	
