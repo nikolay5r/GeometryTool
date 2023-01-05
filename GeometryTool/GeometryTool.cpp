@@ -1180,7 +1180,7 @@ void calculateHeightsInTriangle(double kAB, double nAB, double kAC, double nAC, 
 	cout << " #2: ";
 	printLine(kAC, nAC, xb, yb);
 	cout << " #3: ";
-	printLine(kAC, nAC, xb, yb);
+	printLine(kBC, nBC, xa, ya);
 }
 
 void findEquationsInTriangleOption()
