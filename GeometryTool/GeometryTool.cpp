@@ -263,7 +263,8 @@ void getEquationOfLine(const string name, string& equation)
 	}
 	else
 	{
-		cout << DATABASE_CANNOT_OPEN_TEXT;
+		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
 	}
 }
 
@@ -291,7 +292,8 @@ void getPoint(const string name, string& point)
 	}
 	else
 	{
-		cout << DATABASE_CANNOT_OPEN_TEXT;
+		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
 	}
 }
 
@@ -318,7 +320,8 @@ bool isElementInDatabase(const string element, const char* path)
 	}
 	else
 	{
-		cout << DATABASE_CANNOT_OPEN_TEXT;
+		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
 	}
 
 	dataBase.close();
@@ -339,7 +342,8 @@ void saveLine(const string name, const double k, const string symbol, const doub
 	}
 	else
 	{
-		cout << DATABASE_CANNOT_OPEN_TEXT;
+		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
 	}
 }
 
@@ -432,6 +436,7 @@ void savePoint(const string name, const double x, const double y)
 	else
 	{
 		cout << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
 	}
 }
 
@@ -518,7 +523,8 @@ void deleteLine(string name)
 	}
 	else
 	{
-		cout << DATABASE_CANNOT_OPEN_TEXT;
+		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
 	}
 }
 
@@ -575,7 +581,8 @@ void deletePoint(string name)
 	}
 	else
 	{
-		cout << DATABASE_CANNOT_OPEN_TEXT;
+		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
 	}
 }
 
@@ -889,13 +896,13 @@ void defineLineThroughPoints()
 	}
 	else
 	{
+		calcAnimation();
 		if (x1 == x2)
 		{
 			double k = 1;
 			double n = -x1;
 			string symbol = n >= 0 ? "+" : "-";
 
-			calcAnimation();
 			printLine(k, symbol, n, x1, y1, x2, y2);
 
 			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
@@ -906,7 +913,6 @@ void defineLineThroughPoints()
 			double n = -y1;
 			string symbol = n >= 0 ? "+" : "-";
 
-			calcAnimation();
 			printLine(k, symbol, n, x1, y1, x2, y2);
 
 			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
@@ -918,7 +924,6 @@ void defineLineThroughPoints()
 			string symbol = n >= 0 ? "+" : "-";
 			n = abs(n);
 
-			calcAnimation();
 			printLine(k, symbol, n, x1, y1, x2, y2);
 
 			wantToSaveLine(k, symbol, n);
@@ -1020,7 +1025,7 @@ void findPerpendicularLineOption()
 	wantToUseExistingPoint(point);
 	getPointCoordinates(point, x, y);
 
-	
+	calculatePerpendicularLineArgs(k, symbol, n, x, y);
 
 	calcAnimation();
 	printLine(k, symbol, n, x, y);
@@ -1146,6 +1151,39 @@ void findIntersectionPointOption()
 	}
 }
 
+bool isPointTheSame(double& x1, double& y1, double& x2, double& y2)
+{
+	return (x1 == x2 && y1 == y2);
+}
+
+void createLineFromTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
+{
+	if (x1 == x2)
+	{
+		k = 1;
+		n = -x1;
+	}
+	else if (y1 == y2)
+	{
+		k = 0;
+		n = -y1;
+	}
+	else
+	{
+		k = (y1 - y2) / (x1 - x2);
+		n = k * x1 - y1;
+	}
+}
+
+bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x3, double y3)
+{
+	double k, n;
+	
+	createLineFromTwoPoints(k, n, x1, y1, x2, y2);
+
+	return (y3 == k * x3 + n);
+}
+
 void findEquationsInTriangleOption()
 {
 	string pointA;
@@ -1165,6 +1203,20 @@ void findEquationsInTriangleOption()
 	
 	cout << "Point C:\n";
 	getPointCoordinates(pointC, xc, yc);
+
+	if (isPointTheSame(xa, ya, xb, yb) || isPointTheSame(xc, yc, xb, yb) || isPointTheSame(xa, ya, xc, yc))
+	{
+		cout << "Some of the points are the same.";
+		findEquationsInTriangleOption();
+	}
+	else if (arePointsOnTheSameLine(xa, ya, xb, yb, xc, yc))
+	{
+		cout << "The points are on the same line! The program cannot create a triangle!";
+	}
+	else
+	{
+
+	}
 }
 
 void usersChoice()
