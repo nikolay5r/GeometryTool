@@ -1161,7 +1161,7 @@ bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x
 	return (y3 == k * x3 + n);
 }
 
-void calculateHeightsInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
+void calculateHeights(double xa, double ya, double xb, double yb, double xc, double yc)
 {
 	double k, n;
 
@@ -1186,7 +1186,7 @@ void calculateHeightsInTriangle(double xa, double ya, double xb, double yb, doub
 	printLine(k, n, xa, ya);
 }
 
-void calculateMediansInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
+void calculateMedians(double xa, double ya, double xb, double yb, double xc, double yc)
 {
 	double k, n;
 
@@ -1214,9 +1214,32 @@ void calculateMediansInTriangle(double xa, double ya, double xb, double yb, doub
 	printLine(k, n, xa, ya);
 }
 
-void calculateSemetralsInTriangle(double xa, double ya, double xb, double yb, double xc, double yc)
+void calculateSemetrals(double xa, double ya, double xb, double yb, double xc, double yc)
 {
-	
+	double k, n;
+
+	cout << "Medians:\n";
+
+	double xm = (xa + xb) / 2;
+	double ym = (ya + yb) / 2;
+	calculatePerpendicularLineArgs(k, n, xm, ym);
+
+	cout << " #1: ";
+	printLine(k, n, xc, yc);
+
+	xm = (xa + xc) / 2;
+	ym = (ya + yc) / 2;
+	calculatePerpendicularLineArgs(k, n, xm, ym);
+
+	cout << " #2: ";
+	printLine(k, n, xb, yb);
+
+	xm = (xb + xc) / 2;
+	ym = (yb + yc) / 2;
+	calculatePerpendicularLineArgs(k, n, xm, ym);
+
+	cout << " #3: ";
+	printLine(k, n, xa, ya);
 }
 
 void findEquationsInTriangleOption()
@@ -1249,8 +1272,9 @@ void findEquationsInTriangleOption()
 	}
 	else
 	{
-		calculateHeightsInTriangle(xa, ya, xb, yb, xc, yc);
-		calculateMediansInTriangle(xa, ya, xb, yb, xc, yc);
+		calculateHeights(xa, ya, xb, yb, xc, yc);
+		calculateMedians(xa, ya, xb, yb, xc, yc);
+		calculateSemetrals(xa, ya, xb, yb, xc, yc);
 	}
 }
 
