@@ -1302,6 +1302,11 @@ void findTangentOption()
 	}
 }
 
+void findTheTypeOfPolygonOption()
+{
+
+}
+
 void usersChoice()
 {
 	cout << "Enter an option: ";
@@ -1385,6 +1390,8 @@ void usersChoice()
 	}
 	else if (option == DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER)
 	{
+		cout << "\nFind the type of polygon : \n";
+		findTheTypeOfPolygonOption();
 
 		wait();
 		showMainMenu();
