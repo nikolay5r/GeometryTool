@@ -86,8 +86,10 @@ bool isNameValid(const string name)
 	return true;
 }
 
-void printLine(const double k, const string symbol, const double n, const double x1 = 101, const double y1 = 101, const double x2 = 102, const double y2 = 102)
+void printLine(const double k, double n, const double x1 = 101, const double y1 = 101, const double x2 = 102, const double y2 = 102)
 {
+	string symbol = n >= 0 ? "+" : "-";
+	n = abs(n);
 	cout << "The equation of the line is: ";
 	
 	if (x1 == x2)
@@ -328,8 +330,10 @@ bool isElementInDatabase(const string element, const char* path)
 	return false;
 }
 
-void saveLine(const string name, const double k, const string symbol, const double n)
+void saveLine(const string name, const double k, double n)
 {
+	string symbol = n >= 0 ? "+" : "-";
+	n = abs(n);
 	ofstream dataBase(linesDB, fstream::app);
 
 	if (dataBase.is_open())
@@ -347,36 +351,27 @@ void saveLine(const string name, const double k, const string symbol, const doub
 	}
 }
 
-void setEquationOfLine(double& k, string& symbol, double& n)
+void setEquationOfLine(double& k, double& n)
 {
 	cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
 	cout << "k: ";
 	cin >> k;
 	if (isNumberValid(k))
 	{
-		cout << "\'+\' or \'-\': ";
-		cin >> symbol;
 
-		if (symbol != "+" && symbol != "-")
+		cout << "n: ";
+		cin >> n;
+		if (!isNumberValid(n))
 		{
-			cout << INVALID_INPUT_TEXT;
-			setEquationOfLine(k, symbol, n);
+			cout << INVALID_NUMBER_TEXT;
+			setEquationOfLine(k, n);
 		}
-		else
-		{
-			cout << "n: ";
-			cin >> n;
-			if (!isNumberValid(n))
-			{
-				cout << INVALID_NUMBER_TEXT;
-				setEquationOfLine(k, symbol, n);
-			}
-		}
+
 	}
 	else
 	{
 		cout << INVALID_NUMBER_TEXT;
-		setEquationOfLine(k, symbol, n);
+		setEquationOfLine(k, n);
 	}
 }
 
@@ -397,7 +392,6 @@ void setPointCoordinates(double& x, double& y)
 void saveLineOption(string name = "")
 {
 	double k, n;
-	string symbol;
 
 	if (name == "")
 	{
@@ -416,8 +410,8 @@ void saveLineOption(string name = "")
 	}
 	else
 	{
-		setEquationOfLine(k, symbol, n);
-		saveLine(name, k, symbol, n);
+		setEquationOfLine(k, n);
+		saveLine(name, k, n);
 	}
 }
 
@@ -651,7 +645,7 @@ void saveOrDeleteOption()
 	}
 }
 
-void wantToSaveLine(const double k, const string symbol, const double n, string answer = "")
+void wantToSaveLine(const double k, const double n, string answer = "")
 {
 
 	if (answer == "")
@@ -670,23 +664,23 @@ void wantToSaveLine(const double k, const string symbol, const double n, string 
 
 		if (!isNameValid(name))
 		{
-			wantToSaveLine(k, symbol, n, answer);
+			wantToSaveLine(k, n, answer);
 		}
 		else if (isElementInDatabase(name, linesDB))
 		{
 			cout << NAME_EXISTS_TEXT;
-			wantToSaveLine(k, symbol, n, answer);
+			wantToSaveLine(k, n, answer);
 		}
 		else
 		{
-			saveLine(name, k, symbol, n);
 			saveAnimation();
+			saveLine(name, k, n);
 		}
 	}
 	else if (answer != "yes" && answer != "no")
 	{
 		cout << INVALID_INPUT_TEXT;
-		wantToSaveLine(k, symbol, n);
+		wantToSaveLine(k, n);
 	}
 }
 
@@ -812,15 +806,14 @@ void getArgumentsFromExistingLine(string equation, double& k, double& n)
 	n = stod(arguments[1]);
 }
 
-void getLineArguments(string& line, double& k, string& symbol, double& n)
+void getLineArguments(string& line, double& k, double& n)
 {
 	wantToUseExistingLine(line);
 
 	if (line == "")
 	{
-		setEquationOfLine(k, symbol, n);
-		n = (symbol == "-") ? -n : n;
-		wantToSaveLine(k, symbol, n);
+		setEquationOfLine(k, n);
+		wantToSaveLine(k, n);
 	}
 	else
 	{
@@ -868,13 +861,11 @@ void defineLineThroughSlopeAndPoint()
 		getPointCoordinates(point, x, y);
 
 		double n = k * x - y;
-		string symbol = n >= 0 ? "+" : "-";
-		n = abs(n);
 
 		calcAnimation();
-		printLine(k, symbol, n);
+		printLine(k, n);
 
-		wantToSaveLine(k, symbol, n);
+		wantToSaveLine(k, n);
 	}
 }
 
@@ -901,9 +892,8 @@ void defineLineThroughPoints()
 		{
 			double k = 1;
 			double n = -x1;
-			string symbol = n >= 0 ? "+" : "-";
 
-			printLine(k, symbol, n, x1, y1, x2, y2);
+			printLine(k, n, x1, y1, x2, y2);
 
 			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
 		}
@@ -911,9 +901,8 @@ void defineLineThroughPoints()
 		{
 			double k = 0;
 			double n = -y1;
-			string symbol = n >= 0 ? "+" : "-";
 
-			printLine(k, symbol, n, x1, y1, x2, y2);
+			printLine(k, n, x1, y1, x2, y2);
 
 			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
 		}
@@ -921,12 +910,10 @@ void defineLineThroughPoints()
 		{
 			double k = (y1 - y2) / (x1 - x2);
 			double n = k * x1 - y1;
-			string symbol = n >= 0 ? "+" : "-";
-			n = abs(n);
 
-			printLine(k, symbol, n, x1, y1, x2, y2);
+			printLine(k, n, x1, y1, x2, y2);
 
-			wantToSaveLine(k, symbol, n);
+			wantToSaveLine(k, n);
 		}
 	}
 }
@@ -952,12 +939,12 @@ void defineLineOption()
 
 void checkIfDotIsOnLineOption()
 {
-	string line, symbol;
+	string line;
 	double k = 0, n = 0;
 
 	wantToUseExistingLine(line);
 
-	getLineArguments(line, k, symbol, n);
+	getLineArguments(line, k, n);
 
 	string point;
 	double x = 0, y = 0;
@@ -979,21 +966,19 @@ void checkIfDotIsOnLineOption()
 	}
 }
 
-void calculatePerpendicularLineArgs(double& k, string& symbol, double& n, double& x, double& y)
+void calculatePerpendicularLineArgs(double& k, double& n, double& x, double& y)
 {
 	k = -1 / k;
 	n = k * x - y;
-	symbol = n >= 0 ? "+" : "-";
-	n = abs(n);
 }
 
 void findParallelLineOption()
 {
-	string givenLine, symbol;
+	string givenLine;
 	double k, n;
 
 	wantToUseExistingLine(givenLine);
-	getLineArguments(givenLine, k, symbol, n);
+	getLineArguments(givenLine, k, n);
 
 	string point;
 	double x, y;
@@ -1002,22 +987,20 @@ void findParallelLineOption()
 	getPointCoordinates(point, x, y);
 
 	n = k * x - y;
-	symbol = n >= 0 ? "+" : "-";
-	n = abs(n);
 
 	calcAnimation();
-	printLine(k, symbol, n, x, y);
+	printLine(k, n, x, y);
 
-	wantToSaveLine(k, symbol, n);
+	wantToSaveLine(k, n);
 }
 
 void findPerpendicularLineOption()
 {
-	string givenLine, symbol;
+	string givenLine;
 	double k, n;
 
 	wantToUseExistingLine(givenLine);
-	getLineArguments(givenLine, k, symbol, n);
+	getLineArguments(givenLine, k, n);
 
 	string point;
 	double x, y;
@@ -1025,20 +1008,20 @@ void findPerpendicularLineOption()
 	wantToUseExistingPoint(point);
 	getPointCoordinates(point, x, y);
 
-	calculatePerpendicularLineArgs(k, symbol, n, x, y);
+	calculatePerpendicularLineArgs(k, n, x, y);
 
 	calcAnimation();
-	printLine(k, symbol, n, x, y);
+	printLine(k, n, x, y);
 
-	wantToSaveLine(k, symbol, n);
+	wantToSaveLine(k, n);
 }
 
 void findIntersectionPointOfParabolaAndLine()
 {
-	string line, symbol;
+	string line;
 	double k, n;
 
-	getLineArguments(line, k, symbol, n);
+	getLineArguments(line, k, n);
 
 	double p;
 
@@ -1101,15 +1084,15 @@ void findIntersectionPointOfParabolaAndLine()
 
 void findIntersectionPointOfTwoLines()
 {
-	string line1, symbol1;
+	string line1;
 	double k1, n1;
 
-	getLineArguments(line1, k1, symbol1, n1);
+	getLineArguments(line1, k1, n1);
 
-	string line2, symbol2;
+	string line2;
 	double k2, n2;
 
-	getLineArguments(line2, k2, symbol2, n2);
+	getLineArguments(line2, k2, n2);
 
 	calcAnimation();
 
@@ -1206,8 +1189,7 @@ void findEquationsInTriangleOption()
 
 	if (isPointTheSame(xa, ya, xb, yb) || isPointTheSame(xc, yc, xb, yb) || isPointTheSame(xa, ya, xc, yc))
 	{
-		cout << "Some of the points are the same.";
-		findEquationsInTriangleOption();
+		cout << "Two of the points are the same! The program cannot create a triangle!";
 	}
 	else if (arePointsOnTheSameLine(xa, ya, xb, yb, xc, yc))
 	{
@@ -1215,7 +1197,9 @@ void findEquationsInTriangleOption()
 	}
 	else
 	{
+		double k, n;
 
+		createLineFromTwoPoints(k, n, xa, ya, xb, yb);
 	}
 }
 
