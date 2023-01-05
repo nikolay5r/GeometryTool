@@ -232,7 +232,7 @@ void showMainMenu()
 		<< " " << CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
 		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line and passes through a point;\n"
 		<< " " << FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER << " - derive an equation of a perpendicular line to a given line and passes through a point;\n"
-		<< " " << FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER << " - find intersection point of two lines (if it exists);\n"
+		<< " " << FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER << " - find intersection points (if it exists);\n"
 		<< " " << FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER << " - find equations in triangle;\n"
 		<< " " << FIND_THE_TANGENT_CORRESPONDING_NUMBER << " - derive an equation of a tangent to a parabola at a corresponding point;\n"
 		<< " " << DETERMINE_THE_TYPE_OF_POLYGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of polygon;\n";
@@ -974,6 +974,14 @@ void checkIfDotIsOnLineOption()
 	}
 }
 
+void calculatePerpendicularLineArgs(double& k, string& symbol, double& n, double& x, double& y)
+{
+	k = -1 / k;
+	n = k * x - y;
+	symbol = n >= 0 ? "+" : "-";
+	n = abs(n);
+}
+
 void findParallelLineOption()
 {
 	string givenLine, symbol;
@@ -1001,10 +1009,10 @@ void findParallelLineOption()
 void findPerpendicularLineOption()
 {
 	string givenLine, symbol;
-	double kGivenLine, n;
+	double k, n;
 
 	wantToUseExistingLine(givenLine);
-	getLineArguments(givenLine, kGivenLine, symbol, n);
+	getLineArguments(givenLine, k, symbol, n);
 
 	string point;
 	double x, y;
@@ -1012,10 +1020,7 @@ void findPerpendicularLineOption()
 	wantToUseExistingPoint(point);
 	getPointCoordinates(point, x, y);
 
-	double k = -1 / kGivenLine;
-	n = k * x - y;
-	symbol = n >= 0 ? "+" : "-";
-	n = abs(n);
+	
 
 	calcAnimation();
 	printLine(k, symbol, n, x, y);
@@ -1084,7 +1089,7 @@ void findIntersectionPointOfParabolaAndLine()
 		}
 		else
 		{
-			cout << "There are no intersection points!";
+			cout << "There are no intersection points!\n";
 		}
 	}
 }
