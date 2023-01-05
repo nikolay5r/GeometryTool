@@ -190,7 +190,7 @@ void loadAnimation()
 	printThreeDotsAnimation();
 }
 
-void exitAnimation()
+void closeAnimation()
 {
 	cout << "Closing program";
 	printThreeDotsAnimation();
@@ -821,8 +821,9 @@ void getLineArguments(string& line, double& k, double& n)
 	}
 }
 
-void getPointCoordinates(string& point, double& x, double& y)
+void getPointCoordinates(double& x, double& y)
 {
+	string point = "";
 	wantToUseExistingPoint(point);
 
 	if (point == "")
@@ -851,14 +852,13 @@ void getParabola(double& p)
 void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
-	string point = "";
 
 	cout << "Enter slope: ";
 	cin >> k;
 
 	if (isNumberValid(k))
 	{
-		getPointCoordinates(point, x, y);
+		getPointCoordinates(x, y);
 
 		double n = k * x - y;
 
@@ -897,13 +897,9 @@ void defineLineThroughPoints()
 {
 	double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
-	string point1 = "";
+	getPointCoordinates(x1, y1);
 
-	getPointCoordinates(point1, x1, y1);
-
-	string point2 = "";
-
-	getPointCoordinates(point2, x2, y2);
+	getPointCoordinates(x2, y2);
 
 	if (x1 == x2 && y1 == y2)
 	{
@@ -964,7 +960,7 @@ void checkIfDotIsOnLineOption()
 
 	wantToUseExistingPoint(point);
 
-	getPointCoordinates(point, x, y);
+	getPointCoordinates(x, y);
 
 	bool isPointOnLine = ((k * x + n) == y) ? true : false;
 
@@ -997,7 +993,7 @@ void findParallelLineOption()
 	double x, y;
 
 	wantToUseExistingPoint(point);
-	getPointCoordinates(point, x, y);
+	getPointCoordinates(x, y);
 
 	n = k * x - y;
 
@@ -1019,7 +1015,7 @@ void findPerpendicularLineOption()
 	double x, y;
 
 	wantToUseExistingPoint(point);
-	getPointCoordinates(point, x, y);
+	getPointCoordinates(x, y);
 
 	calculatePerpendicularLineArgs(k, n, x, y);
 
@@ -1251,19 +1247,19 @@ void findEquationsInTriangleOption()
 	double xa, ya;
 
 	cout << "Point A:\n";
-	getPointCoordinates(pointA, xa, ya);
+	getPointCoordinates(xa, ya);
 
 	string pointB;
 	double xb, yb;
 
 	cout << "Point B:\n";
-	getPointCoordinates(pointB, xb, yb);
+	getPointCoordinates(xb, yb);
 
 	string pointC;
 	double xc, yc;
 	
 	cout << "Point C:\n";
-	getPointCoordinates(pointC, xc, yc);
+	getPointCoordinates(xc, yc);
 
 	calcAnimation();
 	if (isPointTheSame(xa, ya, xb, yb) || isPointTheSame(xc, yc, xb, yb) || isPointTheSame(xa, ya, xc, yc))
@@ -1359,6 +1355,8 @@ void usersChoice()
 	}
 	else if (option == FIND_THE_TANGENT_CORRESPONDING_NUMBER)
 	{
+		cout << "\nFind the tangent of a parabola at a point:\n";
+		findTangentOption();
 
 		wait();
 		showMainMenu();
@@ -1390,7 +1388,7 @@ int main()
 		usersChoice();
 	}
 
-	exitAnimation();
+	closeAnimation();
 
 	return 0;
 }
