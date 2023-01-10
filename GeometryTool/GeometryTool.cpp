@@ -8,10 +8,10 @@
 #include <cstring>
 
 using namespace std;
-using std::cout;
-using std::cin;
 
 const int timeToWait = 1200;
+const int maxLengthOfName = 16;
+const int maxNumberSize = 100;
 
 const char* linesDB = "lines.txt";
 const char* pointsDB = "points.txt";
@@ -28,7 +28,7 @@ const char* DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER = "8";
 
 const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
 const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
-const char* DATABASE_CANNOT_OPEN_TEXT = "ERROR! We are sorry the database cannot be open!\n";
+const char* DATABASE_CANNOT_OPEN_TEXT	 = "ERROR! We are sorry the database cannot be open!\n";
 const char* ENTER_NAME_TEXT = "Enter name (it can be upper and lower case letters, \'_\' and numbers and 16 characters long): \n";
 const char* NAME_EXISTS_TEXT = "Name already exists! Try another. . .\n";
 const char* NAME_DOESNT_EXIST_TEXT = "Name doesn't exist! Try another. . .\n";
@@ -43,20 +43,20 @@ void wait()
 
 bool isNumberValid(const double number)
 {
-	return abs(number) <= 100;
+	return abs(number) <= maxNumberSize;
 }
 
 bool areCoordinatesValid(const double x, const double y)
 {
 	if (!isNumberValid(x))
 	{
-		cout << "X-coordinate is too large! It should be between -100 and 100!\n";
+		cerr << "X-coordinate is too large! It should be between -100 and 100!\n";
 		return false;
 	}
 
 	if (!isNumberValid(y))
 	{
-		cout << "Y-coordinate is too large! It should be between -100 and 100!\n";
+		cerr << "Y-coordinate is too large! It should be between -100 and 100!\n";
 		return false;
 	}
 
@@ -65,9 +65,9 @@ bool areCoordinatesValid(const double x, const double y)
 
 bool isNameValid(const string name)
 {
-	if (name.length() > 16)
+	if (name.length() > maxLengthOfName)
 	{
-		cout << "The name is too long! Try again...\n";
+		cerr << "The name is too long! Try again...\n";
 		return false;
 	}
 
@@ -78,7 +78,7 @@ bool isNameValid(const string name)
 			|| (name[i] >= '0' && name[i] <= '9')
 			|| name[i] == '_'))
 		{
-			cout << "Invalid characters in name! Try again...\n";
+			cerr << "Invalid characters in name! Try again...\n";
 			return false;
 		}
 	}
@@ -91,7 +91,7 @@ void printLine(const double k, double n, const double x1, const double y1, const
 	string symbol = n >= 0 ? "+" : "-";
 	n = abs(n);
 	cout << "The equation of the line is: ";
-	
+
 	if (x1 == x2)
 	{
 		cout << "x = " << x1;
@@ -211,7 +211,7 @@ void deleteAnimation()
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
 	size_t pos = 0;
-	
+
 	while ((pos = text.find(delim)) != string::npos) {
 		words.push_back(text.substr(0, pos));
 		text.erase(0, pos + delim.length());
@@ -363,14 +363,14 @@ void setEquationOfLine(double& k, double& n)
 		cin >> n;
 		if (!isNumberValid(n))
 		{
-			cout << INVALID_NUMBER_TEXT;
+			cerr << INVALID_NUMBER_TEXT;
 			setEquationOfLine(k, n);
 		}
 
 	}
 	else
 	{
-		cout << INVALID_NUMBER_TEXT;
+		cerr << INVALID_NUMBER_TEXT;
 		setEquationOfLine(k, n);
 	}
 }
@@ -405,7 +405,7 @@ void saveLineOption(string name = "")
 	}
 	else if (isElementInDatabase(name, linesDB))
 	{
-		cout << NAME_EXISTS_TEXT;
+		cerr << NAME_EXISTS_TEXT;
 		saveLineOption();
 	}
 	else
@@ -429,7 +429,7 @@ void savePoint(const string name, const double x, const double y)
 	}
 	else
 	{
-		cout << DATABASE_CANNOT_OPEN_TEXT;
+		cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
@@ -451,7 +451,7 @@ void savePointOption(string name = "")
 	}
 	else if (isElementInDatabase(name, pointsDB))
 	{
-		cout << NAME_EXISTS_TEXT;
+		cerr << NAME_EXISTS_TEXT;
 		savePointOption();
 	}
 	else
@@ -477,7 +477,7 @@ void saveOption()
 	}
 	else if (keyword != "menu")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		saveOption();
 	}
 }
@@ -512,7 +512,7 @@ void deleteLine(string name)
 		if (rename("linesNew.txt", linesDB))
 		{
 			stopProgram = true;
-			cout << "There was an error with the deleting of the line!\nWe are sorry. . .\n";
+			cerr << "There was an error with the deleting of the line!\nWe are sorry. . .\n";
 		}
 	}
 	else
@@ -531,7 +531,7 @@ void deleteLineOption()
 
 	if (!isElementInDatabase(name, linesDB))
 	{
-		cout << NAME_DOESNT_EXIST_TEXT;
+		cerr << NAME_DOESNT_EXIST_TEXT;
 		deleteLineOption();
 	}
 	else
@@ -570,7 +570,7 @@ void deletePoint(string name)
 		if (rename("pointsNew.txt", pointsDB) != 0)
 		{
 			stopProgram = true;
-			cout << "There was an error with the deleting of the point!\nWe are sorry. . .\n";
+			cerr << "There was an error with the deleting of the point!\nWe are sorry. . .\n";
 		}
 	}
 	else
@@ -589,7 +589,7 @@ void deletePointOption()
 
 	if (!isElementInDatabase(name, pointsDB))
 	{
-		cout << NAME_DOESNT_EXIST_TEXT;
+		cerr << NAME_DOESNT_EXIST_TEXT;
 		deletePointOption();
 	}
 	else
@@ -614,7 +614,7 @@ void deleteOption()
 	}
 	else if (keyword != "menu")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 	}
 }
 
@@ -640,7 +640,7 @@ void saveOrDeleteOption()
 	}
 	else if (keyword != "menu")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		saveOrDeleteOption();
 	}
 }
@@ -679,7 +679,7 @@ void wantToSaveLine(const double k, const double n, string answer = "")
 	}
 	else if (answer != "yes" && answer != "no")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		wantToSaveLine(k, n);
 	}
 }
@@ -706,7 +706,7 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 		}
 		else if (isElementInDatabase(name, pointsDB))
 		{
-			cout << NAME_EXISTS_TEXT;
+			cerr << NAME_EXISTS_TEXT;
 			wantToSavePoint(x, y, answer);
 		}
 		else
@@ -717,7 +717,7 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 	}
 	else if (answer != "yes" && answer != "no")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		wantToSavePoint(x, y);
 	}
 }
@@ -728,7 +728,7 @@ void wantToUseExistingPoint(string& point, string answer = "")
 	{
 		cout << "Do you want to use existing point? ";
 		cin >> answer;
-		
+
 		convertToLowerCase(answer);
 	}
 
@@ -744,13 +744,13 @@ void wantToUseExistingPoint(string& point, string answer = "")
 		}
 		else
 		{
-			cout << NAME_DOESNT_EXIST_TEXT;
+			cerr << NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingPoint(point, answer);
 		}
 	}
 	else if (answer != "no")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		wantToUseExistingPoint(point);
 	}
 }
@@ -777,13 +777,13 @@ void wantToUseExistingLine(string& line, string answer = "")
 		}
 		else
 		{
-			cout << NAME_DOESNT_EXIST_TEXT;
+			cerr << NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingLine(line, answer);
 		}
 	}
 	else if (answer != "no")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		wantToUseExistingLine(line);
 	}
 }
@@ -846,8 +846,7 @@ void getParabola(double& p)
 	cin >> p;
 	if (!isNumberValid(p))
 	{
-		cout << "P-argument is too large! It should be between -100 and 100!\n";
-		
+		cerr << "P-argument is too large! It should be between -100 and 100!\n";
 	}
 }
 
@@ -905,22 +904,22 @@ void defineLineThroughPoints()
 
 	if (x1 == x2 && y1 == y2)
 	{
-		cout << "Can't define a line! Points are the same!\n";
+		cerr << "Can't define a line! Points are the same!\n";
 	}
 	else
 	{
 		calcAnimation();
 		double k = 0, n = 0;
-		
+
 		string message = calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
 		printLine(k, n, x1, y1, x2, y2);
 		if (message == "equalX")
 		{
-			cout << "The program cannot save lines that has equal x-coordinates! We're sorry...";
+			cerr << "The program cannot save lines that has equal x-coordinates! We're sorry...";
 		}
 		else if (message == "equalY")
 		{
-			cout << "The program cannot save lines that has equal y-coordinates! We're sorry...";
+			cerr << "The program cannot save lines that has equal y-coordinates! We're sorry...";
 		}
 		else if (message == "passed")
 		{
@@ -943,7 +942,7 @@ void defineLineOption()
 	}
 	else if (keyword != "menu")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		defineLineOption();
 	}
 }
@@ -952,7 +951,7 @@ void checkIfDotIsOnLineOption()
 {
 	double k = 0, n = 0;
 
-	getLineArguments (k, n);
+	getLineArguments(k, n);
 
 	double x = 0, y = 0;
 
@@ -1103,7 +1102,7 @@ void findIntersectionPointOfTwoLines()
 
 	if (areLinesTheSame(k1, n1, k2, n2))
 	{
-		cout << "The lines are the same! Incorrect input!\n";
+		cerr << "The lines are the same! Incorrect input!\n";
 	}
 	else if (k1 == k2)
 	{
@@ -1114,7 +1113,7 @@ void findIntersectionPointOfTwoLines()
 		double x = 0, y = 0;
 		calculateIntersectionPointOfTwoLines(x, y, k1, n1, k2, n2);
 		cout << "The intersection point is: (" << x << ", " << y << ").\n";
-		
+
 		wantToSavePoint(x, y);
 	}
 }
@@ -1133,7 +1132,7 @@ void findIntersectionPointOption()
 	}
 	else if (keyword != "menu")
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		findIntersectionPointOption();
 	}
 }
@@ -1146,7 +1145,7 @@ bool arePointsTheSame(double& x1, double& y1, double& x2, double& y2)
 bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x3, double y3)
 {
 	double k, n;
-	
+
 	calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
 
 	return (y3 == k * x3 + n);
@@ -1157,22 +1156,22 @@ void calculateHeights(double xa, double ya, double xb, double yb, double xc, dou
 	double k, n;
 
 	cout << "Heights:\n";
-	
+
 	calculateLineByTwoPoints(k, n, xa, ya, xb, yb);
 	calculatePerpendicularLineArgs(k, n, xc, yc);
-	
+
 	cout << " #1: ";
 	printLine(k, n, xc, yc);
-	
+
 	calculateLineByTwoPoints(k, n, xa, ya, xc, yc);
 	calculatePerpendicularLineArgs(k, n, xb, yb);
 
 	cout << " #2: ";
 	printLine(k, n, xb, yb);
-	
+
 	calculateLineByTwoPoints(k, n, xb, yb, xc, yc);
 	calculatePerpendicularLineArgs(k, n, xa, ya);
-	
+
 	cout << " #3: ";
 	printLine(k, n, xa, ya);
 }
@@ -1252,18 +1251,18 @@ void findEquationsInTriangleOption()
 
 	string pointC;
 	double xc, yc;
-	
+
 	cout << "Point C:\n";
 	getPointCoordinates(xc, yc);
 
 	calcAnimation();
 	if (arePointsTheSame(xa, ya, xb, yb) || arePointsTheSame(xc, yc, xb, yb) || arePointsTheSame(xa, ya, xc, yc))
 	{
-		cout << "Two of the points are the same! The program cannot create a triangle!";
+		cerr << "Two of the points are the same! The program cannot create a triangle!";
 	}
 	else if (arePointsOnTheSameLine(xa, ya, xb, yb, xc, yc))
 	{
-		cout << "The points are on the same line! The program cannot create a triangle!";
+		cerr << "The points are on the same line! The program cannot create a triangle!";
 	}
 	else
 	{
@@ -1303,14 +1302,14 @@ bool canCreateTetragon(double k1, double n1, double k2, double n2, double k3, do
 		(areLinesTheSame(k1, n1, k4, n4) || areLinesTheSame(k3, n3, k2, n2)) ||
 		(areLinesTheSame(k4, n4, k2, n2) || areLinesTheSame(k3, n3, k4, n4)))
 	{
-		cout << "You used the same line at least twice! Cannot create a tetragon!\n";
+		cerr << "You used the same line at least twice! Cannot create a tetragon!\n";
 		return false;
 	}
-	
+
 	if ((((k1 == k2) && (k2 == k3)) || ((k1 == k2) && (k2 == k4))) ||
 		(((k1 == k3) && (k3 == k4)) || (k2 == k3) && (k3 == k4)))
 	{
-		cout << "Cannot create a tetragon! At least three of the lines are parallel!\n";
+		cerr << "Cannot create a tetragon! At least three of the lines are parallel!\n";
 		return false;
 	}
 
@@ -1335,7 +1334,7 @@ bool areAllSidesEqual(double k1, double n1, double k2, double n2, double k3, dou
 		xb, yb,
 		xc, yc,
 		xd, yd;
-	
+
 	calculateIntersectionPointOfTwoLines(xa, ya, k1, n1, k4, n4);
 	calculateIntersectionPointOfTwoLines(xb, yb, k1, n1, k2, n2);
 	calculateIntersectionPointOfTwoLines(xc, yc, k2, n2, k3, n3);
@@ -1369,10 +1368,10 @@ void findTheTypeOfTetragonOption()
 	calcAnimation();
 	if (canCreateTetragon(k1, n1, k2, n2, k3, n3, k4, n4))
 	{
-		if (isTetragonRectangle(k1, k2, k3, k4) || isTetragonRectangle(k2, k1, k3, k4) || 
+		if (isTetragonRectangle(k1, k2, k3, k4) || isTetragonRectangle(k2, k1, k3, k4) ||
 			isTetragonRectangle(k3, k1, k2, k4) || isTetragonRectangle(k4, k1, k2, k3))
 		{
-			if (areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4) || areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4) || 
+			if (areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4) || areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4) ||
 				areAllSidesEqual(k3, n3, k1, n1, k2, n2, k4, n4) || areAllSidesEqual(k4, n4, k1, n1, k2, n2, k3, n3))
 			{
 				cout << "The teragon is a SQUARE!\n";
@@ -1411,7 +1410,7 @@ void findTheTypeOfTetragonOption()
 				}
 				else
 				{
-				cout << "The tetragon is a TRAPEZOID!\n";
+					cout << "The tetragon is a TRAPEZOID!\n";
 				}
 			}
 			else if (k1 == k4)
@@ -1575,7 +1574,7 @@ void usersChoice()
 	}
 	else
 	{
-		cout << INVALID_INPUT_TEXT;
+		cerr << INVALID_INPUT_TEXT;
 		usersChoice();
 	}
 }
