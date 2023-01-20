@@ -46,7 +46,7 @@ const char* DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER = "8";
 
 const char* INVALID_INPUT_TEXT = "Invalid input! Try again...\n";
 const char* GO_TO_MAIN_MENU_TEXT = "Enter the word \"menu\" if you want to go to the main menu\n";
-const char* DATABASE_CANNOT_OPEN_TEXT	 = "ERROR! We are sorry the database cannot be open!\n";
+const char* DATABASE_CANNOT_OPEN_TEXT = "ERROR! We are sorry the database cannot be opened!\n";
 const char* ENTER_NAME_TEXT = "Enter name (it can be upper and lower case letters, \'_\' and numbers and 16 characters long): \n";
 const char* NAME_EXISTS_TEXT = "Name already exists! Try another. . .\n";
 const char* NAME_DOESNT_EXIST_TEXT = "Name doesn't exist! Try another. . .\n";
@@ -65,7 +65,7 @@ bool isInputNumber(string input)
 		index++;
 	}
 
-	for ( ; index < input.length(); index++)
+	for (; index < input.length(); index++)
 	{
 		char currentChar = input[index];
 		if (currentChar == '.' || currentChar == ',')
@@ -241,7 +241,7 @@ string getKeywordFromConsole()
 //{
 //	Sleep(timeToWait);
 //}
- 
+
 //void printThreeDotsAnimation()
 //{
 //	for (int i = 0; i < 3; i++)
@@ -480,7 +480,7 @@ void setPointCoordinates(double& x, double& y)
 		stringY;
 
 	cout << "Enter coordinates:\n";
-	
+
 	getXCoord(x);
 	getYCoord(y);
 }
@@ -742,7 +742,7 @@ void saveOrDeleteOption()
 }
 
 void getAnswer(string& answer, string question)
-{	
+{
 	cout << question;
 	getline(cin, answer);
 	convertToLowerCase(answer);
@@ -930,12 +930,12 @@ void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
 	getSlope(k);
-	
+
 	getPointCoordinates(x, y);
 
 	double n = k * x - y;
 
-			//calcAnimation();
+	//calcAnimation();
 	printLine(k, n, x, y);
 
 	wantToSaveLine(k, n);
@@ -1454,7 +1454,7 @@ void findTheTypeOfTetragonOption()
 			{
 				if (areAllSidesEqual(k1, n1, k3, n3, k2, n2, k4, n4) ||
 					areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4) ||
-					areAllSidesEqual(k1, n1, k2, n2, k4, n4, k3, n3) || 
+					areAllSidesEqual(k1, n1, k2, n2, k4, n4, k3, n3) ||
 					areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4) ||
 					areAllSidesEqual(k2, n2, k1, n1, k4, n4, k3, n3) ||
 					areAllSidesEqual(k3, n3, k1, n1, k4, n4, k2, n2))
@@ -1466,8 +1466,8 @@ void findTheTypeOfTetragonOption()
 					cout << "The tetragon is a PARALLELOGRAM!\n";
 				}
 			}
-			else if (k1 == k2 || k1 == k3 || 
-				k1 == k4 || k2 == k3 || 
+			else if (k1 == k2 || k1 == k3 ||
+				k1 == k4 || k2 == k3 ||
 				k2 == k4 || k3 == k4)
 			{
 				cout << "The tetragon is a TRAPEZOID!\n";
