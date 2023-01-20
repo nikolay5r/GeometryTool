@@ -24,6 +24,8 @@
 //#include <windows.h>
 
 using namespace std;
+using std::cin;
+using std::cout;
 
 //const int timeToWait = 1200;
 const int maxLengthOfName = 16;
@@ -52,35 +54,30 @@ const char* INVALID_NUMBER_TEXT = "Number is too large! It should be between -10
 
 bool stopProgram = false;
 
-//void wait()
-//{
-//	Sleep(timeToWait);
-//}
 
-bool isCoordinateNumber(string coord)
+bool isInputNumber(string input)
 {
 	int counterDots = 0;
 	int index = 0;
 
-	if (coord[0] == '-')
+	if (input[0] == '-')
 	{
 		index++;
 	}
 
-	for ( ; index < coord.length(); index++)
+	for ( ; index < input.length(); index++)
 	{
-		char currentChar = coord[index];
+		char currentChar = input[index];
 		if (currentChar == '.' || currentChar == ',')
 		{
 			counterDots++;
 		}
-		else if (currentChar < '0' || currentChar > '9')
+
+		if (counterDots > 1 || (currentChar < '0' || currentChar > '9'))
 		{
+			cerr << INVALID_INPUT_TEXT;
 			return false;
 		}
-
-		if (counterDots > 1)
-			return false;
 	}
 
 	return true;
@@ -88,24 +85,12 @@ bool isCoordinateNumber(string coord)
 
 bool isNumberValid(const double number)
 {
-	return abs(number) <= maxNumberSize;
-}
-
-bool areCoordinatesValid(const double x, const double y)
-{
-	if (!isNumberValid(x))
+	if (abs(number) <= maxNumberSize)
 	{
-		cerr << "X-coordinate is too large! It should be between -100 and 100!\n";
-		return false;
+		return true;
 	}
-
-	if (!isNumberValid(y))
-	{
-		cerr << "Y-coordinate is too large! It should be between -100 and 100!\n";
-		return false;
-	}
-
-	return true;
+	cerr << INVALID_NUMBER_TEXT;
+	return false;
 }
 
 bool isNameValid(const string name)
@@ -175,6 +160,44 @@ void printLine(const double k, double n, const double x1, const double y1, const
 	cout << "\n";
 }
 
+void getN(double& n)
+{
+	string stringN;
+	cout << "Enter n: ";
+	getline(cin, stringN);
+	if (!isInputNumber(stringN))
+	{
+		getN(n);
+	}
+	else
+	{
+		n = stod(stringN);
+		if (!isNumberValid(n))
+		{
+			getN(n);
+		}
+	}
+}
+
+void getSlope(double& k)
+{
+	string stringK;
+	cout << "Enter slope (k): ";
+	getline(cin, stringK);
+	if (!isInputNumber(stringK))
+	{
+		getSlope(k);
+	}
+	else
+	{
+		k = stod(stringK);
+		if (!isNumberValid(k))
+		{
+			getSlope(k);
+		}
+	}
+}
+
 void convertToLowerCase(string& text)
 {
 	string result = "";
@@ -212,6 +235,13 @@ string getKeywordFromConsole()
 	return keyword;
 }
 
+//ANIMATIONS ONLY WORK WITH <windows.h>
+
+//void wait()
+//{
+//	Sleep(timeToWait);
+//}
+ 
 //void printThreeDotsAnimation()
 //{
 //	for (int i = 0; i < 3; i++)
@@ -397,28 +427,51 @@ void saveLine(const string name, const double k, double n)
 	}
 }
 
-void setEquationOfLine(double& k, double& n)
+void getXCoord(double& x)
 {
-	cout << "Enter the equation of the line using this format \"k*x + n\"\n";
-	cout << "k: ";
-	cin >> k;
-	if (isNumberValid(k))
+	string stringX;
+	cout << "x: ";
+	getline(cin, stringX);
+
+	if (!isInputNumber(stringX))
 	{
-
-		cout << "n: ";
-		cin >> n;
-		if (!isNumberValid(n))
-		{
-			cerr << INVALID_NUMBER_TEXT;
-			setEquationOfLine(k, n);
-		}
-
+		getXCoord(x);
 	}
 	else
 	{
-		cerr << INVALID_NUMBER_TEXT;
-		setEquationOfLine(k, n);
+		x = stod(stringX);
+		if (!isNumberValid(x))
+		{
+			getXCoord(x);
+		}
 	}
+}
+
+void getYCoord(double& y)
+{
+	string stringY;
+	cout << "y: ";
+	getline(cin, stringY);
+
+	if (!isInputNumber(stringY))
+	{
+		getYCoord(y);
+	}
+	else
+	{
+		y = stod(stringY);
+		if (!isNumberValid(y))
+		{
+			getYCoord(y);
+		}
+	}
+}
+
+void setEquationOfLine(double& k, double& n)
+{
+	cout << "Enter the equation of the line using this format \"k*x + n\"\n";
+	getSlope(k);
+	getN(n);
 }
 
 void setPointCoordinates(double& x, double& y)
@@ -427,25 +480,9 @@ void setPointCoordinates(double& x, double& y)
 		stringY;
 
 	cout << "Enter coordinates:\n";
-	cout << "x: ";
-	getline(cin, stringX);
-	cout << "y: ";
-	getline(cin, stringY);
-
-	if (!isCoordinateNumber(stringX) || !isCoordinateNumber(stringY))
-	{
-		cout << "Invalid input for coordinates!";
-		setPointCoordinates(x, y);
-	}
-	else if (!areCoordinatesValid(x, y))
-	{
-		setPointCoordinates(x, y);
-	}
-	else
-	{
-		x = stod(stringX);
-		y = stod(stringY);
-	}
+	
+	getXCoord(x);
+	getYCoord(y);
 }
 
 void saveLineOption(string name = "")
@@ -704,37 +741,42 @@ void saveOrDeleteOption()
 	}
 }
 
-void getAnswer(string& answer)
-{
-	if (answer == "")
+void getAnswer(string& answer, string question)
+{	
+	cout << question;
+	getline(cin, answer);
+	convertToLowerCase(answer);
+
+	if (answer != "no" && answer != "yes")
 	{
-		cout << "Do you want to save the line? ";
-		getline(cin, answer);
-		convertToLowerCase(answer);
+		cerr << INVALID_INPUT_TEXT;
+		getAnswer(answer, question);
 	}
 }
 
-string getName()
+void getName(string& name)
 {
-	string name;
 	cout << ENTER_NAME_TEXT;
 	getline(cin, name);
+	if (!isNameValid(name))
+	{
+		getName(name);
+	}
 }
 
 void wantToSaveLine(const double k, const double n, string answer = "")
 {
-
-	getAnswer(answer);
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to save the line? ");
+	}
 
 	if (answer == "yes")
 	{
-		string name = getName();
+		string name;
+		getName(name);
 
-		if (!isNameValid(name))
-		{
-			wantToSaveLine(k, n, answer);
-		}
-		else if (isElementInDatabase(name, linesDB))
+		if (isElementInDatabase(name, linesDB))
 		{
 			cout << NAME_EXISTS_TEXT;
 			wantToSaveLine(k, n, answer);
@@ -745,26 +787,21 @@ void wantToSaveLine(const double k, const double n, string answer = "")
 			saveLine(name, k, n);
 		}
 	}
-	else if (answer != "yes" && answer != "no")
-	{
-		cerr << INVALID_INPUT_TEXT;
-		wantToSaveLine(k, n);
-	}
 }
 
 void wantToSavePoint(const double x, const double y, string answer = "")
 {
-	getAnswer(answer);
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to save the point? ");
+	}
 
 	if (answer == "yes")
 	{
-		string name = getName();
+		string name;
+		getName(name);
 
-		if (!isNameValid(name))
-		{
-			wantToSavePoint(x, y, answer);
-		}
-		else if (isElementInDatabase(name, pointsDB))
+		if (isElementInDatabase(name, pointsDB))
 		{
 			cerr << NAME_EXISTS_TEXT;
 			wantToSavePoint(x, y, answer);
@@ -775,21 +812,19 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 			//saveAnimation();
 		}
 	}
-	else if (answer != "yes" && answer != "no")
-	{
-		cerr << INVALID_INPUT_TEXT;
-		wantToSavePoint(x, y);
-	}
 }
 
 void wantToUseExistingPoint(string& point, string answer = "")
 {
-	getAnswer(answer);
-
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to use existing point? ");
+	}
 
 	if (answer == "yes")
 	{
-		string name = getName();
+		string name;
+		getName(name);
 
 		if (isElementInDatabase(name, pointsDB))
 		{
@@ -802,20 +837,19 @@ void wantToUseExistingPoint(string& point, string answer = "")
 			wantToUseExistingPoint(point, answer);
 		}
 	}
-	else if (answer != "no")
-	{
-		cerr << INVALID_INPUT_TEXT;
-		wantToUseExistingPoint(point);
-	}
 }
 
 void wantToUseExistingLine(string& line, string answer = "")
 {
-	getAnswer(answer);
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to use existing line? ");
+	}
 
 	if (answer == "yes")
 	{
-		string name = getName();
+		string name;
+		getName(name);
 
 		if (isElementInDatabase(name, linesDB))
 		{
@@ -827,11 +861,6 @@ void wantToUseExistingLine(string& line, string answer = "")
 			cerr << NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingLine(line, answer);
 		}
-	}
-	else if (answer != "no")
-	{
-		cerr << INVALID_INPUT_TEXT;
-		wantToUseExistingLine(line);
 	}
 }
 
@@ -900,21 +929,16 @@ void getParabola(double& p)
 void defineLineThroughSlopeAndPoint()
 {
 	double k = 0, x = 0, y = 0;
+	getSlope(k);
+	
+	getPointCoordinates(x, y);
 
-	cout << "Enter slope: ";
-	cin >> k;
+	double n = k * x - y;
 
-	if (isNumberValid(k))
-	{
-		getPointCoordinates(x, y);
+			//calcAnimation();
+	printLine(k, n, x, y);
 
-		double n = k * x - y;
-
-		//calcAnimation();
-		printLine(k, n, x, y);
-
-		wantToSaveLine(k, n);
-	}
+	wantToSaveLine(k, n);
 }
 
 string calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
@@ -994,7 +1018,7 @@ void defineLineOption()
 	}
 }
 
-void checkIfDotIsOnLineOption()
+void checkIfPointIsOnLineOption()
 {
 	double k = 0, n = 0;
 
@@ -1090,7 +1114,7 @@ void findIntersectionPointOfParabolaAndLine()
 		bool isX1IntersectionPoint = ((a * x1 * x1) + (b * x1) + c == 0);
 		bool isX2IntersectionPoint = ((a * x2 * x2) + (b * x2) + c == 0);
 
-		if (x1 == x2 && isX1IntersectionPoint && isX2IntersectionPoint)
+		if ((x1 == x2 && isX1IntersectionPoint && isX2IntersectionPoint) || (isX1IntersectionPoint && !isX2IntersectionPoint))
 		{
 			double y1 = k * x1 - n;
 			cout << "There is one intersection point:\n"
@@ -1104,12 +1128,6 @@ void findIntersectionPointOfParabolaAndLine()
 			cout << "There are two intersection points:\n"
 				<< " Intersection point #1: (" << x1 << ", " << y1 << ")\n"
 				<< " Intersection point #2: (" << x2 << ", " << y2 << ")\n";
-		}
-		else if (isX1IntersectionPoint)
-		{
-			double y1 = k * x1 - n;
-			cout << "There is one intersection point:\n"
-				<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
 		}
 		else if (isX2IntersectionPoint)
 		{
@@ -1473,7 +1491,8 @@ void usersChoice()
 
 	if (option == SAVE_OR_DELETE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nEnter the word \"save\" if you want to save a line or a point\n"
+		cout << "\nSave or delete:\n"
+			<< "Enter the word \"save\" if you want to save a line or a point\n"
 			<< "Enter the word \"delete\" if you want to delete a line or a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		saveOrDeleteOption();
@@ -1483,7 +1502,8 @@ void usersChoice()
 	}
 	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nEnter the word \"slope\" if you want to define a line through slope and a point\n"
+		cout << "\nDefine line:\n"
+			<< "Enter the word \"slope\" if you want to define a line through slope and a point\n"
 			<< "Enter the word \"points\" if you want to define a line through two points\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		defineLineOption();
@@ -1494,7 +1514,7 @@ void usersChoice()
 	else if (option == CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
 		cout << "\nCheck if a point is on a line:\n";
-		checkIfDotIsOnLineOption();
+		checkIfPointIsOnLineOption();
 
 		//wait();
 		showMainMenu();
@@ -1543,7 +1563,7 @@ void usersChoice()
 	}
 	else if (option == DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER)
 	{
-		cout << "\nFind the type of tetragon : \n";
+		cout << "\nFind the type of tetragon: \n";
 		findTheTypeOfTetragonOption();
 
 		//wait();
