@@ -6,3 +6,6 @@ k : 2*x+2
 o : 2*x-2
 Nikolay : 2*x+5
 n : 9*x-45
+lorchi_q_napuavi : 5*x+7
+niki_e_pedal : 100*x+100
+14_21_7 : 21*x+14

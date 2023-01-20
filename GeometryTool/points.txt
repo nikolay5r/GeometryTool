@@ -4,3 +4,4 @@ K : 5;6
 loi : 1;2
 loiObichaNicki : 86;-86
 o : 1;2
+ibe_mi_se : 56;43

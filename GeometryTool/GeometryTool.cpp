@@ -1,4 +1,19 @@
-#include <windows.h>
+/**
+*
+* Solution to course project # 3
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Nikolay Radilov
+* @idnumber 3MI0600253
+* @compiler VC
+*
+*
+*
+*/
+
+
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -6,10 +21,11 @@
 #include <cmath>
 #include <string.h>
 #include <cstring>
+//#include <windows.h>
 
 using namespace std;
 
-const int timeToWait = 1200;
+//const int timeToWait = 1200;
 const int maxLengthOfName = 16;
 const int maxNumberSize = 100;
 
@@ -36,10 +52,10 @@ const char* INVALID_NUMBER_TEXT = "Number is too large! It should be between -10
 
 bool stopProgram = false;
 
-void wait()
-{
-	Sleep(timeToWait);
-}
+//void wait()
+//{
+//	Sleep(timeToWait);
+//}
 
 bool isNumberValid(const double number)
 {
@@ -157,7 +173,8 @@ string getKeywordFromConsole()
 	cout << "Keyword: ";
 
 	string keyword = "";
-	cin >> keyword;
+
+	getline(cin, keyword);
 
 	cout << "\n";
 
@@ -166,47 +183,47 @@ string getKeywordFromConsole()
 	return keyword;
 }
 
-void printThreeDotsAnimation()
-{
-	for (int i = 0; i < 3; i++)
-	{
-		wait();
-		cout << ". ";
-	}
+//void printThreeDotsAnimation()
+//{
+//	for (int i = 0; i < 3; i++)
+//	{
+//		wait();
+//		cout << ". ";
+//	}
+//
+//	wait();
+//	cout << "\n";
+//}
 
-	wait();
-	cout << "\n";
-}
+//void calcAnimation()
+//{
+//	cout << "Calculating";
+//	printThreeDotsAnimation();
+//}
 
-void calcAnimation()
-{
-	cout << "Calculating";
-	printThreeDotsAnimation();
-}
+//void loadAnimation()
+//{
+//	cout << "Loading";
+//	printThreeDotsAnimation();
+//}
 
-void loadAnimation()
-{
-	cout << "Loading";
-	printThreeDotsAnimation();
-}
+//void closeAnimation()
+//{
+//	cout << "Closing program";
+//	printThreeDotsAnimation();
+//}
 
-void closeAnimation()
-{
-	cout << "Closing program";
-	printThreeDotsAnimation();
-}
+//void saveAnimation()
+//{
+//	cout << "Saving";
+//	printThreeDotsAnimation();
+//}
 
-void saveAnimation()
-{
-	cout << "Saving";
-	printThreeDotsAnimation();
-}
-
-void deleteAnimation()
-{
-	cout << "Deleting";
-	printThreeDotsAnimation();
-}
+//void deleteAnimation()
+//{
+//	cout << "Deleting";
+//	printThreeDotsAnimation();
+//}
 
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
@@ -353,7 +370,7 @@ void saveLine(const string name, const double k, double n)
 
 void setEquationOfLine(double& k, double& n)
 {
-	cout << "Enter the equation of the line using this format \"k*x +/- n\"\n";
+	cout << "Enter the equation of the line using this format \"k*x + n\"\n";
 	cout << "k: ";
 	cin >> k;
 	if (isNumberValid(k))
@@ -396,7 +413,7 @@ void saveLineOption(string name = "")
 	if (name == "")
 	{
 		cout << ENTER_NAME_TEXT;
-		cin >> name;
+		getline(cin, name);
 	}
 
 	if (!isNameValid(name))
@@ -442,7 +459,7 @@ void savePointOption(string name = "")
 	if (name == "")
 	{
 		cout << ENTER_NAME_TEXT;
-		cin >> name;
+		getline(cin, name);
 	}
 
 	if (!isNameValid(name))
@@ -468,12 +485,12 @@ void saveOption()
 	if (keyword == "line")
 	{
 		saveLineOption();
-		saveAnimation();
+		//saveAnimation();
 	}
 	else if (keyword == "point")
 	{
 		savePointOption();
-		saveAnimation();
+		//saveAnimation();
 	}
 	else if (keyword != "menu")
 	{
@@ -482,7 +499,7 @@ void saveOption()
 	}
 }
 
-void deleteLine(string name)
+void deleteLine(const string name)
 {
 	string rowText;
 
@@ -527,7 +544,7 @@ void deleteLineOption()
 	string name;
 
 	cout << "Enter the name of the line: ";
-	cin >> name;
+	getline(cin, name);
 
 	if (!isElementInDatabase(name, linesDB))
 	{
@@ -540,7 +557,7 @@ void deleteLineOption()
 	}
 }
 
-void deletePoint(string name)
+void deletePoint(const string name)
 {
 	string rowText;
 
@@ -585,7 +602,7 @@ void deletePointOption()
 	string name;
 
 	cout << "Enter the name of the point: ";
-	cin >> name;
+	getline(cin, name);
 
 	if (!isElementInDatabase(name, pointsDB))
 	{
@@ -605,12 +622,12 @@ void deleteOption()
 	if (keyword == "line")
 	{
 		deleteLineOption();
-		deleteAnimation();
+		//deleteAnimation();
 	}
 	else if (keyword == "point")
 	{
 		deletePointOption();
-		deleteAnimation();
+		//deleteAnimation();
 	}
 	else if (keyword != "menu")
 	{
@@ -645,22 +662,31 @@ void saveOrDeleteOption()
 	}
 }
 
-void wantToSaveLine(const double k, const double n, string answer = "")
+void getAnswer(string& answer)
 {
-
 	if (answer == "")
 	{
 		cout << "Do you want to save the line? ";
-		cin >> answer;
-
+		getline(cin, answer);
 		convertToLowerCase(answer);
 	}
+}
+
+string getName()
+{
+	string name;
+	cout << ENTER_NAME_TEXT;
+	getline(cin, name);
+}
+
+void wantToSaveLine(const double k, const double n, string answer = "")
+{
+
+	getAnswer(answer);
 
 	if (answer == "yes")
 	{
-		string name;
-		cout << ENTER_NAME_TEXT;
-		cin >> name;
+		string name = getName();
 
 		if (!isNameValid(name))
 		{
@@ -673,7 +699,7 @@ void wantToSaveLine(const double k, const double n, string answer = "")
 		}
 		else
 		{
-			saveAnimation();
+			//saveAnimation();
 			saveLine(name, k, n);
 		}
 	}
@@ -686,19 +712,11 @@ void wantToSaveLine(const double k, const double n, string answer = "")
 
 void wantToSavePoint(const double x, const double y, string answer = "")
 {
-	if (answer == "")
-	{
-		cout << "Do you want to save the point? ";
-		cin >> answer;
-
-		convertToLowerCase(answer);
-	}
+	getAnswer(answer);
 
 	if (answer == "yes")
 	{
-		string name;
-		cout << ENTER_NAME_TEXT;
-		cin >> name;
+		string name = getName();
 
 		if (!isNameValid(name))
 		{
@@ -712,7 +730,7 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 		else
 		{
 			savePoint(name, x, y);
-			saveAnimation();
+			//saveAnimation();
 		}
 	}
 	else if (answer != "yes" && answer != "no")
@@ -724,22 +742,16 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 
 void wantToUseExistingPoint(string& point, string answer = "")
 {
-	if (answer == "")
-	{
-		cout << "Do you want to use existing point? ";
-		cin >> answer;
+	getAnswer(answer);
 
-		convertToLowerCase(answer);
-	}
 
 	if (answer == "yes")
 	{
-		string name;
-		cout << "Enter name: ";
-		cin >> name;
+		string name = getName();
+
 		if (isElementInDatabase(name, pointsDB))
 		{
-			loadAnimation();
+			//loadAnimation();
 			getPoint(name, point);
 		}
 		else
@@ -757,22 +769,15 @@ void wantToUseExistingPoint(string& point, string answer = "")
 
 void wantToUseExistingLine(string& line, string answer = "")
 {
-	if (answer == "")
-	{
-		cout << "Do you want to use existing line? ";
-		cin >> answer;
-
-		convertToLowerCase(answer);
-	}
+	getAnswer(answer);
 
 	if (answer == "yes")
 	{
-		string name;
-		cout << "Enter name: ";
-		cin >> name;
+		string name = getName();
+
 		if (isElementInDatabase(name, linesDB))
 		{
-			loadAnimation();
+			//loadAnimation();
 			getEquationOfLine(name, line);
 		}
 		else
@@ -863,7 +868,7 @@ void defineLineThroughSlopeAndPoint()
 
 		double n = k * x - y;
 
-		calcAnimation();
+		//calcAnimation();
 		printLine(k, n, x, y);
 
 		wantToSaveLine(k, n);
@@ -908,7 +913,7 @@ void defineLineThroughPoints()
 	}
 	else
 	{
-		calcAnimation();
+		//calcAnimation();
 		double k = 0, n = 0;
 
 		string message = calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
@@ -959,7 +964,7 @@ void checkIfDotIsOnLineOption()
 
 	bool isPointOnLine = ((k * x + n) == y) ? true : false;
 
-	calcAnimation();
+	//calcAnimation();
 	if (isPointOnLine)
 	{
 		cout << "The point IS on the line.\n";
@@ -988,7 +993,7 @@ void findParallelLineOption()
 
 	n = k * x - y;
 
-	calcAnimation();
+	//calcAnimation();
 	printLine(k, n, x, y);
 
 	wantToSaveLine(k, n);
@@ -1006,7 +1011,7 @@ void findPerpendicularLineOption()
 
 	calculatePerpendicularLineArgs(k, n, x, y);
 
-	calcAnimation();
+	//calcAnimation();
 	printLine(k, n, x, y);
 
 	wantToSaveLine(k, n);
@@ -1022,7 +1027,7 @@ void findIntersectionPointOfParabolaAndLine()
 
 	getParabola(p);
 
-	calcAnimation();
+	//calcAnimation();
 	if (p == 0)
 	{
 		double y = 0;
@@ -1098,7 +1103,7 @@ void findIntersectionPointOfTwoLines()
 
 	getLineArguments(k2, n2);
 
-	calcAnimation();
+	//calcAnimation();
 
 	if (areLinesTheSame(k1, n1, k2, n2))
 	{
@@ -1255,7 +1260,7 @@ void findEquationsInTriangleOption()
 	cout << "Point C:\n";
 	getPointCoordinates(xc, yc);
 
-	calcAnimation();
+	//calcAnimation();
 	if (arePointsTheSame(xa, ya, xb, yb) || arePointsTheSame(xc, yc, xb, yb) || arePointsTheSame(xa, ya, xc, yc))
 	{
 		cerr << "Two of the points are the same! The program cannot create a triangle!";
@@ -1267,9 +1272,9 @@ void findEquationsInTriangleOption()
 	else
 	{
 		calculateHeights(xa, ya, xb, yb, xc, yc);
-		wait();
+		//wait();
 		calculateMedians(xa, ya, xb, yb, xc, yc);
-		wait();
+		//wait();
 		calculateSemetrals(xa, ya, xb, yb, xc, yc);
 	}
 }
@@ -1365,7 +1370,7 @@ void findTheTypeOfTetragonOption()
 	cout << "Line 4:\n";
 	getLineArguments(k4, n4);
 
-	calcAnimation();
+	//calcAnimation();
 	if (canCreateTetragon(k1, n1, k2, n2, k3, n3, k4, n4))
 	{
 		if (isTetragonRectangle(k1, k2, k3, k4) || isTetragonRectangle(k2, k1, k3, k4) ||
@@ -1383,95 +1388,29 @@ void findTheTypeOfTetragonOption()
 		}
 		else
 		{
-			if (k1 == k2)
+			if ((k1 == k2 && k3 == k4) ||
+				(k1 == k3 && k2 == k4) ||
+				(k1 == k4 && k2 == k3))
 			{
-				if (areAllSidesEqual(k1, n1, k3, n3, k2, n2, k4, n4))
+				if (areAllSidesEqual(k1, n1, k3, n3, k2, n2, k4, n4) ||
+					areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4) ||
+					areAllSidesEqual(k1, n1, k2, n2, k4, n4, k3, n3) || 
+					areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4) ||
+					areAllSidesEqual(k2, n2, k1, n1, k4, n4, k3, n3) ||
+					areAllSidesEqual(k3, n3, k1, n1, k4, n4, k2, n2))
 				{
 					cout << "The tetragon is a RHOMBUS!\n";
 				}
-				else if (k3 == k4)
-				{
-					cout << "The tetragon is a PARALLELOGRAM!\n";
-				}
 				else
 				{
-					cout << "The tetragon is a TRAPEZOID!\n";
+					cout << "The tetragon is a PARALLELOGRAM!\n";
 				}
 			}
-			else if (k1 == k3)
+			else if (k1 == k2 || k1 == k3 || 
+				k1 == k4 || k2 == k3 || 
+				k2 == k4 || k3 == k4)
 			{
-				if (areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4))
-				{
-					cout << "The tetragon is a RHOMBUS!\n";
-				}
-				else if (k2 == k4)
-				{
-					cout << "The tetragon is a PARALLELOGRAM!\n";
-				}
-				else
-				{
-					cout << "The tetragon is a TRAPEZOID!\n";
-				}
-			}
-			else if (k1 == k4)
-			{
-				if (areAllSidesEqual(k1, n1, k2, n2, k4, n4, k3, n3))
-				{
-					cout << "The tetragon is a RHOMBUS!\n";
-				}
-				else if (k3 == k2)
-				{
-					cout << "The tetragon is a PARALLELOGRAM!\n";
-				}
-				else
-				{
-					cout << "The tetragon is a TRAPEZOID!\n";
-				}
-			}
-			else if (k2 == k3)
-			{
-				if (areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4))
-				{
-					cout << "The tetragon is a RHOMBUS!\n";
-				}
-				else if (k1 == k4)
-				{
-					cout << "The tetragon is a PARALLELOGRAM!\n";
-				}
-				else
-				{
-					cout << "The tetragon is a TRAPEZOID!\n";
-				}
-			}
-			else if (k2 == k4)
-			{
-				if (areAllSidesEqual(k2, n2, k1, n1, k4, n4, k3, n3))
-				{
-					cout << "The tetragon is a RHOMBUS!\n";
-				}
-				else if (k3 == k1)
-				{
-					cout << "The tetragon is a PARALLELOGRAM!\n";
-				}
-				else
-				{
-					cout << "The tetragon is a TRAPEZOID!\n";
-				}
-			}
-			else if (k3 == k4)
-			{
-				if (areAllSidesEqual(k3, n3, k1, n1, k4, n4, k2, n2))
-				{
-					cout << "The tetragon is a RHOMBUS!\n";
-				}
-				else if (k2 == k1)
-				{
-					cout << "The tetragon is a PARALLELOGRAM!\n";
-				}
-				else
-				{
-					cout << "The tetragon is a TRAPEZOID!\n";
-				}
+				cout << "The tetragon is a TRAPEZOID!\n";
 			}
 			else
 			{
@@ -1486,7 +1425,7 @@ void usersChoice()
 	cout << "Enter an option: ";
 
 	string option;
-	cin >> option;
+	getline(cin, option);
 
 	convertToLowerCase(option);
 
@@ -1497,7 +1436,7 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 		saveOrDeleteOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
@@ -1507,7 +1446,7 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 		defineLineOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER)
@@ -1515,7 +1454,7 @@ void usersChoice()
 		cout << "\nCheck if a point is on a line:\n";
 		checkIfDotIsOnLineOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == FIND_PARALEL_LINE_CORRESPONDING_NUMBER)
@@ -1523,7 +1462,7 @@ void usersChoice()
 		cout << "\nFind parallel line:\n";
 		findParallelLineOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER)
@@ -1531,7 +1470,7 @@ void usersChoice()
 		cout << "\nFind perpendicular line:\n";
 		findPerpendicularLineOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER)
@@ -1541,7 +1480,7 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 		findIntersectionPointOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER)
@@ -1549,7 +1488,7 @@ void usersChoice()
 		cout << "\nFind equations in trinagle by given three points:\n";
 		findEquationsInTriangleOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == FIND_THE_TANGENT_CORRESPONDING_NUMBER)
@@ -1557,7 +1496,7 @@ void usersChoice()
 		cout << "\nFind the tangent of a parabola at a point:\n";
 		findTangentOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER)
@@ -1565,7 +1504,7 @@ void usersChoice()
 		cout << "\nFind the type of tetragon : \n";
 		findTheTypeOfTetragonOption();
 
-		wait();
+		//wait();
 		showMainMenu();
 	}
 	else if (option == "exit")
@@ -1589,7 +1528,7 @@ int main()
 		usersChoice();
 	}
 
-	closeAnimation();
+	//closeAnimation();
 
 	return 0;
 }
