@@ -57,6 +57,35 @@ bool stopProgram = false;
 //	Sleep(timeToWait);
 //}
 
+bool isCoordinateNumber(string coord)
+{
+	int counterDots = 0;
+	int index = 0;
+
+	if (coord[0] == '-')
+	{
+		index++;
+	}
+
+	for ( ; index < coord.length(); index++)
+	{
+		char currentChar = coord[index];
+		if (currentChar == '.' || currentChar == ',')
+		{
+			counterDots++;
+		}
+		else if (currentChar < '0' || currentChar > '9')
+		{
+			return false;
+		}
+
+		if (counterDots > 1)
+			return false;
+	}
+
+	return true;
+}
+
 bool isNumberValid(const double number)
 {
 	return abs(number) <= maxNumberSize;
@@ -394,15 +423,28 @@ void setEquationOfLine(double& k, double& n)
 
 void setPointCoordinates(double& x, double& y)
 {
+	string stringX,
+		stringY;
+
 	cout << "Enter coordinates:\n";
 	cout << "x: ";
-	cin >> x;
+	getline(cin, stringX);
 	cout << "y: ";
-	cin >> y;
+	getline(cin, stringY);
 
-	if (!areCoordinatesValid(x, y))
+	if (!isCoordinateNumber(stringX) || !isCoordinateNumber(stringY))
+	{
+		cout << "Invalid input for coordinates!";
+		setPointCoordinates(x, y);
+	}
+	else if (!areCoordinatesValid(x, y))
 	{
 		setPointCoordinates(x, y);
+	}
+	else
+	{
+		x = stod(stringX);
+		y = stod(stringY);
 	}
 }
 
