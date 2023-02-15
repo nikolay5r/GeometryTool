@@ -1,18 +1,3 @@
-/**
-*
-* Solution to course project # 3
-* Introduction to programming course
-* Faculty of Mathematics and Informatics of Sofia University
-* Winter semester 2022/2023
-*
-* @author Nikolay Radilov
-* @idnumber 3MI0600253
-* @compiler VC
-*
-*
-*
-*/
-
 
 #include <fstream>
 #include <sstream>
@@ -21,13 +6,11 @@
 #include <cmath>
 #include <string.h>
 #include <cstring>
-//#include <windows.h>
+#include <windows.h>
 
 using namespace std;
-using std::cin;
-using std::cout;
 
-//const int timeToWait = 1200;
+const int timeToWait = 1200;
 const int maxLengthOfName = 16;
 const int maxNumberSize = 100;
 
@@ -53,7 +36,6 @@ const char* NAME_DOESNT_EXIST_TEXT = "Name doesn't exist! Try another. . .\n";
 const char* INVALID_NUMBER_TEXT = "Number is too large! It should be between -100 and 100!\n";
 
 bool stopProgram = false;
-
 
 bool isInputNumber(string input)
 {
@@ -237,52 +219,52 @@ string getKeywordFromConsole()
 
 //ANIMATIONS ONLY WORK WITH <windows.h>
 
-//void wait()
-//{
-//	Sleep(timeToWait);
-//}
+void wait()
+{
+	Sleep(timeToWait);
+}
 
-//void printThreeDotsAnimation()
-//{
-//	for (int i = 0; i < 3; i++)
-//	{
-//		wait();
-//		cout << ". ";
-//	}
-//
-//	wait();
-//	cout << "\n";
-//}
+void printThreeDotsAnimation()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		wait();
+		cout << ". ";
+	}
 
-//void calcAnimation()
-//{
-//	cout << "Calculating";
-//	printThreeDotsAnimation();
-//}
+	wait();
+	cout << "\n";
+}
 
-//void loadAnimation()
-//{
-//	cout << "Loading";
-//	printThreeDotsAnimation();
-//}
+void calcAnimation()
+{
+	cout << "Calculating";
+	printThreeDotsAnimation();
+}
 
-//void closeAnimation()
-//{
-//	cout << "Closing program";
-//	printThreeDotsAnimation();
-//}
+void loadAnimation()
+{
+	cout << "Loading";
+	printThreeDotsAnimation();
+}
 
-//void saveAnimation()
-//{
-//	cout << "Saving";
-//	printThreeDotsAnimation();
-//}
+void closeAnimation()
+{
+	cout << "Closing program";
+	printThreeDotsAnimation();
+}
 
-//void deleteAnimation()
-//{
-//	cout << "Deleting";
-//	printThreeDotsAnimation();
-//}
+void saveAnimation()
+{
+	cout << "Saving";
+	printThreeDotsAnimation();
+}
+
+void deleteAnimation()
+{
+	cout << "Deleting";
+	printThreeDotsAnimation();
+}
 
 void splitByDelim(vector<string>& words, string text, string delim = " ")
 {
@@ -564,12 +546,12 @@ void saveOption()
 	if (keyword == "line")
 	{
 		saveLineOption();
-		//saveAnimation();
+		saveAnimation();
 	}
 	else if (keyword == "point")
 	{
 		savePointOption();
-		//saveAnimation();
+		saveAnimation();
 	}
 	else if (keyword != "menu")
 	{
@@ -701,12 +683,12 @@ void deleteOption()
 	if (keyword == "line")
 	{
 		deleteLineOption();
-		//deleteAnimation();
+		deleteAnimation();
 	}
 	else if (keyword == "point")
 	{
 		deletePointOption();
-		//deleteAnimation();
+		deleteAnimation();
 	}
 	else if (keyword != "menu")
 	{
@@ -783,7 +765,7 @@ void wantToSaveLine(const double k, const double n, string answer = "")
 		}
 		else
 		{
-			//saveAnimation();
+			saveAnimation();
 			saveLine(name, k, n);
 		}
 	}
@@ -809,7 +791,7 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 		else
 		{
 			savePoint(name, x, y);
-			//saveAnimation();
+			saveAnimation();
 		}
 	}
 }
@@ -828,7 +810,7 @@ void wantToUseExistingPoint(string& point, string answer = "")
 
 		if (isElementInDatabase(name, pointsDB))
 		{
-			//loadAnimation();
+			loadAnimation();
 			getPoint(name, point);
 		}
 		else
@@ -853,7 +835,7 @@ void wantToUseExistingLine(string& line, string answer = "")
 
 		if (isElementInDatabase(name, linesDB))
 		{
-			//loadAnimation();
+			loadAnimation();
 			getEquationOfLine(name, line);
 		}
 		else
@@ -935,7 +917,7 @@ void defineLineThroughSlopeAndPoint()
 
 	double n = k * x - y;
 
-	//calcAnimation();
+	calcAnimation();
 	printLine(k, n, x, y);
 
 	wantToSaveLine(k, n);
@@ -979,7 +961,7 @@ void defineLineThroughPoints()
 	}
 	else
 	{
-		//calcAnimation();
+		calcAnimation();
 		double k = 0, n = 0;
 
 		string message = calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
@@ -1030,7 +1012,7 @@ void checkIfPointIsOnLineOption()
 
 	bool isPointOnLine = ((k * x + n) == y) ? true : false;
 
-	//calcAnimation();
+	calcAnimation();
 	if (isPointOnLine)
 	{
 		cout << "The point IS on the line.\n";
@@ -1059,7 +1041,7 @@ void findParallelLineOption()
 
 	n = k * x - y;
 
-	//calcAnimation();
+	calcAnimation();
 	printLine(k, n, x, y);
 
 	wantToSaveLine(k, n);
@@ -1077,7 +1059,7 @@ void findPerpendicularLineOption()
 
 	calculatePerpendicularLineArgs(k, n, x, y);
 
-	//calcAnimation();
+	calcAnimation();
 	printLine(k, n, x, y);
 
 	wantToSaveLine(k, n);
@@ -1093,7 +1075,7 @@ void findIntersectionPointOfParabolaAndLine()
 
 	getParabola(p);
 
-	//calcAnimation();
+	calcAnimation();
 	if (p == 0)
 	{
 		double y = 0;
@@ -1163,7 +1145,7 @@ void findIntersectionPointOfTwoLines()
 
 	getLineArguments(k2, n2);
 
-	//calcAnimation();
+	calcAnimation();
 
 	if (areLinesTheSame(k1, n1, k2, n2))
 	{
@@ -1320,7 +1302,7 @@ void findEquationsInTriangleOption()
 	cout << "Point C:\n";
 	getPointCoordinates(xc, yc);
 
-	//calcAnimation();
+	calcAnimation();
 	if (arePointsTheSame(xa, ya, xb, yb) || arePointsTheSame(xc, yc, xb, yb) || arePointsTheSame(xa, ya, xc, yc))
 	{
 		cerr << "Two of the points are the same! The program cannot create a triangle!";
@@ -1332,9 +1314,9 @@ void findEquationsInTriangleOption()
 	else
 	{
 		calculateHeights(xa, ya, xb, yb, xc, yc);
-		//wait();
+		wait();
 		calculateMedians(xa, ya, xb, yb, xc, yc);
-		//wait();
+		wait();
 		calculateSemetrals(xa, ya, xb, yb, xc, yc);
 	}
 }
@@ -1430,7 +1412,7 @@ void findTheTypeOfTetragonOption()
 	cout << "Line 4:\n";
 	getLineArguments(k4, n4);
 
-	//calcAnimation();
+	calcAnimation();
 	if (canCreateTetragon(k1, n1, k2, n2, k3, n3, k4, n4))
 	{
 		if (isTetragonRectangle(k1, k2, k3, k4) || isTetragonRectangle(k2, k1, k3, k4) ||
@@ -1497,7 +1479,7 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 		saveOrDeleteOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
@@ -1508,7 +1490,7 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 		defineLineOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER)
@@ -1516,7 +1498,7 @@ void usersChoice()
 		cout << "\nCheck if a point is on a line:\n";
 		checkIfPointIsOnLineOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == FIND_PARALEL_LINE_CORRESPONDING_NUMBER)
@@ -1524,7 +1506,7 @@ void usersChoice()
 		cout << "\nFind parallel line:\n";
 		findParallelLineOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER)
@@ -1532,7 +1514,7 @@ void usersChoice()
 		cout << "\nFind perpendicular line:\n";
 		findPerpendicularLineOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER)
@@ -1542,7 +1524,7 @@ void usersChoice()
 			<< GO_TO_MAIN_MENU_TEXT;
 		findIntersectionPointOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER)
@@ -1550,7 +1532,7 @@ void usersChoice()
 		cout << "\nFind equations in trinagle by given three points:\n";
 		findEquationsInTriangleOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == FIND_THE_TANGENT_CORRESPONDING_NUMBER)
@@ -1558,7 +1540,7 @@ void usersChoice()
 		cout << "\nFind the tangent of a parabola at a point:\n";
 		findTangentOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER)
@@ -1566,7 +1548,7 @@ void usersChoice()
 		cout << "\nFind the type of tetragon: \n";
 		findTheTypeOfTetragonOption();
 
-		//wait();
+		wait();
 		showMainMenu();
 	}
 	else if (option == "exit")
@@ -1590,7 +1572,7 @@ int main()
 		usersChoice();
 	}
 
-	//closeAnimation();
+	closeAnimation();
 
 	return 0;
 }
