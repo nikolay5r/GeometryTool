@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Helper.h" />
+    <ClInclude Include="Print.h" />
     <ClInclude Include="Validation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
