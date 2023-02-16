@@ -8,11 +8,6 @@
 #include <string>
 #include <windows.h>
 
-#include "Animation.h"
-#include "Helper.h"
-#include "Validation.h"
-#include "Print.h"
-
 const int timeToWait = 1200;
 const int maxLengthOfName = 16;
 const int maxNumberSize = 100;
@@ -39,6 +34,12 @@ const char* NAME_DOESNT_EXIST_TEXT = "Name doesn't exist! Try another. . .\n";
 const char* INVALID_NUMBER_TEXT = "Number is too large! It should be between -100 and 100!\n";
 
 bool stopProgram = false;
+
+#include "Headers/Print.h"
+#include "Headers/Animation.h"
+#include "Headers/Helper.h"
+#include "Headers/Validation.h"
+#include "Headers/Options/SaveAndDeleteOption.h"
 
 void getN(double& n)
 {
@@ -76,14 +77,6 @@ void getSlope(double& k)
 			getSlope(k);
 		}
 	}
-}
-
-std::string toString(double number)
-{
-	std::stringstream ss;
-	ss << number;
-
-	return ss.str();
 }
 
 std::string getKeywordFromConsole()
@@ -191,27 +184,6 @@ bool isElementInDatabase(const std::string element, const char* path)
 	return false;
 }
 
-void saveLine(const std::string name, const double k, double n)
-{
-	std::string symbol = n >= 0 ? "+" : "-";
-	n = abs(n);
-	std::ofstream  dataBase(linesDB, std::fstream::app);
-
-	if (dataBase.is_open())
-	{
-		std::string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
-
-		dataBase << data << "\n";
-
-		dataBase.close();
-	}
-	else
-	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
-		exit(0);
-	}
-}
-
 void getXCoord(double& x)
 {
 	std::string stringX;
@@ -268,262 +240,6 @@ void setPointCoordinates(double& x, double& y)
 
 	getXCoord(x);
 	getYCoord(y);
-}
-
-void saveLineOption(std::string name = "")
-{
-	double k, n;
-
-	if (name == "")
-	{
-		std::cout << ENTER_NAME_TEXT;
-		std::getline(std::cin, name);
-	}
-
-	if (!isNameValid(name))
-	{
-		saveLineOption();
-	}
-	else if (isElementInDatabase(name, linesDB))
-	{
-		std::cerr << NAME_EXISTS_TEXT;
-		saveLineOption();
-	}
-	else
-	{
-		setEquationOfLine(k, n);
-		saveLine(name, k, n);
-	}
-}
-
-void savePoint(const std::string name, const double x, const double y)
-{
-	std::ofstream  dataBase(pointsDB, std::ios::app);
-
-	if (dataBase.is_open())
-	{
-		std::string data = name + " : " + toString(x) + ";" + toString(y);
-
-		dataBase << data << "\n";
-
-		dataBase.close();
-	}
-	else
-	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
-		exit(0);
-	}
-}
-
-void savePointOption(std::string name = "")
-{
-	double x = 0,
-		y = 0;
-
-	if (name == "")
-	{
-		std::cout << ENTER_NAME_TEXT;
-		std::getline(std::cin, name);
-	}
-
-	if (!isNameValid(name))
-	{
-		savePointOption();
-	}
-	else if (isElementInDatabase(name, pointsDB))
-	{
-		std::cerr << NAME_EXISTS_TEXT;
-		savePointOption();
-	}
-	else
-	{
-		setPointCoordinates(x, y);
-		savePoint(name, x, y);
-	}
-}
-
-void saveOption()
-{
-	std::string keyword = getKeywordFromConsole();
-
-	if (keyword == "line")
-	{
-		saveLineOption();
-		saveAnimation();
-	}
-	else if (keyword == "point")
-	{
-		savePointOption();
-		saveAnimation();
-	}
-	else if (keyword != "menu")
-	{
-		std::cerr << INVALID_INPUT_TEXT;
-		saveOption();
-	}
-}
-
-void deleteLine(const std::string name)
-{
-	std::string rowText;
-
-	std::ifstream dataBase(linesDB);
-	std::ofstream  newDataBase("linesNew.txt");
-
-	if (dataBase.is_open() && newDataBase.is_open())
-	{
-		while (std::getline(dataBase, rowText))
-		{
-			std::vector<std::string> words{};
-
-			splitByDelim(words, rowText, " : ");
-
-			if (words[0] == name)
-			{
-				continue;
-			}
-
-			newDataBase << rowText << "\n";
-		}
-
-		dataBase.close();
-		newDataBase.close();
-
-		remove(linesDB);
-		if (rename("linesNew.txt", linesDB))
-		{
-			stopProgram = true;
-			std::cerr << "There was an error with the deleting of the line!\nWe are sorry. . .\n";
-		}
-	}
-	else
-	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
-		exit(0);
-	}
-}
-
-void deleteLineOption()
-{
-	std::string name;
-
-	std::cout << "Enter the name of the line: ";
-	std::getline(std::cin, name);
-
-	if (!isElementInDatabase(name, linesDB))
-	{
-		std::cerr << NAME_DOESNT_EXIST_TEXT;
-		deleteLineOption();
-	}
-	else
-	{
-		deleteLine(name);
-	}
-}
-
-void deletePoint(const std::string name)
-{
-	std::string rowText;
-
-	std::ifstream dataBase(pointsDB);
-	std::ofstream  newDataBase("pointsNew.txt");
-
-	if (dataBase.is_open() && newDataBase.is_open())
-	{
-		while (std::getline(dataBase, rowText))
-		{
-			std::vector<std::string> words{};
-
-			splitByDelim(words, rowText, " : ");
-
-			if (words[0] == name)
-			{
-				continue;
-			}
-
-			newDataBase << rowText << "\n";
-		}
-
-		dataBase.close();
-		newDataBase.close();
-
-		remove(pointsDB);
-		if (rename("pointsNew.txt", pointsDB) != 0)
-		{
-			stopProgram = true;
-			std::cerr << "There was an error with the deleting of the point!\nWe are sorry. . .\n";
-		}
-	}
-	else
-	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
-		exit(0);
-	}
-}
-
-void deletePointOption()
-{
-	std::string name;
-
-	std::cout << "Enter the name of the point: ";
-	std::getline(std::cin, name);
-
-	if (!isElementInDatabase(name, pointsDB))
-	{
-		std::cerr << NAME_DOESNT_EXIST_TEXT;
-		deletePointOption();
-	}
-	else
-	{
-		deletePoint(name);
-	}
-}
-
-void deleteOption()
-{
-	std::string keyword = getKeywordFromConsole();
-
-	if (keyword == "line")
-	{
-		deleteLineOption();
-		deleteAnimation();
-	}
-	else if (keyword == "point")
-	{
-		deletePointOption();
-		deleteAnimation();
-	}
-	else if (keyword != "menu")
-	{
-		std::cerr << INVALID_INPUT_TEXT;
-	}
-}
-
-void saveOrDeleteOption()
-{
-	std::string keyword = getKeywordFromConsole();
-
-	if (keyword == "save")
-	{
-		std::cout << "Enter \"line\" if you want to save a line\n"
-			<< "Enter \"point\" if you want to save a point\n"
-			<< GO_TO_MAIN_MENU_TEXT;
-
-		saveOption();
-	}
-	else if (keyword == "delete")
-	{
-		std::cout << "Enter \"line\" if you want to delete a line\n"
-			<< "Enter \"point\" if you want to delete a point\n"
-			<< GO_TO_MAIN_MENU_TEXT;
-
-		deleteOption();
-	}
-	else if (keyword != "menu")
-	{
-		std::cerr << INVALID_INPUT_TEXT;
-		saveOrDeleteOption();
-	}
 }
 
 void getAnswer(std::string& answer, std::string question)
@@ -724,30 +440,6 @@ void defineLineThroughSlopeAndPoint()
 	printLine(k, n, x, y);
 
 	wantToSaveLine(k, n);
-}
-
-std::string calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
-{
-	std::string message;
-	if (x1 == x2)
-	{
-		k = 1;
-		n = -x1;
-		message = "equalX";
-	}
-	else if (y1 == y2)
-	{
-		k = 0;
-		n = y1;
-		message = "equalY";
-	}
-	else
-	{
-		k = (y1 - y2) / (x1 - x2);
-		n = k * x1 - y1;
-		message = "passed";
-	}
-	return message;
 }
 
 void defineLineThroughPoints()
