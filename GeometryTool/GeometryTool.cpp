@@ -5,10 +5,12 @@
 #include <iostream>
 #include <cmath>
 #include <string.h>
-#include <cstring>
+#include <string>
 #include <windows.h>
 
-using namespace std;
+#include "Animation.h"
+#include "Helper.h"
+#include "Validation.h"
 
 const int timeToWait = 1200;
 const int maxLengthOfName = 16;
@@ -37,116 +39,55 @@ const char* INVALID_NUMBER_TEXT = "Number is too large! It should be between -10
 
 bool stopProgram = false;
 
-bool isInputNumber(string input)
-{
-	int counterDots = 0;
-	int index = 0;
-
-	if (input[0] == '-')
-	{
-		index++;
-	}
-
-	for (; index < input.length(); index++)
-	{
-		char currentChar = input[index];
-		if (currentChar == '.' || currentChar == ',')
-		{
-			counterDots++;
-		}
-
-		if (counterDots > 1 || (currentChar < '0' || currentChar > '9'))
-		{
-			cerr << INVALID_INPUT_TEXT;
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool isNumberValid(const double number)
-{
-	if (abs(number) <= maxNumberSize)
-	{
-		return true;
-	}
-	cerr << INVALID_NUMBER_TEXT;
-	return false;
-}
-
-bool isNameValid(const string name)
-{
-	if (name.length() > maxLengthOfName)
-	{
-		cerr << "The name is too long! Try again...\n";
-		return false;
-	}
-
-	for (int i = 0; i < name.length(); i++)
-	{
-		if (!((name[i] >= 'a' && name[i] <= 'z')
-			|| (name[i] >= 'A' && name[i] <= 'Z')
-			|| (name[i] >= '0' && name[i] <= '9')
-			|| name[i] == '_'))
-		{
-			cerr << "Invalid characters in name! Try again...\n";
-			return false;
-		}
-	}
-
-	return true;
-}
-
 void printLine(const double k, double n, const double x1, const double y1, const double x2 = 102, const double y2 = 102)
 {
-	string symbol = n >= 0 ? "+" : "-";
+	std::string symbol = n >= 0 ? "+" : "-";
 	n = abs(n);
-	cout << "The equation of the line is: ";
+	std::cout << "The equation of the line is: ";
 
 	if (x1 == x2)
 	{
-		cout << "x = " << x1;
+		std::cout << "x = " << x1;
 	}
 	else if (y1 == y2)
 	{
-		cout << "y = " << y1;
+		std::cout << "y = " << y1;
 	}
 	else if (k != 1 && k != 0)
 	{
 		if (n == 0)
 		{
-			cout << "y = " << k << " * x";
+			std::cout << "y = " << k << " * x";
 		}
 		else
 		{
-			cout << "y = " << k << " * x " << symbol << " " << n;
+			std::cout << "y = " << k << " * x " << symbol << " " << n;
 		}
 	}
 	else if (k == 1)
 	{
-		cout << "y = x " << symbol << " " << n;
+		std::cout << "y = x " << symbol << " " << n;
 	}
 	else
 	{
 		if (symbol == "+")
 		{
-			cout << "y = " << n;
+			std::cout << "y = " << n;
 		}
 		else
 		{
-			cout << "y = " << symbol << n;
+			std::cout << "y = " << symbol << n;
 		}
 	}
 
-	cout << "\n";
+	std::cout << "\n";
 }
 
 void getN(double& n)
 {
-	string stringN;
-	cout << "Enter n: ";
-	getline(cin, stringN);
+	std::string stringN;
+	std::cout << "Enter n: ";
+	std::getline(std::cin, stringN);
 	if (!isInputNumber(stringN))
 	{
 		getN(n);
@@ -163,9 +104,9 @@ void getN(double& n)
 
 void getSlope(double& k)
 {
-	string stringK;
-	cout << "Enter slope (k): ";
-	getline(cin, stringK);
+	std::string stringK;
+	std::cout << "Enter slope (k): ";
+	std::getline(std::cin, stringK);
 	if (!isInputNumber(stringK))
 	{
 		getSlope(k);
@@ -180,114 +121,39 @@ void getSlope(double& k)
 	}
 }
 
-void convertToLowerCase(string& text)
+std::string toString(double number)
 {
-	string result = "";
-
-	for (int i = 0; i < text.length(); i++) {
-
-		char ch = tolower(text[i]);
-
-		result += ch;
-	}
-
-	text = result;
-}
-
-string toString(double number)
-{
-	stringstream ss;
+	std::stringstream ss;
 	ss << number;
 
 	return ss.str();
 }
 
-string getKeywordFromConsole()
+std::string getKeywordFromConsole()
 {
-	cout << "Keyword: ";
+	std::cout << "Keyword: ";
 
-	string keyword = "";
+	std::string keyword = "";
 
-	getline(cin, keyword);
+	std::getline(std::cin, keyword);
 
-	cout << "\n";
+	std::cout << "\n";
 
 	convertToLowerCase(keyword);
 
 	return keyword;
 }
 
-//ANIMATIONS ONLY WORK WITH <windows.h>
-
-void wait()
+void printTitle()
 {
-	Sleep(timeToWait);
+	std::cout << "\n\t\t\t---GeometryTool---\n";
 }
 
-void printThreeDotsAnimation()
+void printMainMenu()
 {
-	for (int i = 0; i < 3; i++)
-	{
-		wait();
-		cout << ". ";
-	}
+	std::cout << "\nEnter a number corresponding to the option you want to choose or enter \"exit\" if you want to exit:\n";
 
-	wait();
-	cout << "\n";
-}
-
-void calcAnimation()
-{
-	cout << "Calculating";
-	printThreeDotsAnimation();
-}
-
-void loadAnimation()
-{
-	cout << "Loading";
-	printThreeDotsAnimation();
-}
-
-void closeAnimation()
-{
-	cout << "Closing program";
-	printThreeDotsAnimation();
-}
-
-void saveAnimation()
-{
-	cout << "Saving";
-	printThreeDotsAnimation();
-}
-
-void deleteAnimation()
-{
-	cout << "Deleting";
-	printThreeDotsAnimation();
-}
-
-void splitByDelim(vector<string>& words, string text, string delim = " ")
-{
-	size_t pos = 0;
-
-	while ((pos = text.find(delim)) != string::npos) {
-		words.push_back(text.substr(0, pos));
-		text.erase(0, pos + delim.length());
-	}
-
-	words.push_back(text);
-}
-
-void showTitle()
-{
-	cout << "\n\t\t\t---GeometryTool---\n";
-}
-
-void showMainMenu()
-{
-	cout << "\nEnter a number corresponding to the option you want to choose or enter \"exit\" if you want to exit:\n";
-
-	cout << " " << SAVE_OR_DELETE_CORRESPONDING_NUMBER << " - save a line or a point or delete one;\n"
+	std::cout << " " << SAVE_OR_DELETE_CORRESPONDING_NUMBER << " - save a line or a point or delete one;\n"
 		<< " " << DEFINE_LINE_CORRESPONDING_NUMBER << " - define a line through slope and points;\n"
 		<< " " << CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER << " - check if a point is on a line;\n"
 		<< " " << FIND_PARALEL_LINE_CORRESPONDING_NUMBER << " - derive an equation of a line that is parallel to a given line and passes through a point;\n"
@@ -298,17 +164,17 @@ void showMainMenu()
 		<< " " << DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER << " - given four equations to determine the type of tetragon.\n";
 }
 
-void getEquationOfLine(const string name, string& equation)
+void getEquationOfLine(const std::string name, std::string& equation)
 {
-	ifstream database(linesDB);
+	std::ifstream database(linesDB);
 
 	if (database.is_open())
 	{
-		string rowText;
+		std::string rowText;
 
-		while (getline(database, rowText))
+		while (std::getline(database, rowText))
 		{
-			vector<string> words{};
+			std::vector<std::string> words{};
 
 			splitByDelim(words, rowText, " : ");
 
@@ -323,22 +189,22 @@ void getEquationOfLine(const string name, string& equation)
 	}
 	else
 	{
-		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
 
-void getPoint(const string name, string& point)
+void getPoint(const std::string name, std::string& point)
 {
-	ifstream database(pointsDB);
+	std::ifstream database(pointsDB);
 
 	if (database.is_open())
 	{
-		string rowText;
+		std::string rowText;
 
-		while (getline(database, rowText))
+		while (std::getline(database, rowText))
 		{
-			vector<string> words{};
+			std::vector<std::string> words{};
 
 			splitByDelim(words, rowText, " : ");
 
@@ -352,22 +218,22 @@ void getPoint(const string name, string& point)
 	}
 	else
 	{
-		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
 
-bool isElementInDatabase(const string element, const char* path)
+bool isElementInDatabase(const std::string element, const char* path)
 {
-	ifstream dataBase(path);
+	std::ifstream dataBase(path);
 
 	if (dataBase.is_open())
 	{
-		string rowText;
+		std::string rowText;
 
-		while (getline(dataBase, rowText))
+		while (std::getline(dataBase, rowText))
 		{
-			vector<string> words{};
+			std::vector<std::string> words{};
 
 			splitByDelim(words, rowText, " : ");
 
@@ -380,7 +246,7 @@ bool isElementInDatabase(const string element, const char* path)
 	}
 	else
 	{
-		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 
@@ -388,15 +254,15 @@ bool isElementInDatabase(const string element, const char* path)
 	return false;
 }
 
-void saveLine(const string name, const double k, double n)
+void saveLine(const std::string name, const double k, double n)
 {
-	string symbol = n >= 0 ? "+" : "-";
+	std::string symbol = n >= 0 ? "+" : "-";
 	n = abs(n);
-	ofstream dataBase(linesDB, fstream::app);
+	std::ofstream  dataBase(linesDB, std::fstream::app);
 
 	if (dataBase.is_open())
 	{
-		string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
+		std::string data = name + " : " + toString(k) + "*x" + symbol + toString(n);
 
 		dataBase << data << "\n";
 
@@ -404,16 +270,16 @@ void saveLine(const string name, const double k, double n)
 	}
 	else
 	{
-		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
 
 void getXCoord(double& x)
 {
-	string stringX;
-	cout << "x: ";
-	getline(cin, stringX);
+	std::string stringX;
+	std::cout << "x: ";
+	std::getline(std::cin, stringX);
 
 	if (!isInputNumber(stringX))
 	{
@@ -431,17 +297,17 @@ void getXCoord(double& x)
 
 void getYCoord(double& y)
 {
-	string stringY;
-	cout << "y: ";
-	getline(cin, stringY);
+	std::string Y;
+	std::cout << "y: ";
+	std::getline(std::cin, Y);
 
-	if (!isInputNumber(stringY))
+	if (!isInputNumber(Y))
 	{
 		getYCoord(y);
 	}
 	else
 	{
-		y = stod(stringY);
+		y = stod(Y);
 		if (!isNumberValid(y))
 		{
 			getYCoord(y);
@@ -451,30 +317,30 @@ void getYCoord(double& y)
 
 void setEquationOfLine(double& k, double& n)
 {
-	cout << "Enter the equation of the line using this format \"k*x + n\"\n";
+	std::cout << "Enter the equation of the line using this format \"k*x + n\"\n";
 	getSlope(k);
 	getN(n);
 }
 
 void setPointCoordinates(double& x, double& y)
 {
-	string stringX,
-		stringY;
+	std::string stringX,
+		Y;
 
-	cout << "Enter coordinates:\n";
+	std::cout << "Enter coordinates:\n";
 
 	getXCoord(x);
 	getYCoord(y);
 }
 
-void saveLineOption(string name = "")
+void saveLineOption(std::string name = "")
 {
 	double k, n;
 
 	if (name == "")
 	{
-		cout << ENTER_NAME_TEXT;
-		getline(cin, name);
+		std::cout << ENTER_NAME_TEXT;
+		std::getline(std::cin, name);
 	}
 
 	if (!isNameValid(name))
@@ -483,7 +349,7 @@ void saveLineOption(string name = "")
 	}
 	else if (isElementInDatabase(name, linesDB))
 	{
-		cerr << NAME_EXISTS_TEXT;
+		std::cerr << NAME_EXISTS_TEXT;
 		saveLineOption();
 	}
 	else
@@ -493,13 +359,13 @@ void saveLineOption(string name = "")
 	}
 }
 
-void savePoint(const string name, const double x, const double y)
+void savePoint(const std::string name, const double x, const double y)
 {
-	ofstream dataBase(pointsDB, ios::app);
+	std::ofstream  dataBase(pointsDB, std::ios::app);
 
 	if (dataBase.is_open())
 	{
-		string data = name + " : " + toString(x) + ";" + toString(y);
+		std::string data = name + " : " + toString(x) + ";" + toString(y);
 
 		dataBase << data << "\n";
 
@@ -507,20 +373,20 @@ void savePoint(const string name, const double x, const double y)
 	}
 	else
 	{
-		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
 
-void savePointOption(string name = "")
+void savePointOption(std::string name = "")
 {
 	double x = 0,
 		y = 0;
 
 	if (name == "")
 	{
-		cout << ENTER_NAME_TEXT;
-		getline(cin, name);
+		std::cout << ENTER_NAME_TEXT;
+		std::getline(std::cin, name);
 	}
 
 	if (!isNameValid(name))
@@ -529,7 +395,7 @@ void savePointOption(string name = "")
 	}
 	else if (isElementInDatabase(name, pointsDB))
 	{
-		cerr << NAME_EXISTS_TEXT;
+		std::cerr << NAME_EXISTS_TEXT;
 		savePointOption();
 	}
 	else
@@ -541,7 +407,7 @@ void savePointOption(string name = "")
 
 void saveOption()
 {
-	string keyword = getKeywordFromConsole();
+	std::string keyword = getKeywordFromConsole();
 
 	if (keyword == "line")
 	{
@@ -555,23 +421,23 @@ void saveOption()
 	}
 	else if (keyword != "menu")
 	{
-		cerr << INVALID_INPUT_TEXT;
+		std::cerr << INVALID_INPUT_TEXT;
 		saveOption();
 	}
 }
 
-void deleteLine(const string name)
+void deleteLine(const std::string name)
 {
-	string rowText;
+	std::string rowText;
 
-	ifstream dataBase(linesDB);
-	ofstream newDataBase("linesNew.txt");
+	std::ifstream dataBase(linesDB);
+	std::ofstream  newDataBase("linesNew.txt");
 
 	if (dataBase.is_open() && newDataBase.is_open())
 	{
-		while (getline(dataBase, rowText))
+		while (std::getline(dataBase, rowText))
 		{
-			vector<string> words{};
+			std::vector<std::string> words{};
 
 			splitByDelim(words, rowText, " : ");
 
@@ -590,26 +456,26 @@ void deleteLine(const string name)
 		if (rename("linesNew.txt", linesDB))
 		{
 			stopProgram = true;
-			cerr << "There was an error with the deleting of the line!\nWe are sorry. . .\n";
+			std::cerr << "There was an error with the deleting of the line!\nWe are sorry. . .\n";
 		}
 	}
 	else
 	{
-		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
 
 void deleteLineOption()
 {
-	string name;
+	std::string name;
 
-	cout << "Enter the name of the line: ";
-	getline(cin, name);
+	std::cout << "Enter the name of the line: ";
+	std::getline(std::cin, name);
 
 	if (!isElementInDatabase(name, linesDB))
 	{
-		cerr << NAME_DOESNT_EXIST_TEXT;
+		std::cerr << NAME_DOESNT_EXIST_TEXT;
 		deleteLineOption();
 	}
 	else
@@ -618,18 +484,18 @@ void deleteLineOption()
 	}
 }
 
-void deletePoint(const string name)
+void deletePoint(const std::string name)
 {
-	string rowText;
+	std::string rowText;
 
-	ifstream dataBase(pointsDB);
-	ofstream newDataBase("pointsNew.txt");
+	std::ifstream dataBase(pointsDB);
+	std::ofstream  newDataBase("pointsNew.txt");
 
 	if (dataBase.is_open() && newDataBase.is_open())
 	{
-		while (getline(dataBase, rowText))
+		while (std::getline(dataBase, rowText))
 		{
-			vector<string> words{};
+			std::vector<std::string> words{};
 
 			splitByDelim(words, rowText, " : ");
 
@@ -648,26 +514,26 @@ void deletePoint(const string name)
 		if (rename("pointsNew.txt", pointsDB) != 0)
 		{
 			stopProgram = true;
-			cerr << "There was an error with the deleting of the point!\nWe are sorry. . .\n";
+			std::cerr << "There was an error with the deleting of the point!\nWe are sorry. . .\n";
 		}
 	}
 	else
 	{
-		cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
 
 void deletePointOption()
 {
-	string name;
+	std::string name;
 
-	cout << "Enter the name of the point: ";
-	getline(cin, name);
+	std::cout << "Enter the name of the point: ";
+	std::getline(std::cin, name);
 
 	if (!isElementInDatabase(name, pointsDB))
 	{
-		cerr << NAME_DOESNT_EXIST_TEXT;
+		std::cerr << NAME_DOESNT_EXIST_TEXT;
 		deletePointOption();
 	}
 	else
@@ -678,7 +544,7 @@ void deletePointOption()
 
 void deleteOption()
 {
-	string keyword = getKeywordFromConsole();
+	std::string keyword = getKeywordFromConsole();
 
 	if (keyword == "line")
 	{
@@ -692,17 +558,17 @@ void deleteOption()
 	}
 	else if (keyword != "menu")
 	{
-		cerr << INVALID_INPUT_TEXT;
+		std::cerr << INVALID_INPUT_TEXT;
 	}
 }
 
 void saveOrDeleteOption()
 {
-	string keyword = getKeywordFromConsole();
+	std::string keyword = getKeywordFromConsole();
 
 	if (keyword == "save")
 	{
-		cout << "Enter \"line\" if you want to save a line\n"
+		std::cout << "Enter \"line\" if you want to save a line\n"
 			<< "Enter \"point\" if you want to save a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 
@@ -710,7 +576,7 @@ void saveOrDeleteOption()
 	}
 	else if (keyword == "delete")
 	{
-		cout << "Enter \"line\" if you want to delete a line\n"
+		std::cout << "Enter \"line\" if you want to delete a line\n"
 			<< "Enter \"point\" if you want to delete a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 
@@ -718,35 +584,35 @@ void saveOrDeleteOption()
 	}
 	else if (keyword != "menu")
 	{
-		cerr << INVALID_INPUT_TEXT;
+		std::cerr << INVALID_INPUT_TEXT;
 		saveOrDeleteOption();
 	}
 }
 
-void getAnswer(string& answer, string question)
+void getAnswer(std::string& answer, std::string question)
 {
-	cout << question;
-	getline(cin, answer);
+	std::cout << question;
+	std::getline(std::cin, answer);
 	convertToLowerCase(answer);
 
 	if (answer != "no" && answer != "yes")
 	{
-		cerr << INVALID_INPUT_TEXT;
+		std::cerr << INVALID_INPUT_TEXT;
 		getAnswer(answer, question);
 	}
 }
 
-void getName(string& name)
+void getName(std::string& name)
 {
-	cout << ENTER_NAME_TEXT;
-	getline(cin, name);
+	std::cout << ENTER_NAME_TEXT;
+	std::getline(std::cin, name);
 	if (!isNameValid(name))
 	{
 		getName(name);
 	}
 }
 
-void wantToSaveLine(const double k, const double n, string answer = "")
+void wantToSaveLine(const double k, const double n, std::string answer = "")
 {
 	if (answer == "")
 	{
@@ -755,12 +621,12 @@ void wantToSaveLine(const double k, const double n, string answer = "")
 
 	if (answer == "yes")
 	{
-		string name;
+		std::string name;
 		getName(name);
 
 		if (isElementInDatabase(name, linesDB))
 		{
-			cout << NAME_EXISTS_TEXT;
+			std::cout << NAME_EXISTS_TEXT;
 			wantToSaveLine(k, n, answer);
 		}
 		else
@@ -771,7 +637,7 @@ void wantToSaveLine(const double k, const double n, string answer = "")
 	}
 }
 
-void wantToSavePoint(const double x, const double y, string answer = "")
+void wantToSavePoint(const double x, const double y, std::string answer = "")
 {
 	if (answer == "")
 	{
@@ -780,12 +646,12 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 
 	if (answer == "yes")
 	{
-		string name;
+		std::string name;
 		getName(name);
 
 		if (isElementInDatabase(name, pointsDB))
 		{
-			cerr << NAME_EXISTS_TEXT;
+			std::cerr << NAME_EXISTS_TEXT;
 			wantToSavePoint(x, y, answer);
 		}
 		else
@@ -796,7 +662,7 @@ void wantToSavePoint(const double x, const double y, string answer = "")
 	}
 }
 
-void wantToUseExistingPoint(string& point, string answer = "")
+void wantToUseExistingPoint(std::string& point, std::string answer = "")
 {
 	if (answer == "")
 	{
@@ -805,7 +671,7 @@ void wantToUseExistingPoint(string& point, string answer = "")
 
 	if (answer == "yes")
 	{
-		string name;
+		std::string name;
 		getName(name);
 
 		if (isElementInDatabase(name, pointsDB))
@@ -815,13 +681,13 @@ void wantToUseExistingPoint(string& point, string answer = "")
 		}
 		else
 		{
-			cerr << NAME_DOESNT_EXIST_TEXT;
+			std::cerr << NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingPoint(point, answer);
 		}
 	}
 }
 
-void wantToUseExistingLine(string& line, string answer = "")
+void wantToUseExistingLine(std::string& line, std::string answer = "")
 {
 	if (answer == "")
 	{
@@ -830,7 +696,7 @@ void wantToUseExistingLine(string& line, string answer = "")
 
 	if (answer == "yes")
 	{
-		string name;
+		std::string name;
 		getName(name);
 
 		if (isElementInDatabase(name, linesDB))
@@ -840,24 +706,24 @@ void wantToUseExistingLine(string& line, string answer = "")
 		}
 		else
 		{
-			cerr << NAME_DOESNT_EXIST_TEXT;
+			std::cerr << NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingLine(line, answer);
 		}
 	}
 }
 
-void getCoordinatesFromExistingPoint(string point, double& x, double& y)
+void getCoordinatesFromExistingPoint(std::string point, double& x, double& y)
 {
-	vector<string> coordinates;
+	std::vector<std::string> coordinates;
 	splitByDelim(coordinates, point, ";");
 
 	x = stod(coordinates[0]);
 	y = stod(coordinates[1]);
 }
 
-void getArgumentsFromExistingLine(string equation, double& k, double& n)
+void getArgumentsFromExistingLine(std::string equation, double& k, double& n)
 {
-	vector<string> arguments;
+	std::vector<std::string> arguments;
 	splitByDelim(arguments, equation, "*x");
 
 	k = stod(arguments[0]);
@@ -866,7 +732,7 @@ void getArgumentsFromExistingLine(string equation, double& k, double& n)
 
 void getLineArguments(double& k, double& n)
 {
-	string line = "";
+	std::string line = "";
 
 	wantToUseExistingLine(line);
 
@@ -883,7 +749,7 @@ void getLineArguments(double& k, double& n)
 
 void getPointCoordinates(double& x, double& y)
 {
-	string point = "";
+	std::string point = "";
 	wantToUseExistingPoint(point);
 
 	if (point == "")
@@ -899,12 +765,12 @@ void getPointCoordinates(double& x, double& y)
 
 void getParabola(double& p)
 {
-	cout << "Enter a parabola in this format \"y^2 = 2px\":\n";
-	cout << "p: ";
-	cin >> p;
+	std::cout << "Enter a parabola in this format \"y^2 = 2px\":\n";
+	std::cout << "p: ";
+	std::cin >> p;
 	if (!isNumberValid(p))
 	{
-		cerr << "P-argument is too large! It should be between -100 and 100!\n";
+		std::cerr << "P-argument is too large! It should be between -100 and 100!\n";
 	}
 }
 
@@ -923,9 +789,9 @@ void defineLineThroughSlopeAndPoint()
 	wantToSaveLine(k, n);
 }
 
-string calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
+std::string calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
 {
-	string message;
+	std::string message;
 	if (x1 == x2)
 	{
 		k = 1;
@@ -957,22 +823,22 @@ void defineLineThroughPoints()
 
 	if (x1 == x2 && y1 == y2)
 	{
-		cerr << "Can't define a line! Points are the same!\n";
+		std::cerr << "Can't define a line! Points are the same!\n";
 	}
 	else
 	{
 		calcAnimation();
 		double k = 0, n = 0;
 
-		string message = calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
+		std::string message = calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
 		printLine(k, n, x1, y1, x2, y2);
 		if (message == "equalX")
 		{
-			cerr << "The program cannot save lines that has equal x-coordinates! We're sorry...";
+			std::cerr << "The program cannot save lines that has equal x-coordinates! We're sorry...";
 		}
 		else if (message == "equalY")
 		{
-			cerr << "The program cannot save lines that has equal y-coordinates! We're sorry...";
+			std::cerr << "The program cannot save lines that has equal y-coordinates! We're sorry...";
 		}
 		else if (message == "passed")
 		{
@@ -983,7 +849,7 @@ void defineLineThroughPoints()
 
 void defineLineOption()
 {
-	string keyword = getKeywordFromConsole();
+	std::string keyword = getKeywordFromConsole();
 
 	if (keyword == "slope")
 	{
@@ -995,38 +861,9 @@ void defineLineOption()
 	}
 	else if (keyword != "menu")
 	{
-		cerr << INVALID_INPUT_TEXT;
+		std::cerr << INVALID_INPUT_TEXT;
 		defineLineOption();
 	}
-}
-
-void checkIfPointIsOnLineOption()
-{
-	double k = 0, n = 0;
-
-	getLineArguments(k, n);
-
-	double x = 0, y = 0;
-
-	getPointCoordinates(x, y);
-
-	bool isPointOnLine = ((k * x + n) == y) ? true : false;
-
-	calcAnimation();
-	if (isPointOnLine)
-	{
-		cout << "The point IS on the line.\n";
-	}
-	else
-	{
-		cout << "The point IS NOT on the line.\n";
-	}
-}
-
-void calculatePerpendicularLineArgs(double& k, double& n, double& x, double& y)
-{
-	k = -1 / k;
-	n = k * x - y;
 }
 
 void findParallelLineOption()
@@ -1081,7 +918,7 @@ void findIntersectionPointOfParabolaAndLine()
 		double y = 0;
 		double x = -n / k;
 
-		cout << "There is one intersection point:\n"
+		std::cout << "There is one intersection point:\n"
 			<< " Intersection point: (" << x << ", " << y << ")\n";
 	}
 	else
@@ -1099,7 +936,7 @@ void findIntersectionPointOfParabolaAndLine()
 		if ((x1 == x2 && isX1IntersectionPoint && isX2IntersectionPoint) || (isX1IntersectionPoint && !isX2IntersectionPoint))
 		{
 			double y1 = k * x1 - n;
-			cout << "There is one intersection point:\n"
+			std::cout << "There is one intersection point:\n"
 				<< " Intersection point: (" << x1 << ", " << y1 << ")\n";
 		}
 		else if (isX1IntersectionPoint && isX2IntersectionPoint)
@@ -1107,32 +944,44 @@ void findIntersectionPointOfParabolaAndLine()
 			double y1 = k * x1 - n;
 			double y2 = k * x2 - n;
 
-			cout << "There are two intersection points:\n"
+			std::cout << "There are two intersection points:\n"
 				<< " Intersection point #1: (" << x1 << ", " << y1 << ")\n"
 				<< " Intersection point #2: (" << x2 << ", " << y2 << ")\n";
 		}
 		else if (isX2IntersectionPoint)
 		{
 			double y2 = k * x2 - n;
-			cout << "There is one intersection point:\n"
+			std::cout << "There is one intersection point:\n"
 				<< " Intersection point: (" << x2 << ", " << y2 << ")\n";
 		}
 		else
 		{
-			cout << "There are no intersection points!\n";
+			std::cout << "There are no intersection points!\n";
 		}
 	}
 }
 
-bool areLinesTheSame(double k1, double n1, double k2, double n2)
+void checkIfPointIsOnLineOption()
 {
-	return k1 == k2 && n1 == n2;
-}
+	double k = 0, n = 0;
 
-void calculateIntersectionPointOfTwoLines(double& x, double& y, double k1, double n1, double k2, double n2)
-{
-	x = (n2 - n1) / (k1 - k2);
-	y = k1 * x - n1;
+	getLineArguments(k, n);
+
+	double x = 0, y = 0;
+
+	getPointCoordinates(x, y);
+
+	bool isPointOnLine = ((k * x + n) == y) ? true : false;
+
+	calcAnimation();
+	if (isPointOnLine)
+	{
+		std::cout << "The point IS on the line.\n";
+	}
+	else
+	{
+		std::cout << "The point IS NOT on the line.\n";
+	}
 }
 
 void findIntersectionPointOfTwoLines()
@@ -1149,17 +998,17 @@ void findIntersectionPointOfTwoLines()
 
 	if (areLinesTheSame(k1, n1, k2, n2))
 	{
-		cerr << "The lines are the same! Incorrect input!\n";
+		std::cerr << "The lines are the same! Incorrect input!\n";
 	}
 	else if (k1 == k2)
 	{
-		cout << "There are no intersection points! The lines are parallel!\n";
+		std::cout << "There are no intersection points! The lines are parallel!\n";
 	}
 	else
 	{
 		double x = 0, y = 0;
 		calculateIntersectionPointOfTwoLines(x, y, k1, n1, k2, n2);
-		cout << "The intersection point is: (" << x << ", " << y << ").\n";
+		std::cout << "The intersection point is: (" << x << ", " << y << ").\n";
 
 		wantToSavePoint(x, y);
 	}
@@ -1167,7 +1016,7 @@ void findIntersectionPointOfTwoLines()
 
 void findIntersectionPointOption()
 {
-	string keyword = getKeywordFromConsole();
+	std::string keyword = getKeywordFromConsole();
 
 	if (keyword == "parabola")
 	{
@@ -1179,137 +1028,39 @@ void findIntersectionPointOption()
 	}
 	else if (keyword != "menu")
 	{
-		cerr << INVALID_INPUT_TEXT;
+		std::cerr << INVALID_INPUT_TEXT;
 		findIntersectionPointOption();
 	}
 }
 
-bool arePointsTheSame(double& x1, double& y1, double& x2, double& y2)
-{
-	return (x1 == x2 && y1 == y2);
-}
-
-bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x3, double y3)
-{
-	double k, n;
-
-	calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
-
-	return (y3 == k * x3 + n);
-}
-
-void calculateHeights(double xa, double ya, double xb, double yb, double xc, double yc)
-{
-	double k, n;
-
-	cout << "Heights:\n";
-
-	calculateLineByTwoPoints(k, n, xa, ya, xb, yb);
-	calculatePerpendicularLineArgs(k, n, xc, yc);
-
-	cout << " #1: ";
-	printLine(k, n, xc, yc);
-
-	calculateLineByTwoPoints(k, n, xa, ya, xc, yc);
-	calculatePerpendicularLineArgs(k, n, xb, yb);
-
-	cout << " #2: ";
-	printLine(k, n, xb, yb);
-
-	calculateLineByTwoPoints(k, n, xb, yb, xc, yc);
-	calculatePerpendicularLineArgs(k, n, xa, ya);
-
-	cout << " #3: ";
-	printLine(k, n, xa, ya);
-}
-
-void calculateMedians(double xa, double ya, double xb, double yb, double xc, double yc)
-{
-	double k, n;
-
-	cout << "Medians:\n";
-
-	double xm = (xa + xb) / 2;
-	double ym = (ya + yb) / 2;
-	calculateLineByTwoPoints(k, n, xm, ym, xc, yc);
-
-	cout << " #1: ";
-	printLine(k, n, xc, yc);
-
-	xm = (xa + xc) / 2;
-	ym = (ya + yc) / 2;
-	calculateLineByTwoPoints(k, n, xm, ym, xb, yb);
-
-	cout << " #2: ";
-	printLine(k, n, xb, yb);
-
-	xm = (xb + xc) / 2;
-	ym = (yb + yc) / 2;
-	calculateLineByTwoPoints(k, n, xm, ym, xa, ya);
-
-	cout << " #3: ";
-	printLine(k, n, xa, ya);
-}
-
-void calculateSemetrals(double xa, double ya, double xb, double yb, double xc, double yc)
-{
-	double k, n;
-
-	cout << "Semetrals:\n";
-
-	double xm = (xa + xb) / 2;
-	double ym = (ya + yb) / 2;
-	calculateLineByTwoPoints(k, n, xa, ya, xb, yb);
-	calculatePerpendicularLineArgs(k, n, xm, ym);
-
-	cout << " #1: ";
-	printLine(k, n, xm, ym);
-
-	xm = (xa + xc) / 2;
-	ym = (ya + yc) / 2;
-	calculateLineByTwoPoints(k, n, xa, ya, xc, yc);
-	calculatePerpendicularLineArgs(k, n, xm, ym);
-
-	cout << " #2: ";
-	printLine(k, n, xm, ym);
-
-	xm = (xb + xc) / 2;
-	ym = (yb + yc) / 2;
-	calculateLineByTwoPoints(k, n, xb, yb, xc, yc);
-	calculatePerpendicularLineArgs(k, n, xm, ym);
-
-	cout << " #3: ";
-	printLine(k, n, xm, ym);
-}
-
 void findEquationsInTriangleOption()
 {
-	string pointA;
+	std::string pointA;
 	double xa, ya;
 
-	cout << "Point A:\n";
+	std::cout << "Point A:\n";
 	getPointCoordinates(xa, ya);
 
-	string pointB;
+	std::string pointB;
 	double xb, yb;
 
-	cout << "Point B:\n";
+	std::cout << "Point B:\n";
 	getPointCoordinates(xb, yb);
 
-	string pointC;
+	std::string pointC;
 	double xc, yc;
 
-	cout << "Point C:\n";
+	std::cout << "Point C:\n";
 	getPointCoordinates(xc, yc);
 
 	calcAnimation();
 	if (arePointsTheSame(xa, ya, xb, yb) || arePointsTheSame(xc, yc, xb, yb) || arePointsTheSame(xa, ya, xc, yc))
 	{
-		cerr << "Two of the points are the same! The program cannot create a triangle!";
+		std::cerr << "Two of the points are the same! The program cannot create a triangle!";
 	}
 	else if (arePointsOnTheSameLine(xa, ya, xb, yb, xc, yc))
 	{
-		cerr << "The points are on the same line! The program cannot create a triangle!";
+		std::cerr << "The points are on the same line! The program cannot create a triangle!";
 	}
 	else
 	{
@@ -1334,66 +1085,13 @@ void findTangentOption()
 		double k = p / x;
 		double n = (p * x) / y;
 
-		cout << "Tangent:\n";
+		std::cout << "Tangent:\n";
 		printLine(k, n, x, y);
 	}
 	else
 	{
-		cout << "Point is not on the parabola! Can't find the tangent!\n";
+		std::cout << "Point is not on the parabola! Can't find the tangent!\n";
 	}
-}
-
-bool canCreateTetragon(double k1, double n1, double k2, double n2, double k3, double n3, double k4, double n4)
-{
-	if ((areLinesTheSame(k1, n1, k2, n2) || areLinesTheSame(k1, n1, k3, n3)) ||
-		(areLinesTheSame(k1, n1, k4, n4) || areLinesTheSame(k3, n3, k2, n2)) ||
-		(areLinesTheSame(k4, n4, k2, n2) || areLinesTheSame(k3, n3, k4, n4)))
-	{
-		cerr << "You used the same line at least twice! Cannot create a tetragon!\n";
-		return false;
-	}
-
-	if ((((k1 == k2) && (k2 == k3)) || ((k1 == k2) && (k2 == k4))) ||
-		(((k1 == k3) && (k3 == k4)) || (k2 == k3) && (k3 == k4)))
-	{
-		cerr << "Cannot create a tetragon! At least three of the lines are parallel!\n";
-		return false;
-	}
-
-	return true;
-}
-
-bool areLinesPerpendicular(double k1, double k2)
-{
-	return (k1 == (-1 / k2));
-}
-
-bool isTetragonRectangle(double k1, double k2, double k3, double k4)
-{
-	return (areLinesPerpendicular(k1, k2) && areLinesPerpendicular(k1, k3) && k1 == k4) ||
-		(areLinesPerpendicular(k1, k2) && areLinesPerpendicular(k1, k4) && k1 == k3) ||
-		(areLinesPerpendicular(k1, k3) && areLinesPerpendicular(k1, k4) && k1 == k2);
-}
-
-bool areAllSidesEqual(double k1, double n1, double k2, double n2, double k3, double n3, double k4, double n4)
-{
-	double xa, ya,
-		xb, yb,
-		xc, yc,
-		xd, yd;
-
-	calculateIntersectionPointOfTwoLines(xa, ya, k1, n1, k4, n4);
-	calculateIntersectionPointOfTwoLines(xb, yb, k1, n1, k2, n2);
-	calculateIntersectionPointOfTwoLines(xc, yc, k2, n2, k3, n3);
-	calculateIntersectionPointOfTwoLines(xd, yd, k3, n3, k4, n4);
-
-
-	double AB = sqrt((xb - xa) * (xb - xa) + (yb - ya) * (yb - ya));
-	double AD = sqrt((xd - xa) * (xd - xa) + (yd - ya) * (yd - ya));
-	double BC = sqrt((xc - xb) * (xc - xb) + (yc - yb) * (yc - yb));
-	double CD = sqrt((xd - xc) * (xd - xc) + (yd - yc) * (yd - yc));
-
-	return (AB == AD && AD == BC && BC == CD);
 }
 
 void findTheTypeOfTetragonOption()
@@ -1403,17 +1101,17 @@ void findTheTypeOfTetragonOption()
 		k3, n3,
 		k4, n4;
 
-	cout << "Line 1:\n";
+	std::cout << "Line 1:\n";
 	getLineArguments(k1, n1);
-	cout << "Line 2:\n";
+	std::cout << "Line 2:\n";
 	getLineArguments(k2, n2);
-	cout << "Line 3:\n";
+	std::cout << "Line 3:\n";
 	getLineArguments(k3, n3);
-	cout << "Line 4:\n";
+	std::cout << "Line 4:\n";
 	getLineArguments(k4, n4);
 
 	calcAnimation();
-	if (canCreateTetragon(k1, n1, k2, n2, k3, n3, k4, n4))
+	if (checkIfTetragonCanBeCreated(k1, n1, k2, n2, k3, n3, k4, n4))
 	{
 		if (isTetragonRectangle(k1, k2, k3, k4) || isTetragonRectangle(k2, k1, k3, k4) ||
 			isTetragonRectangle(k3, k1, k2, k4) || isTetragonRectangle(k4, k1, k2, k3))
@@ -1421,11 +1119,11 @@ void findTheTypeOfTetragonOption()
 			if (areAllSidesEqual(k1, n1, k2, n2, k3, n3, k4, n4) || areAllSidesEqual(k2, n2, k1, n1, k3, n3, k4, n4) ||
 				areAllSidesEqual(k3, n3, k1, n1, k2, n2, k4, n4) || areAllSidesEqual(k4, n4, k1, n1, k2, n2, k3, n3))
 			{
-				cout << "The teragon is a SQUARE!\n";
+				std::cout << "The teragon is a SQUARE!\n";
 			}
 			else
 			{
-				cout << "The tetragon is a RECTANGLE!\n";
+				std::cout << "The tetragon is a RECTANGLE!\n";
 			}
 		}
 		else
@@ -1441,22 +1139,22 @@ void findTheTypeOfTetragonOption()
 					areAllSidesEqual(k2, n2, k1, n1, k4, n4, k3, n3) ||
 					areAllSidesEqual(k3, n3, k1, n1, k4, n4, k2, n2))
 				{
-					cout << "The tetragon is a RHOMBUS!\n";
+					std::cout << "The tetragon is a RHOMBUS!\n";
 				}
 				else
 				{
-					cout << "The tetragon is a PARALLELOGRAM!\n";
+					std::cout << "The tetragon is a PARALLELOGRAM!\n";
 				}
 			}
 			else if (k1 == k2 || k1 == k3 ||
 				k1 == k4 || k2 == k3 ||
 				k2 == k4 || k3 == k4)
 			{
-				cout << "The tetragon is a TRAPEZOID!\n";
+				std::cout << "The tetragon is a TRAPEZOID!\n";
 			}
 			else
 			{
-				cout << "It is just a tetragon!\n";
+				std::cout << "It is just a tetragon!\n";
 			}
 		}
 	}
@@ -1464,92 +1162,92 @@ void findTheTypeOfTetragonOption()
 
 void usersChoice()
 {
-	cout << "Enter an option: ";
+	std::cout << "Enter an option: ";
 
-	string option;
-	getline(cin, option);
+	std::string option;
+	std::getline(std::cin, option);
 
 	convertToLowerCase(option);
 
 	if (option == SAVE_OR_DELETE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nSave or delete:\n"
+		std::cout << "\nSave or delete:\n"
 			<< "Enter the word \"save\" if you want to save a line or a point\n"
 			<< "Enter the word \"delete\" if you want to delete a line or a point\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		saveOrDeleteOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == DEFINE_LINE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nDefine line:\n"
+		std::cout << "\nDefine line:\n"
 			<< "Enter the word \"slope\" if you want to define a line through slope and a point\n"
 			<< "Enter the word \"points\" if you want to define a line through two points\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		defineLineOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == CHECK_IF_POINT_IS_ON_LINE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nCheck if a point is on a line:\n";
+		std::cout << "\nCheck if a point is on a line:\n";
 		checkIfPointIsOnLineOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == FIND_PARALEL_LINE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nFind parallel line:\n";
+		std::cout << "\nFind parallel line:\n";
 		findParallelLineOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == FIND_PERPENDICULAR_LINE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nFind perpendicular line:\n";
+		std::cout << "\nFind perpendicular line:\n";
 		findPerpendicularLineOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == FIND_INTERSECTION_POINT_CORRESPONDING_NUMBER)
 	{
-		cout << "\nEnter the word \"parabola\" if you want to find the intersection point(s) of a parabola and a line\n"
+		std::cout << "\nEnter the word \"parabola\" if you want to find the intersection point(s) of a parabola and a line\n"
 			<< "Enter the word \"lines\" if you want to find the intersection point(s) of two lines\n"
 			<< GO_TO_MAIN_MENU_TEXT;
 		findIntersectionPointOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == FIND_EQUATIONS_IN_TRIANGLE_CORRESPONDING_NUMBER)
 	{
-		cout << "\nFind equations in trinagle by given three points:\n";
+		std::cout << "\nFind equations in trinagle by given three points:\n";
 		findEquationsInTriangleOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == FIND_THE_TANGENT_CORRESPONDING_NUMBER)
 	{
-		cout << "\nFind the tangent of a parabola at a point:\n";
+		std::cout << "\nFind the tangent of a parabola at a point:\n";
 		findTangentOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == DETERMINE_THE_TYPE_OF_TETRAGON_CORRESPONDING_NUMBER)
 	{
-		cout << "\nFind the type of tetragon: \n";
+		std::cout << "\nFind the type of tetragon: \n";
 		findTheTypeOfTetragonOption();
 
 		wait();
-		showMainMenu();
+		printMainMenu();
 	}
 	else if (option == "exit")
 	{
@@ -1557,15 +1255,15 @@ void usersChoice()
 	}
 	else
 	{
-		cerr << INVALID_INPUT_TEXT;
+		std::cerr << INVALID_INPUT_TEXT;
 		usersChoice();
 	}
 }
 
 int main()
 {
-	showTitle();
-	showMainMenu();
+	printTitle();
+	printMainMenu();
 
 	while (!stopProgram)
 	{

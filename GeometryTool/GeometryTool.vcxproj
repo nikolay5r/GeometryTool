@@ -129,6 +129,11 @@
   <ItemGroup>
     <ClCompile Include="GeometryTool.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="Validation.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
