@@ -35,11 +35,11 @@ const char* INVALID_NUMBER_TEXT = "Number is too large! It should be between -10
 
 bool stopProgram = false;
 
-#include "Headers/Print.h"
-#include "Headers/Animation.h"
-#include "Headers/Helper.h"
-#include "Headers/Validation.h"
-#include "Headers/Options/SaveAndDeleteOption.h"
+#include "headers/print.h"
+#include "headers/animation.h"
+#include "headers/helper.h"
+#include "headers/validation.h"
+#include "headers/options/saveAndDeleteOption.h"
 
 void getN(double& n)
 {
