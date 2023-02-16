@@ -131,3 +131,34 @@ bool areAllSidesEqual(double k1, double n1, double k2, double n2, double k3, dou
 
 	return (AB == AD && AD == BC && BC == CD);
 }
+
+bool isElementInDatabase(const std::string element, const char* path)
+{
+	std::ifstream dataBase(path);
+
+	if (dataBase.is_open())
+	{
+		std::string rowText;
+
+		while (std::getline(dataBase, rowText))
+		{
+			std::vector<std::string> words{};
+
+			splitByDelim(words, rowText, " : ");
+
+			if (words[0] == element)
+			{
+				dataBase.close();
+				return true;
+			}
+		}
+	}
+	else
+	{
+		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
+		exit(0);
+	}
+
+	dataBase.close();
+	return false;
+}

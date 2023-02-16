@@ -154,28 +154,3 @@ std::string toString(double number)
 	return ss.str();
 }
 
-void saveLineOption(std::string name = "")
-{
-	double k, n;
-
-	if (name == "")
-	{
-		std::cout << ENTER_NAME_TEXT;
-		std::getline(std::cin, name);
-	}
-
-	if (!isNameValid(name))
-	{
-		saveLineOption();
-	}
-	else if (isElementInDatabase(name, linesDB))
-	{
-		std::cerr << NAME_EXISTS_TEXT;
-		saveLineOption();
-	}
-	else
-	{
-		setEquationOfLine(k, n);
-		saveLine(name, k, n);
-	}
-}

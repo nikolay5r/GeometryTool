@@ -1,133 +1,297 @@
 #pragma once
 
-bool isInputNumber(std::string input)
+void getN(double& n)
 {
-	int counterDots = 0;
-	int index = 0;
-
-	if (input[0] == '-')
+	std::string stringN;
+	std::cout << "Enter n: ";
+	std::getline(std::cin, stringN);
+	if (!isInputNumber(stringN))
 	{
-		index++;
+		getN(n);
 	}
-
-	for (; index < input.length(); index++)
+	else
 	{
-		char currentChar = input[index];
-		if (currentChar == '.' || currentChar == ',')
+		n = stod(stringN);
+		if (!isNumberValid(n))
 		{
-			counterDots++;
-		}
-
-		if (counterDots > 1 || (currentChar < '0' || currentChar > '9'))
-		{
-			std::cerr << INVALID_INPUT_TEXT;
-			return false;
+			getN(n);
 		}
 	}
-
-	return true;
 }
 
-bool isNumberValid(const double number)
+void getSlope(double& k)
 {
-	if (abs(number) <= maxNumberSize)
+	std::string stringK;
+	std::cout << "Enter slope (k): ";
+	std::getline(std::cin, stringK);
+	if (!isInputNumber(stringK))
 	{
-		return true;
+		getSlope(k);
 	}
-	std::cerr << INVALID_NUMBER_TEXT;
-	return false;
-}
-
-bool areLinesTheSame(double k1, double n1, double k2, double n2)
-{
-	return k1 == k2 && n1 == n2;
-}
-
-bool isNameValid(const std::string name)
-{
-	if (name.length() > maxLengthOfName)
+	else
 	{
-		std::cerr << "The name is too long! Try again...\n";
-		return false;
-	}
-
-	for (int i = 0; i < name.length(); i++)
-	{
-		if (!((name[i] >= 'a' && name[i] <= 'z')
-			|| (name[i] >= 'A' && name[i] <= 'Z')
-			|| (name[i] >= '0' && name[i] <= '9')
-			|| name[i] == '_'))
+		k = stod(stringK);
+		if (!isNumberValid(k))
 		{
-			std::cerr << "Invalid characters in name! Try again...\n";
-			return false;
+			getSlope(k);
 		}
 	}
-
-	return true;
 }
 
-bool arePointsTheSame(double& x1, double& y1, double& x2, double& y2)
+std::string getKeywordFromConsole()
 {
-	return (x1 == x2 && y1 == y2);
+	std::cout << "Keyword: ";
+
+	std::string keyword = "";
+
+	std::getline(std::cin, keyword);
+
+	std::cout << "\n";
+
+	convertToLowerCase(keyword);
+
+	return keyword;
 }
 
-bool arePointsOnTheSameLine(double x1, double y1, double x2, double y2, double x3, double y3)
+void getXCoord(double& x)
 {
-	double k, n;
+	std::string stringX;
+	std::cout << "x: ";
+	std::getline(std::cin, stringX);
 
-	calculateLineByTwoPoints(k, n, x1, y1, x2, y2);
-
-	return (y3 == k * x3 + n);
-}
-
-bool checkIfTetragonCanBeCreated(double k1, double n1, double k2, double n2, double k3, double n3, double k4, double n4)
-{
-	if ((areLinesTheSame(k1, n1, k2, n2) || areLinesTheSame(k1, n1, k3, n3)) ||
-		(areLinesTheSame(k1, n1, k4, n4) || areLinesTheSame(k3, n3, k2, n2)) ||
-		(areLinesTheSame(k4, n4, k2, n2) || areLinesTheSame(k3, n3, k4, n4)))
+	if (!isInputNumber(stringX))
 	{
-		std::cerr << "You used the same line at least twice! Cannot create a tetragon!\n";
-		return false;
+		getXCoord(x);
+	}
+	else
+	{
+		x = stod(stringX);
+		if (!isNumberValid(x))
+		{
+			getXCoord(x);
+		}
+	}
+}
+
+void getYCoord(double& y)
+{
+	std::string Y;
+	std::cout << "y: ";
+	std::getline(std::cin, Y);
+
+	if (!isInputNumber(Y))
+	{
+		getYCoord(y);
+	}
+	else
+	{
+		y = stod(Y);
+		if (!isNumberValid(y))
+		{
+			getYCoord(y);
+		}
+	}
+}
+
+void setEquationOfLine(double& k, double& n)
+{
+	std::cout << "Enter the equation of the line using this format \"k*x + n\"\n";
+	getSlope(k);
+	getN(n);
+}
+
+void setPointCoordinates(double& x, double& y)
+{
+	std::string stringX,
+		Y;
+
+	std::cout << "Enter coordinates:\n";
+
+	getXCoord(x);
+	getYCoord(y);
+}
+
+void getAnswer(std::string& answer, std::string question)
+{
+	std::cout << question;
+	std::getline(std::cin, answer);
+	convertToLowerCase(answer);
+
+	if (answer != "no" && answer != "yes")
+	{
+		std::cerr << INVALID_INPUT_TEXT;
+		getAnswer(answer, question);
+	}
+}
+
+void getName(std::string& name)
+{
+	std::cout << ENTER_NAME_TEXT;
+	std::getline(std::cin, name);
+	if (!isNameValid(name))
+	{
+		getName(name);
+	}
+}
+
+void wantToSaveLine(const double k, const double n, std::string answer = "")
+{
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to save the line? ");
 	}
 
-	if ((((k1 == k2) && (k2 == k3)) || ((k1 == k2) && (k2 == k4))) ||
-		(((k1 == k3) && (k3 == k4)) || (k2 == k3) && (k3 == k4)))
+	if (answer == "yes")
 	{
-		std::cerr << "Cannot create a tetragon! At least three of the lines are parallel!\n";
-		return false;
+		std::string name;
+		getName(name);
+
+		if (isElementInDatabase(name, linesDB))
+		{
+			std::cout << NAME_EXISTS_TEXT;
+			wantToSaveLine(k, n, answer);
+		}
+		else
+		{
+			saveAnimation();
+			saveLine(name, k, n);
+		}
+	}
+}
+
+void wantToSavePoint(const double x, const double y, std::string answer = "")
+{
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to save the point? ");
 	}
 
-	return true;
+	if (answer == "yes")
+	{
+		std::string name;
+		getName(name);
+
+		if (isElementInDatabase(name, pointsDB))
+		{
+			std::cerr << NAME_EXISTS_TEXT;
+			wantToSavePoint(x, y, answer);
+		}
+		else
+		{
+			savePoint(name, x, y);
+			saveAnimation();
+		}
+	}
 }
-bool areLinesPerpendicular(double k1, double k2)
+
+void wantToUseExistingPoint(std::string& point, std::string answer = "")
 {
-	return (k1 == (-1 / k2));
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to use existing point? ");
+	}
+
+	if (answer == "yes")
+	{
+		std::string name;
+		getName(name);
+
+		if (isElementInDatabase(name, pointsDB))
+		{
+			loadAnimation();
+			getPoint(name, point);
+		}
+		else
+		{
+			std::cerr << NAME_DOESNT_EXIST_TEXT;
+			wantToUseExistingPoint(point, answer);
+		}
+	}
 }
 
-bool isTetragonRectangle(double k1, double k2, double k3, double k4)
+void wantToUseExistingLine(std::string& line, std::string answer = "")
 {
-	return (areLinesPerpendicular(k1, k2) && areLinesPerpendicular(k1, k3) && k1 == k4) ||
-		(areLinesPerpendicular(k1, k2) && areLinesPerpendicular(k1, k4) && k1 == k3) ||
-		(areLinesPerpendicular(k1, k3) && areLinesPerpendicular(k1, k4) && k1 == k2);
+	if (answer == "")
+	{
+		getAnswer(answer, "Do you want to use existing line? ");
+	}
+
+	if (answer == "yes")
+	{
+		std::string name;
+		getName(name);
+
+		if (isElementInDatabase(name, linesDB))
+		{
+			loadAnimation();
+			getEquationOfLine(name, line);
+		}
+		else
+		{
+			std::cerr << NAME_DOESNT_EXIST_TEXT;
+			wantToUseExistingLine(line, answer);
+		}
+	}
 }
 
-bool areAllSidesEqual(double k1, double n1, double k2, double n2, double k3, double n3, double k4, double n4)
+void getCoordinatesFromExistingPoint(std::string point, double& x, double& y)
 {
-	double xa, ya,
-		xb, yb,
-		xc, yc,
-		xd, yd;
+	std::vector<std::string> coordinates;
+	splitByDelim(coordinates, point, ";");
 
-	calculateIntersectionPointOfTwoLines(xa, ya, k1, n1, k4, n4);
-	calculateIntersectionPointOfTwoLines(xb, yb, k1, n1, k2, n2);
-	calculateIntersectionPointOfTwoLines(xc, yc, k2, n2, k3, n3);
-	calculateIntersectionPointOfTwoLines(xd, yd, k3, n3, k4, n4);
+	x = stod(coordinates[0]);
+	y = stod(coordinates[1]);
+}
 
+void getArgumentsFromExistingLine(std::string equation, double& k, double& n)
+{
+	std::vector<std::string> arguments;
+	splitByDelim(arguments, equation, "*x");
 
-	double AB = sqrt((xb - xa) * (xb - xa) + (yb - ya) * (yb - ya));
-	double AD = sqrt((xd - xa) * (xd - xa) + (yd - ya) * (yd - ya));
-	double BC = sqrt((xc - xb) * (xc - xb) + (yc - yb) * (yc - yb));
-	double CD = sqrt((xd - xc) * (xd - xc) + (yd - yc) * (yd - yc));
+	k = stod(arguments[0]);
+	n = stod(arguments[1]);
+}
 
-	return (AB == AD && AD == BC && BC == CD);
+void getLineArguments(double& k, double& n)
+{
+	std::string line = "";
+
+	wantToUseExistingLine(line);
+
+	if (line == "")
+	{
+		setEquationOfLine(k, n);
+		wantToSaveLine(k, n);
+	}
+	else
+	{
+		getArgumentsFromExistingLine(line, k, n);
+	}
+}
+
+void getPointCoordinates(double& x, double& y)
+{
+	std::string point = "";
+	wantToUseExistingPoint(point);
+
+	if (point == "")
+	{
+		setPointCoordinates(x, y);
+		wantToSavePoint(x, y);
+	}
+	else
+	{
+		getCoordinatesFromExistingPoint(point, x, y);
+	}
+}
+
+void getParabola(double& p)
+{
+	std::cout << "Enter a parabola in this format \"y^2 = 2px\":\n";
+	std::cout << "p: ";
+	std::cin >> p;
+	if (!isNumberValid(p))
+	{
+		std::cerr << "P-argument is too large! It should be between -100 and 100!\n";
+	}
 }
