@@ -1,5 +1,7 @@
 #pragma once
 
+const char* linesDB = "data/lines.txt";
+
 void saveLine(const std::string name, const double k, double n)
 {
 	std::string symbol = n >= 0 ? "+" : "-";

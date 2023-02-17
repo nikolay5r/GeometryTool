@@ -1,6 +1,6 @@
 #pragma once
 
-const char* pointsDB = "databases/points.txt";
+const char* pointsDB = "data/points.txt";
 
 void savePoint(const std::string name, const double x, const double y)
 {
