@@ -10,6 +10,7 @@
 
 bool stopProgram = false;
 
+#include "src/constants.h"
 #include "src/print.h"
 #include "src/animation.h"
 #include "src/helper.h"
