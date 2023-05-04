@@ -1,4 +1,12 @@
-#pragma once
+#include <iostream>
+#include <string>
+
+#include "Validation.h"
+#include "Constants.h"
+#include "Helper.h"
+#include "Animation.h"
+#include "LineService.h"
+#include "PointService.h"
 
 void getN(double& n)
 {
@@ -119,14 +127,14 @@ void getAnswer(std::string& answer, std::string question)
 
 	if (answer != "no" && answer != "yes")
 	{
-		std::cerr << INVALID_INPUT_TEXT;
+		std::cerr << constants::INVALID_INPUT_TEXT;
 		getAnswer(answer, question);
 	}
 }
 
 void getName(std::string& name)
 {
-	std::cout << ENTER_NAME_TEXT;
+	std::cout << constants::ENTER_NAME_TEXT;
 	std::getline(std::cin, name);
 	if (!isNameValid(name))
 	{
@@ -146,9 +154,9 @@ void wantToSaveLine(const double k, const double n, std::string answer = "")
 		std::string name;
 		getName(name);
 
-		if (isElementInDatabase(name, linesDB))
+		if (isElementInDatabase(name, constants::linesDB))
 		{
-			std::cout << NAME_EXISTS_TEXT;
+			std::cout << constants::NAME_EXISTS_TEXT;
 			wantToSaveLine(k, n, answer);
 		}
 		else
@@ -171,9 +179,9 @@ void wantToSavePoint(const double x, const double y, std::string answer = "")
 		std::string name;
 		getName(name);
 
-		if (isElementInDatabase(name, pointsDB))
+		if (isElementInDatabase(name, constants::pointsDB))
 		{
-			std::cerr << NAME_EXISTS_TEXT;
+			std::cerr << constants::NAME_EXISTS_TEXT;
 			wantToSavePoint(x, y, answer);
 		}
 		else
@@ -196,14 +204,14 @@ void wantToUseExistingPoint(std::string& point, std::string answer = "")
 		std::string name;
 		getName(name);
 
-		if (isElementInDatabase(name, pointsDB))
+		if (isElementInDatabase(name, constants::pointsDB))
 		{
 			loadAnimation();
 			getPoint(name, point);
 		}
 		else
 		{
-			std::cerr << NAME_DOESNT_EXIST_TEXT;
+			std::cerr << constants::NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingPoint(point, answer);
 		}
 	}
@@ -221,14 +229,14 @@ void wantToUseExistingLine(std::string& line, std::string answer = "")
 		std::string name;
 		getName(name);
 
-		if (isElementInDatabase(name, linesDB))
+		if (isElementInDatabase(name, constants::linesDB))
 		{
 			loadAnimation();
 			getEquationOfLine(name, line);
 		}
 		else
 		{
-			std::cerr << NAME_DOESNT_EXIST_TEXT;
+			std::cerr << constants::NAME_DOESNT_EXIST_TEXT;
 			wantToUseExistingLine(line, answer);
 		}
 	}

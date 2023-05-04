@@ -1,12 +1,15 @@
-#pragma once
-
-const char* linesDB = "data/lines.txt";
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <fstream>
+#include "Constants.h"
+#include "Helper.h"
 
 void saveLine(const std::string name, const double k, double n)
 {
 	std::string symbol = n >= 0 ? "+" : "-";
 	n = abs(n);
-	std::ofstream dataBase(linesDB, std::fstream::app);
+	std::ofstream dataBase(constants::linesDB, std::ios::app);
 
 	if (dataBase.is_open())
 	{
@@ -18,14 +21,14 @@ void saveLine(const std::string name, const double k, double n)
 	}
 	else
 	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << constants::DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
 
 void getEquationOfLine(const std::string name, std::string& equation)
 {
-	std::ifstream database(linesDB);
+	std::ifstream database(constants::linesDB);
 
 	if (database.is_open())
 	{
@@ -48,7 +51,7 @@ void getEquationOfLine(const std::string name, std::string& equation)
 	}
 	else
 	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << constants::DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }
@@ -57,7 +60,7 @@ void deleteLine(const std::string name)
 {
 	std::string rowText;
 
-	std::ifstream dataBase(linesDB);
+	std::ifstream dataBase(constants::linesDB);
 	std::ofstream  newDataBase("linesNew.txt");
 
 	if (dataBase.is_open() && newDataBase.is_open())
@@ -79,16 +82,16 @@ void deleteLine(const std::string name)
 		dataBase.close();
 		newDataBase.close();
 
-		remove(linesDB);
-		if (rename("linesNew.txt", linesDB))
+		remove(constants::linesDB);
+		if (rename("linesNew.txt", constants::linesDB))
 		{
-			stopProgram = true;
 			std::cerr << "There was an error with the deleting of the line!\nWe are sorry. . .\n";
+			throw std::runtime_error("ERROR with renaming the file on deleting line!");
 		}
 	}
 	else
 	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << constants::DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 }

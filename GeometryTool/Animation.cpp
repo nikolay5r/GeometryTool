@@ -1,10 +1,11 @@
-#pragma once
+#include <windows.h>
+#include <iostream>
 
-//ANIMATIONS ONLY WORK WITH <windows.h>
+#include "Constants.h"
 
 void wait()
 {
-	Sleep(timeToWait);
+	Sleep(constants::TIME_TO_SLEEP);
 }
 
 void printThreeDotsAnimation()

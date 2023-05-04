@@ -127,12 +127,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="LineService.cpp" />
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="GeometryTool.cpp" />
+    <ClCompile Include="PointService.cpp" />
+    <ClCompile Include="Print.cpp" />
+    <ClCompile Include="UserInteraction.cpp" />
+    <ClCompile Include="Validation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Helper.h" />
-    <ClInclude Include="SaveAndDeleteOption.h" />
+    <ClInclude Include="LineService.h" />
+    <ClInclude Include="Options.h" />
+    <ClInclude Include="PointService.h" />
+    <ClInclude Include="Print.h" />
+    <ClInclude Include="UserInteraction.h" />
     <ClInclude Include="Validation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

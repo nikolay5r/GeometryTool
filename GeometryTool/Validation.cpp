@@ -1,4 +1,9 @@
-#pragma once
+#include <iostream>
+#include <cmath>
+#include <fstream>
+#include <string>
+#include "Constants.h"
+#include "Helper.h"
 
 bool isInputNumber(std::string input)
 {
@@ -20,7 +25,7 @@ bool isInputNumber(std::string input)
 
 		if (counterDots > 1 || (currentChar < '0' || currentChar > '9'))
 		{
-			std::cerr << INVALID_INPUT_TEXT;
+			std::cerr << constants::INVALID_INPUT_TEXT;
 			return false;
 		}
 	}
@@ -30,11 +35,11 @@ bool isInputNumber(std::string input)
 
 bool isNumberValid(const double number)
 {
-	if (abs(number) <= maxNumberSize)
+	if (abs(number) <= constants::MAX_NUMBER_SIZE)
 	{
 		return true;
 	}
-	std::cerr << INVALID_NUMBER_TEXT;
+	std::cerr << constants::INVALID_NUMBER_TEXT;
 	return false;
 }
 
@@ -45,7 +50,7 @@ bool areLinesTheSame(double k1, double n1, double k2, double n2)
 
 bool isNameValid(const std::string name)
 {
-	if (name.length() > maxLengthOfName)
+	if (name.length() > constants::MAX_NAME_LENGTH)
 	{
 		std::cerr << "The name is too long! Try again...\n";
 		return false;
@@ -155,7 +160,7 @@ bool isElementInDatabase(const std::string element, const char* path)
 	}
 	else
 	{
-		std::cerr << DATABASE_CANNOT_OPEN_TEXT;
+		std::cerr << constants::DATABASE_CANNOT_OPEN_TEXT;
 		exit(0);
 	}
 

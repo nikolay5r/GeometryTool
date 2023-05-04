@@ -1,4 +1,8 @@
-#pragma once
+#include <vector>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include "Print.h"
 
 std::string calculateLineByTwoPoints(double& k, double& n, double x1, double y1, double x2, double y2)
 {
